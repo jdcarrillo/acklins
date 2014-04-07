@@ -1,0 +1,78 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package mataproceso;
+
+import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Scanner;
+import java.util.Timer;
+import java.util.TimerTask;
+
+/**
+ *
+ * @author jcarrillo
+ */
+public class MataProceso {
+
+    /**
+     * @param args the command line arguments
+     */
+   public static void main( String ... args ) throws java.io.IOException , InterruptedException {
+        //Process p = new ProcessBuilder("V:\\PixelPointPos.exe","1" ).start();
+    //    Process p = new ProcessBuilder("gedit" ).start();
+      // Process p = new ProcessBuilder("calc" ).start();
+       
+       // InputStream input = p.getInputStream();
+       // p.waitFor();
+        //System.out.println( "El resultado fue: "+ new Scanner( input ).useDelimiter("\\A").next() );
+        //p.destroy();
+        
+        //String nombre;
+       // try (Scanner lector = new Scanner("c:\\archivo.txt")) { 
+            //nombre = lector.nextLine();
+            //lector.close();
+                        //System.out.println("lector "+ nombre);
+  //}
+       
+            
+       
+        TimerTask timerTask;
+        timerTask = new TimerTask() {
+            archivo a = new archivo();
+
+            @Override
+            public void run() {
+                // Aquí el código que queremos ejecutar.
+                String x;
+                //x=String.valueOf(a.leer("/home/jcarrillo/archivo.txt"));
+                x = String.valueOf(a.leer("c:archivo.txt"));
+                //System.out.println(x);
+                if (x.equals("0")) {
+                    System.out.println("leyo " + a.leer("/home/jcarrillo/archivo.txt"));
+                    //Process p = new ProcessBuilder("calc").start();
+                    //p.destroy();
+                    try {
+                        String[] cmd = {"TASKKILL", "/F", "/IM", "notepad.exe"}; //Comando de apagado en windows
+                        Runtime.getRuntime().exec(cmd);
+                    } catch (IOException ioe) {
+                        System.out.println(ioe);
+
+                    }
+                }else;
+
+            }
+            
+        };
+
+
+        Timer timer = new Timer();
+        timer.scheduleAtFixedRate(timerTask, 0, 1000);
+        
+
+    }
+
+}
+
