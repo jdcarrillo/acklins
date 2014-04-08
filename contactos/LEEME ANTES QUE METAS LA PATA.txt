@@ -1,0 +1,59 @@
+---------------------------------------------------------------------------------------------------------------
+|                                                                                                             |
+| descargado desde: http://jc-mouse.blogspot.com/                                                             |
+| "El conocimiento es de todos y es deber de cada persona enseñar al que no sabe.                             |
+| lastimosamente tambien hay que comer, ASI QUE HAGA CLIC EN LA PUBLICIDAD!!!!!!!!!!!!!!!!!                   |
+---------------------------------------------------------------------------------------------------------------
+
+CREA UNA BASE DE DATOS CON NOMBRE "dbcontactos", LUEGO AÑADE LA SIGUIENTE TABLA JUNTO CON LOS SIGUIENTES DATOS:
+
+create table persona(
+	id bigint(10) NOT NULL auto_increment,
+	Nombre varchar(32) not null,
+	appPaterno varchar(32) not null,
+	appMaterno carchar(32),
+	mail varchar(32) default '@hotmail.com',
+	PRIMARY KEY (ID)
+)
+
+
+insert into persona(Nombre, appPaterno, appMaterno, mail)
+values("Anita","Quiere","Problemas","ana233@hotmail.com");
+
+insert into persona(Nombre, appPaterno, appMaterno, mail)
+values("Pablito","Saco","Unclavito","clavito009@hotmail.com");
+
+insert into persona(Nombre, appPaterno, appMaterno, mail)
+values("Paola","Nomequire","Hablar","paomala@hotmail.com");
+
+insert into persona(Nombre, appPaterno, appMaterno, mail)
+values("Mirtha","Hornea","Pasteles","ana233@hotmail.com");
+
+insert into persona(Nombre, appPaterno, appMaterno, mail)
+values("Luis","Mamani","Mamani","lucho_to777@hotmail.com");
+
+insert into persona(Nombre, appPaterno, appMaterno, mail)
+values("Hilarion","Daza","McDonald","ani233@hotmail.com");
+
+insert into persona(Nombre, appPaterno, appMaterno, mail)
+values("Juan Carlos","Quinata","yQue","locoo1@hotmail.com");
+
+insert into persona(Nombre, appPaterno, appMaterno, mail)
+values("Yamevoy","Aburriendo","","mmmmmmm23@hotmail.com");
+
+insert into persona(Nombre, appPaterno, appMaterno, mail)
+values("Ysigo","Escribiendo","Summadre","lesigo88@hotmail.com");
+
+insert into persona(Nombre, appPaterno, appMaterno, mail)
+values("Ultimo","seran","Primeros","primerillo1212@hotmail.com");
+
+
+
+
+
+EN LA CLASE CONECTATE.JAVA COMPLETA LOS SIGUIENTES DATOS
+
+public class conectate {
+   static String bd = "dbcontactos";
+   static String login = "USUARIO";
+   static String password = "CONTRASEÑA_MYSQL";
