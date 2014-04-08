@@ -1,0 +1,203 @@
+-- MySQL Administrator dump 1.4
+--
+-- ------------------------------------------------------
+-- Server version	5.1.22-rc-community
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+
+
+--
+-- Create schema dbbusqueda
+--
+
+CREATE DATABASE IF NOT EXISTS dbbusqueda;
+USE dbbusqueda;
+
+--
+-- Definition of table `catalogo`
+--
+
+DROP TABLE IF EXISTS `catalogo`;
+CREATE TABLE `catalogo` (
+  `IDCATALOGO` int(11) NOT NULL,
+  `IDCLIENTE` int(11) DEFAULT NULL,
+  `CATEGORIA` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`IDCATALOGO`),
+  KEY `FK_TIENE` (`IDCLIENTE`),
+  CONSTRAINT `FK_TIENE` FOREIGN KEY (`IDCLIENTE`) REFERENCES `cliente` (`IDCLIENTE`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `catalogo`
+--
+
+/*!40000 ALTER TABLE `catalogo` DISABLE KEYS */;
+INSERT INTO `catalogo` (`IDCATALOGO`,`IDCLIENTE`,`CATEGORIA`) VALUES 
+ (100,1,'SOFTWARE'),
+ (101,2,'HARDWARE'),
+ (102,3,'HARDWARE');
+/*!40000 ALTER TABLE `catalogo` ENABLE KEYS */;
+
+
+--
+-- Definition of table `cliente`
+--
+
+DROP TABLE IF EXISTS `cliente`;
+CREATE TABLE `cliente` (
+  `IDCLIENTE` int(11) NOT NULL DEFAULT '0',
+  `NOMBRECLIENTE` varchar(50) DEFAULT NULL,
+  `APELLIDOCLIENTE` varchar(50) DEFAULT NULL,
+  `CIUDADCLIENTE` varchar(50) DEFAULT NULL,
+  `DIRECCIONCLIENTE` varchar(50) DEFAULT NULL,
+  `TELEFONOCLIENTE` varchar(50) DEFAULT NULL,
+  `EMAILCLIENTE` varchar(50) DEFAULT NULL,
+  `LOGIN` varchar(50) DEFAULT NULL,
+  `PASSWORD` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`IDCLIENTE`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `cliente`
+--
+
+/*!40000 ALTER TABLE `cliente` DISABLE KEYS */;
+INSERT INTO `cliente` (`IDCLIENTE`,`NOMBRECLIENTE`,`APELLIDOCLIENTE`,`CIUDADCLIENTE`,`DIRECCIONCLIENTE`,`TELEFONOCLIENTE`,`EMAILCLIENTE`,`LOGIN`,`PASSWORD`) VALUES 
+ (1,'Fernanda','Ramon','Quito','Shyris','083274415','mafer_211986@hotmail.com','mafer211986','mafer231986'),
+ (2,'Juan','Carrillo','Quito','Monteserrin','099732086','jcm159@gmail.com','jcm159','jcm123'),
+ (3,'Karen','Villalba','Quito','Republica de El Salvador','099732086','karen12@gmail.com','karen','246'),
+ (5,'Pablo','Villacis','Quito','Carcelen','095833948','pablo_1@hotmail.com','pablito','987'),
+ (20,'Brenda','Altamirano','Quito','San Rafael','092345678','brendys@gmail.com','brendys17','17');
+/*!40000 ALTER TABLE `cliente` ENABLE KEYS */;
+
+
+--
+-- Definition of table `multimedia`
+--
+
+DROP TABLE IF EXISTS `multimedia`;
+CREATE TABLE `multimedia` (
+  `IDMULTIMEDIA` int(11) NOT NULL,
+  `IDPRODUCTO` int(11) DEFAULT NULL,
+  `TIPOCONTENIDO` varchar(45) DEFAULT NULL,
+  `DESCRIPCION` varchar(150) DEFAULT NULL,
+  `API` varchar(150) DEFAULT NULL,
+  PRIMARY KEY (`IDMULTIMEDIA`),
+  KEY `FK_multimedia_1` (`IDPRODUCTO`),
+  CONSTRAINT `FK_multimedia_1` FOREIGN KEY (`IDPRODUCTO`) REFERENCES `producto` (`IDPRODUCTO`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `multimedia`
+--
+
+/*!40000 ALTER TABLE `multimedia` DISABLE KEYS */;
+INSERT INTO `multimedia` (`IDMULTIMEDIA`,`IDPRODUCTO`,`TIPOCONTENIDO`,`DESCRIPCION`,`API`) VALUES 
+ (3000,111,'Fotos','Fotos de Software','Flickr'),
+ (3001,112,'Fotos','Fotos de Software','Flickr');
+/*!40000 ALTER TABLE `multimedia` ENABLE KEYS */;
+
+
+--
+-- Definition of table `producto`
+--
+
+DROP TABLE IF EXISTS `producto`;
+CREATE TABLE `producto` (
+  `IDPRODUCTO` int(11) NOT NULL,
+  `IDCATALOGO` int(11) DEFAULT NULL,
+  `MARCA` varchar(50) DEFAULT NULL,
+  `GARANTIA` varchar(50) DEFAULT NULL,
+  `NOMBREPRODUCTO` varchar(50) DEFAULT NULL,
+  `PRECIOSINIVA` float DEFAULT NULL,
+  `PRECIOCONIVA` float DEFAULT NULL,
+  PRIMARY KEY (`IDPRODUCTO`),
+  KEY `FK_PERTENECE` (`IDCATALOGO`),
+  CONSTRAINT `FK_PERTENECE` FOREIGN KEY (`IDCATALOGO`) REFERENCES `catalogo` (`IDCATALOGO`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `producto`
+--
+
+/*!40000 ALTER TABLE `producto` DISABLE KEYS */;
+INSERT INTO `producto` (`IDPRODUCTO`,`IDCATALOGO`,`MARCA`,`GARANTIA`,`NOMBREPRODUCTO`,`PRECIOSINIVA`,`PRECIOCONIVA`) VALUES 
+ (111,100,'Microsoft','Si','Adobe CS5',160,179.2),
+ (112,101,'Benq','No','Mini Mouse',6.75,7.56),
+ (113,102,'Microsoft','Si','Office 2010',280,313.6);
+/*!40000 ALTER TABLE `producto` ENABLE KEYS */;
+
+
+--
+-- Definition of table `promocion`
+--
+
+DROP TABLE IF EXISTS `promocion`;
+CREATE TABLE `promocion` (
+  `IDPROMOCION` int(11) NOT NULL,
+  `IDPRODUCTO` int(11) DEFAULT NULL,
+  `TIPO` varchar(50) DEFAULT NULL,
+  `DESCUENTO` float DEFAULT NULL,
+  `TOTALDESCUENTO` float DEFAULT NULL,
+  PRIMARY KEY (`IDPROMOCION`),
+  KEY `FK_PUEDE_TENER` (`IDPRODUCTO`),
+  CONSTRAINT `FK_PUEDE_TENER` FOREIGN KEY (`IDPRODUCTO`) REFERENCES `producto` (`IDPRODUCTO`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `promocion`
+--
+
+/*!40000 ALTER TABLE `promocion` DISABLE KEYS */;
+INSERT INTO `promocion` (`IDPROMOCION`,`IDPRODUCTO`,`TIPO`,`DESCUENTO`,`TOTALDESCUENTO`) VALUES 
+ (1000,111,'Navidad',15,15.15),
+ (1001,112,'Dia Hp',25,25.25);
+/*!40000 ALTER TABLE `promocion` ENABLE KEYS */;
+
+
+--
+-- Definition of table `proveedor`
+--
+
+DROP TABLE IF EXISTS `proveedor`;
+CREATE TABLE `proveedor` (
+  `IDPROVEEDOR` int(11) NOT NULL,
+  `IDPRODUCTO` int(11) DEFAULT NULL,
+  `NOMBREPROVEEDOR` varchar(50) DEFAULT NULL,
+  `DIRECCIONPROVEEDOR` varchar(50) DEFAULT NULL,
+  `CIUDADPROVEEDOR` varchar(50) DEFAULT NULL,
+  `TELEFONOPROVEEDOR` varchar(50) DEFAULT NULL,
+  `EMAILPROVEEDOR` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`IDPROVEEDOR`),
+  KEY `FK_SON_PROVEIDOS` (`IDPRODUCTO`),
+  CONSTRAINT `FK_SON_PROVEIDOS` FOREIGN KEY (`IDPRODUCTO`) REFERENCES `producto` (`IDPRODUCTO`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `proveedor`
+--
+
+/*!40000 ALTER TABLE `proveedor` DISABLE KEYS */;
+INSERT INTO `proveedor` (`IDPROVEEDOR`,`IDPRODUCTO`,`NOMBREPROVEEDOR`,`DIRECCIONPROVEEDOR`,`CIUDADPROVEEDOR`,`TELEFONOPROVEEDOR`,`EMAILPROVEEDOR`) VALUES 
+ (221,NULL,'Tecnomega','Colon','Quito','2900453','tecnomegaventas@hotmail.com'),
+ (222,111,'Computron','Quito','Quito','022456873','computron@gmail.com');
+/*!40000 ALTER TABLE `proveedor` ENABLE KEYS */;
+
+
+
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
