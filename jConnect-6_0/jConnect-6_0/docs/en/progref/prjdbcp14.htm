@@ -1,0 +1,226 @@
+
+<html>
+<!-- 
+Copyright (C) 2003. Sybase Inc. All rights reserved.
+Programmer's Reference
+jConnect&#153; for JDBC&#153;
+-->
+
+<HEAD>
+<script language="JavaScript">
+<!--
+
+if (navigator.appName == "Netscape"){
+     document.write('<LINK REL=STYLESHEET HREF="netscape.css" TYPE="text/javascript">');
+     }
+else{
+     document.write('<LINK REL=STYLESHEET HREF="default.css" TYPE="text/css">');
+     }
+
+//-->
+</script>
+<NOSCRIPT><LINK REL=STYLESHEET HREF="default.css" TYPE="text/css"></NOSCRIPT>
+<TITLE>Debugging  with jConnect</TITLE></HEAD>
+<BODY bgproperties="FIXED" bgcolor="#ffffe2">
+<P ALIGN=RIGHT><A HREF="prjdbcp13.htm"><IMG SRC="images/arrow-left.gif" align=top></A>&nbsp;&nbsp;<A HREF="prjdbcp15.htm"><IMG SRC="images/arrow-right.gif" align=top></A></P>
+
+<P ALIGN=LEFT><I>Chapter 3  Troubleshooting</I><HR NOSHADE SIZE=1></P>
+<A NAME="X36792"></A><h1>Debugging  with jConnect</h1>
+<p>jConnect includes a <b>Debug</b> class that contains
+
+a set of debugging functions. The <b>Debug</b> methods
+
+include a variety of assert, trace, and timer functions that let
+
+you define the scope of the debugging process and the output destination
+
+for the debugging results.</p>
+<p>The jConnect installation also includes a complete set of
+
+debug-enabled classes. These classes are located in the <i>devclasses</i> subdirectory
+
+under your jConnect installation directory. For debugging purposes,
+
+you must redirect your CLASSPATH environment variable to reference
+
+the debug mode runtime classes (<i>devclasses/jconn2d.jar</i>),
+
+rather than the standard jConnect <i>classes</i> directory.
+
+You can also do this by explicitly providing a -<b>classpath </b>argument
+
+to the <b>java</b> command when you run a Java program.</p>
+<A NAME="TI70"></A><h2>Obtaining an
+
+instance of the Debug class </h2>
+<p>To use the jConnect debugging feature, your application must
+
+import the <b>Debug</b> interface and obtain an instance
+
+of the <b>Debug</b> class by calling the <b>getDebug(
+
+)</b> method on the <b>SybDriver</b> class.</p>
+<p>
+<pre>import com.sybase.jdbcx.Debug 
+ import.com.sybase.jdbcx.SybDebug 
+ //
+ ... 
+ SybDriver  sybDriver = (SybDriver)
+ Class.forName("com.sybase.jdbc2.jdbc.SybDriver").newInstance();</pre>
+
+<pre>Debug  sybdebug = sybDriver.getDebug();
+ ...</pre>
+</p>
+<A NAME="X24697"></A><h2>Turning on debugging in your application</h2>
+<p>To use the <b>debug( )</b> method on the <b>Debug</b> object
+
+to turn on debugging within your application, add this call: 
+<pre>sybdebug.debug(true, [<i>classes</i>], [<i>printstream</i>]);</pre>
+</p>
+<p>The <i>classes</i> parameter is a string that
+
+lists the specific classes you want to debug, separated by colons.
+
+For example: 
+<pre>sybdebug.debug(true,"MyClass")</pre>
+</p>
+<p>and 
+<pre>sybdebug.debug(true,"MyClass:YourClass")</pre>
+</p>
+<p>"STATIC" in the class string turns on debugging
+
+for all static methods in jConnect in addition to the designated
+
+classes. For example: 
+<pre>sybdebug.debug(true,"STATIC:MyClass")</pre>
+</p>
+<p>You can specify "ALL" to turn on debugging
+
+for all classes. For example: 
+<pre>sybdebug.debug(true,"ALL"); </pre>
+</p>
+<p>The <i>printstream</i> parameter is optional.
+
+If you do not specify a printstream, the debug output goes to the
+
+output file you specified with <b>DriverManager.setLogStream(
+
+)</b>.</p>
+<A NAME="TI71"></A><h2>Turning off debugging in your application</h2>
+<p>To turn off debugging, add this call: 
+<pre>sybdebug.debug(false); </pre>
+</p>
+<A NAME="TI72"></A><h2>Setting the CLASSPATH for debugging</h2>
+<p>Before you run your debug-enabled application, redefine the
+
+CLASSPATH environment variable to reference the <i>/devclasses</i> subdirectory
+
+under your jConnect installation directory.</p>
+<p>
+<ul>
+<li class=fi>For UNIX, replace <i>$JDBC_HOME/classes/jconn2.jar</i> with <i>$JDBC_HOME/devclasses/jconn2d.jar.</i>
+</li>
+<li class=ds>For Windows, replace <i>%JDBC_HOME%\classes\jconn2.jar</i> with <i>%JDBC_HOME%\devclasses\jconn2d.jar.</i>
+
+</li>
+</ul>
+</p>
+<A NAME="X21699"></A><h2>Using the Debug methods</h2>
+<p>To customize the debugging process, you can add calls to other <b>Debug</b> methods.</p>
+<p>In these methods, the first (object) parameter is usually <i>this</i> to
+
+specify the calling object. If any of these methods are static,
+
+use <i>null</i> for the object parameter. 
+<ul>
+<li class=fi><b>println( )</b>
+<br><br>
+Use this method to define the message to print in the output
+
+log if debugging is enabled and the object is included in the list
+
+of classes to debug. The debug output goes to the file you specified
+
+with <i>sybdebug</i>
+<b>.debug( )</b>.
+<br><br>
+The syntax is: 
+<pre>sybdebug.println(object,message  string);</pre>
+
+<br><br>
+For example: 
+<pre>sybdebug.println(this,"Query:  "+ query);</pre>
+
+<br><br>
+produces a message similar to this in the output log: 
+<pre>myApp(thread[x,y,z]): Query:  select * from authors</pre>
+
+</li>
+<li class=ds><b>assert( )</b>
+<br><br>
+Use this method to assert a condition and throw a runtime
+
+exception when the condition is not met. You can also define the
+
+message to print in the output log if the condition is not met.
+
+The syntax is: 
+<pre>sybdebug.assert(object,boolean  condition,message
+   string);</pre>
+
+<br><br>
+For example: 
+<pre>sybdebug.assert(this,amount&lt;=buf.length,amount+"
+   too  big!");</pre>
+
+<br><br>
+produces a message similar to this in the output log if "amount" exceeds the
+
+value of buf.length: 
+<pre>java.lang.RuntimeException:myApp(thread[x,y,z]):
+Assertion  failed: 513 too big!
+at jdbc.sybase.utils.sybdebug.assert(
+sybdebug.java:338)
+at  myApp.myCall(myApp.java:xxx)
+at .... more stack: </pre>
+
+</li>
+<li class=ds><b>startTimer( )<br>stopTimer( )</b>
+<br><br>
+Use these methods to start and stop a timer that measures
+
+the milliseconds that elapse during an event. The method keeps one
+
+timer per object, and one for all static methods. The syntax to
+
+start the timer is: 
+<pre>sybdebug.startTimer(object);</pre>
+
+<br><br>
+The syntax to stop the timer is: 
+<pre>sybdebug.stopTimer(object,message  string);</pre>
+
+<br><br>
+For example: 
+<pre>sybdebug.startTimer(this);
+stmt.executeQuery(query);
+sybdebug.stopTimer(this,"executeQuery");</pre>
+
+<br><br>
+produces a message similar to this in the output log: 
+<pre>myApp(thread[x,y,z]):executeQuery  elapsed time =
+  25ms</pre>
+
+
+</li>
+</ul>
+</p>
+<P>&nbsp;</P><hr noshade size=1>
+<table cols=3><tr><td colspan=2 align=left>
+Copyright &copy; 2003 Sybase, Inc. All rights reserved.&nbsp;&nbsp;&nbsp;
+</td><td colspan=1>
+<A HREF="prjdbcp15.htm"><IMG SRC="images/arrow-right.gif" ALIGN=right></A>
+</td></tr></table>
+</BODY>
+</HTML>
+

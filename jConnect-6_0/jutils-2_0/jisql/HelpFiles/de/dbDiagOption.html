@@ -1,0 +1,132 @@
+<html>
+<body bgcolor="#FFFFFF">
+<blockquote> 
+<table width="75%" border="0">
+  <tr> 
+    <td> 
+      <div align="left"><font face="Default" size="2"><a href="toc.html"><b>Inhaltsverzeichnis</b></a></font></div>
+    </td>
+    <td> 
+      <div align="left"><font face="Default" size="2"><a href="overview.html"><b>&Uuml;berblick</b></a></font></div>
+    </td>
+    <td bgcolor="#FFFFFF"> 
+      <div align="left"><font face="Default" size="2"><b><a href="menu.html">Men&uuml;s</a></b></font></div>
+    </td>
+    <td> 
+      <div align="left"><font face="Default" size="2"><b><a href="windows.html">Fenster</a></b></font></div>
+    </td>
+    <td bgcolor="#FFFFFF"> 
+      <div align="left"><font face="Default" size="2"><b><a href="button.html">Schaltfl&auml;chen</a></b></font></div>
+    </td>
+  </tr>
+</table>
+<hr>
+  
+<h2 align="left"><font face="Default" color="#000099">Datenbankdiagnose</font></h2>
+  
+  <p align="left"><font face="Default" size="2">Diese Optionen bieten eine bequeme Methode, um
+Diagnoseparameter zu setzen, mit denen Sie Probleme der
+Performance l&ouml;sen k&ouml;nnen. Weitere Hinweise finden Sie in
+der Dokumentation <i>Performance und Tuning f&uuml;r Adaptive
+Server Enterprise</i>. Diese Optionen sind
+verbindungsspezifisch und haben den Standardwert
+&quot;Aus&quot;. </font></p>
+  <p align="left"><font face="Default" size="2"> Um eine Option zu aktivieren, klicken Sie auf die
+Schaltfl&auml;che <font color="#000099"><b>Ein</b></font> der Option und dann auf <b><font color="#000099">&Uuml;bernehmen</font></b>,
+um Ihre Auswahl zu aktivieren. Diese Werte werden nicht
+aktualisiert, wenn sie in der Datenbank ge&auml;ndert werden -
+sie sind wirte-only. </font></p>
+  <table width="85%" border="1" cellspacing="0" cellpadding="5" height="80">
+    <tr> 
+      <td valign="top" width="12%" height="60"><b><i><font color="#660000" face="Default" size="2">HINWEIS</font><font color="#660000">:</font></i></b></td>
+      <td valign="top" width="88%" height="60"><font face="Default" size="2">Die Schaltfl&auml;chen <font color="#000099"> <b>Ein</b></font>|<font color="#000099"><b>Aus</b></font> 
+f&uuml;r diese Optionen werden entmarkiert, nachdem Sie auf <font color="#000099"><b>&Uuml;bernehmen</b></font> 
+ klicken, und der Befehl wird an die Datenbank geschickt,
+weil <b>jisql</b> nicht sicher sein kann, welchen Status
+diese Parameter gerade haben. Beispiel: Sie klicken auf <font color="#000099"><b>Ein</b></font> 
+f&uuml;r &quot;I/O-Statistik anzeigen&quot;, dann auf
+"&Uuml;bernehmen". Danach f&uuml;hren Sie dieselbe Anweisung in
+einer Anweisungsfolge im Eingabefenster aus. <b>jisql</b>
+wird nicht informiert, dass der Wert der Option ge&auml;ndert
+wurde. 
+        </font></td>
+    </tr>
+  </table>
+  <p align="left"><font face="Default" size="2">Die f&uuml;r diese Optionen generierten Nachrichten werden gem&auml;&szlig;
+Ihrer Auswahl f&uuml;r die Option
+&quot;</font><font size="2">SQL-Warnungen anzeigen
+als&quot; im Register
+<a href="miscoptions.html">Sonstiges</a> im Fenster
+<a href="options.html">Optionen</a> ausgegeben. <br>
+    </font></font></p>
+  <table width="90%" border="1" cellpadding="5" cellspacing="0" bordercolorlight="#999999" bordercolor="#999999">
+    <tr> 
+      <td width="50%" valign="top" bordercolor="#999999"> 
+    <b><font face="Default" size="2">OPTION</font></b>
+      </td>
+      <td width="50%"><b><font face="Default" size="2">BESCHREIBUNG</font></b></td>
+    </tr>
+    <tr> 
+      <td width="50%" valign="top"> 
+      <b><font face="Default" size="2">Abfrageplan anzeigen (showplan)</font></b>
+      </td>
+      
+    <td width="50%"><font face="Default" size="2">Wenn die Option auf &quot;Ein&quot; gesetzt ist, wird eine
+Beschreibung des Verarbeitungsplans f&uuml;r die Abfrage
+erstellt, die bei der Performancediagnose n&uuml;tzlich sein
+kann. Diese Option gibt keine Ergebnisse aus, wenn sie
+innerhalb einer gespeicherten Prozedur oder eines Triggers
+verwendet wird. Der Standard ist &quot;Aus&quot;. </font></td>
+    </tr>
+    <tr> 
+      <td width="50%" valign="top"> 
+       <b><font face="Default" size="2">Kompilieren, aber Abfragen nicht ausf&uuml;hren (noexec)</font></b>
+      </td>
+      <td width="50%"> 
+        
+      <p><font face="Default" size="2">Wenn die Option auf &quot;Ein&quot; gesetzt ist, kompiliert
+jede Abfrage, wird aber nicht ausgef&uuml;hrt. Wenn diese Option
+gesetzt wurde, werden keine darauf folgenden Befehle
+ausgef&uuml;hrt, bis Sie sie wieder auf &quot;Aus&quot; schalten. </font></p>
+      </td>
+    </tr>
+    <tr> 
+      
+    <td width="50%" valign="top"> <b><font face="Default" size="2">I/O-Statistik anzeigen (statistics io)</font></b> </td>
+      
+      <td width="50%"> 
+        <p><font face="Default" size="2">Klicken Sie auf &quot;Ein&quot;, um die Anzahl von Scans,
+logischen Lesevorg&auml;ngen und jede Tabelle anzuzeigen, die in
+der Abfrageanweisung referenziert wird. Die Ausgabe erfolgt
+immer im Statusfenster. </font>
+<br><font face="Default" size="2"> Der Standard ist &quot;Aus&quot;.</font></p>
+      </td>
+    </tr>
+    <tr> 
+      <td width="50%" valign="top"> 
+        <div align="left"><b><font face="Default" size="2">Unterabfrage-Cacheinformation anzeigen (statistics
+subquerycache)</font></b></div>
+      </td>
+      
+    <td width="50%"><font face="Default" size="2">Wenn diese Option auf &quot;Ein&quot; gesetzt ist, wird die
+Anzahl der Cachetreffer, der Cachefehlschl&auml;ge, sowie die
+Anzahl der Zeilen im Unterabfragencache f&uuml;r jede
+Unterabfrage angezeigt. Der Standard ist &quot;Aus&quot;.</font></td>
+    </tr>
+    <tr> 
+      <td width="50%" valign="top"> 
+        <div align="left"><b><font size="2" face="Default">Anzeige von Analyse-, Kompilierungs- und Ausf&uuml;hrungszeiten (statistics time)</font></b></div>
+      </td>
+      
+    <td width="50%"><font face="Default" size="2">Wenn diese Option auf &quot;Ein&quot; gesetzt ist, wird die
+Zeit angezeigt, die erforderlich war, um jeden Befehl
+syntaktisch zu analysieren und zu kompilieren. F&uuml;r jeden
+Schritt des Befehls wird die Zeit angezeigt, die f&uuml;r seine
+Ausf&uuml;hrung erforderlich war. Die Zeitangaben erfolgen
+in Millisekunden und in Zeittakten, deren exakter
+Wert vom Rechner abh&auml;ngt. Der
+Standard ist &quot;Aus&quot;.</font></td>
+    </tr>
+  </table>
+</blockquote> 
+</html>

@@ -1,0 +1,137 @@
+
+<html>
+<!-- 
+Copyright (C) 2003. Sybase Inc. All rights reserved.
+Programmer's Reference
+jConnect&#153; for JDBC&#153;
+-->
+
+<HEAD>
+<script language="JavaScript">
+<!--
+
+if (navigator.appName == "Netscape"){
+     document.write('<LINK REL=STYLESHEET HREF="netscape.css" TYPE="text/javascript">');
+     }
+else{
+     document.write('<LINK REL=STYLESHEET HREF="default.css" TYPE="text/css">');
+     }
+
+//-->
+</script>
+<NOSCRIPT><LINK REL=STYLESHEET HREF="default.css" TYPE="text/css"></NOSCRIPT>
+<TITLE>Usage  requirements</TITLE></HEAD>
+<BODY bgproperties="FIXED" bgcolor="#ffffe2">
+<P ALIGN=RIGHT><A HREF="prjdbcp28.htm"><IMG SRC="images/arrow-left.gif" align=top></A>&nbsp;&nbsp;<A HREF="prjdbcp30.htm"><IMG SRC="images/arrow-right.gif" align=top></A></P>
+
+<P ALIGN=LEFT><I>Chapter 6  Web Server  Gateways</I><HR NOSHADE SIZE=1></P>
+<A NAME="X37253"></A><h1>Usage  requirements</h1>
+<A NAME="X31829"></A><h2>Reading the <i>index.html</i> file</h2>
+<p>Use your Web browser to view the <i>index.html</i> file
+
+in your jConnect installation directory. <i>index.html </i>provides
+
+links to the jConnect documentation and sample code.</p>
+<p><IMG SRC="images/note.gif" width=17 height=17 border=0 align="bottom" alt="Note">&nbsp;&nbsp; If you use Netscape on the same machine where you have
+
+installed jConnect, make sure that your browser does not have access
+
+to your CLASSPATH environment variable. See "Restrictions
+
+on Setting CLASSPATH When You Use Netscape" in Chapter
+
+3 of the <i>Sybase jConnect for JDBC Installation Guide and
+
+Release Bulletin</i>.</P>
+<p>
+<ol>
+<li class=fi>Open your Web browser.
+</li>
+<li class=ds>Enter the URL that matches your setup. For example,
+
+if your browser and the Web server are running on the same host,
+
+enter: 
+<pre>http://localhost:8000/index.html</pre>
+
+<br><br>
+If the browser and the Web server are running on different
+
+hosts, enter: 
+<pre>http://<i>host</i>:<i>port</i>/index.html</pre>
+
+<br><br>
+where <i>host </i>is the name of the host on
+
+which the Web server is running, and <i>port </i>is
+
+the listening port.
+
+</li>
+</ol>
+</p>
+<A NAME="X27448"></A><h2>Running the sample  Isql applet</h2>
+<p>After loading the <i>index.html</i> file in
+
+your browser: 
+<ol>
+<li class=fi>Click "Run
+
+Sample JDBC Applets."
+<br><br>
+This takes you to the jConnect Sample Programs page.
+</li>
+<li class=ds>Move down the Sample Programs page to find the table
+
+under "Executable Samples."
+</li>
+<li class=ds>Locate "Isql.java" in the table
+
+and click Run at the end of the row.
+
+</li>
+</ol>
+</p>
+<p>The sample <b>Isql.java</b> applet prompts for
+
+a simple query on a sample database and displays the results. The
+
+applet displays a default Adaptive Server host name, port number,
+
+user name (<i>guest</i>), password (<i>sybase</i>),
+
+database, and query. Using the default values, the applet connects
+
+to the Sybase demonstration database. It returns results after you
+
+click Go.</p>
+<A NAME="TI106"></A><h3>Troubleshooting</h3>
+<p>Under UNIX, if the applet does not appear as expected, you
+
+can modify the applet screen dimensions: </p>
+<p>
+<ol>
+<li class=fi>Use a text editor to
+
+edit the following:
+<br><br>
+<i>$JDBC_HOME/sample2/gateway.html</i>
+</li>
+<li class=ds>Change the height parameter in line 7 to 650. You
+
+can experiment with different height settings.
+</li>
+<li class=ds>Reload the Web page on your browser.
+
+</li>
+</ol>
+</p>
+<P>&nbsp;</P><hr noshade size=1>
+<table cols=3><tr><td colspan=2 align=left>
+Copyright &copy; 2003 Sybase, Inc. All rights reserved.&nbsp;&nbsp;&nbsp;
+</td><td colspan=1>
+<A HREF="prjdbcp30.htm"><IMG SRC="images/arrow-right.gif" ALIGN=right></A>
+</td></tr></table>
+</BODY>
+</HTML>
+

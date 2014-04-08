@@ -1,0 +1,264 @@
+
+<html>
+<!-- 
+Copyright (C) 2003. Sybase Inc. All rights reserved.
+Programmer's Reference
+jConnect&#153; for JDBC&#153;
+-->
+
+<HEAD>
+<script language="JavaScript">
+<!--
+
+if (navigator.appName == "Netscape"){
+     document.write('<LINK REL=STYLESHEET HREF="netscape.css" TYPE="text/javascript">');
+     }
+else{
+     document.write('<LINK REL=STYLESHEET HREF="default.css" TYPE="text/css">');
+     }
+
+//-->
+</script>
+<NOSCRIPT><LINK REL=STYLESHEET HREF="default.css" TYPE="text/css"></NOSCRIPT>
+<TITLE>About this book</TITLE></HEAD>
+<BODY bgproperties="FIXED" bgcolor="#ffffe2">
+<P ALIGN=RIGHT>&nbsp;
+&nbsp;&nbsp;<A HREF="prjdbcp2.htm"><IMG SRC="images/arrow-right.gif" align=top></A></P>
+
+<P ALIGN=LEFT><I> </I><HR NOSHADE SIZE=1></P>
+<A NAME="TI2"></A><H1>Programmer's Reference</H1>
+<H2>jConnect&#153; for JDBC&#153;</H2>
+<P><A HREF="legal.htm" target="Sybase trademarks">Sybase trademarks</A></P>
+<p>The <i>Sybase</i> <i>jConnect
+
+for JDBC Programmer's Reference</i> describes the jConnect&#153; for
+
+JDBC&#153; product and explains how to use it to access data stored
+
+in relational database management systems.</p>
+<A NAME="TI3"></A><h4>Audience</h4>
+<p>This manual is for database-application programmers who are
+
+familiar with the Java programming language, JDBC, and Transact-SQL<sup>&#174;</sup>
+,
+
+the Sybase version of Structured Query Language.</p>
+<A NAME="TI4"></A><h4>Related  Documents</h4>
+<p>You may find the following documents helpful: 
+<ul>
+<li class=fi>The <i>Sybase jConnect
+
+for JDBC Installation Guide</i>
+</li>
+<li class=ds>The <i>Sybase jConnect for JDBC Release Bulletin</i>
+</li>
+<li class=ds>The javadoc documentation of jConnect extensions
+
+to JDBC. The Java Development Kit (JDK) from Java Software contains
+
+a javadoc script for extracting comments from source-code files.
+
+This script has been used to extract documentation of jConnect packages,
+
+classes, and methods from jConnect source files. When you install
+
+jConnect using the full installation or javadocs option, the javadoc
+
+information is placed in the <i>javadocs</i> directory:
+<br><br>
+<i>Installation_directory/docs</i><i>/en/javadocs</i>
+
+</li>
+</ul>
+</p>
+<A NAME="TI5"></A><h4>Other sources of information</h4>
+<p>Use the Sybase Getting Started CD, the Sybase Technical Library
+
+CD and the Technical Library Product Manuals Web site to learn more
+
+about your product: 
+<ul>
+<li class=fi>The Getting Started CD
+
+contains release bulletins and installation guides in PDF format,
+
+and may also contain other documents or updated information not
+
+included on the Technical Library CD. It is included with your software.
+
+To read or print documents on the Getting Started CD you need Adobe
+
+Acrobat Reader (downloadable at no charge from the Adobe Web site,
+
+using a link provided on the CD).
+</li>
+<li class=ds>The Technical Library CD contains product manuals
+
+and is included with your software. The DynaText reader (included
+
+on the Technical Library CD) allows you to access technical information
+
+about your product in an easy-to-use format.
+<br><br>
+Refer to the <i>Technical Library Installation Guide</i> in
+
+your documentation package for instructions on installing and starting
+
+the Technical Library.
+</li>
+<li class=ds>The Technical Library Product Manuals Web site is
+
+an HTML version of the Technical Library CD that you can access
+
+using a standard Web browser. In addition to product manuals, you
+
+will find links to EBFs/Updates, Technical Documents, Case
+
+Management, Solved Cases, newsgroups, and the Sybase Developer Network.
+<br><br>
+To access the Technical Library Product Manuals Web site,
+
+go to <A HREF="http://www.sybase.com/support/manuals/" TARGET="sybextern">Product Manuals</A>
+.
+
+</li>
+</ul>
+</p>
+<A NAME="TI6"></A><h4>Sybase certifications on the Web</h4>
+<p>Technical documentation at the Sybase Web site is updated
+
+frequently.</p>
+<A NAME="TI7"></A><p><img src="images/proc.gif" width=17 height=17 border=0 align="bottom" alt="Steps"> Finding the latest information on product certifications </p>
+<ol type=1><li class=fi>Point your Web browser to <A HREF="http://www.sybase.com/support/techdocs/" TARGET="sybextern">Technical Documents</A>
+.
+</li>
+
+<li class=ds>Select Products from the navigation bar on the
+
+left.
+</li>
+
+<li class=ds>Select a product name from the product list and
+
+click Go.
+</li>
+
+<li class=ds>Select the Certification Report filter, specify
+
+a time frame, and click Go.
+</li>
+
+<li class=ds>Click a Certification Report title to display
+
+the report.
+</li>
+</ol>
+<br>
+<A NAME="TI8"></A><p><img src="images/proc.gif" width=17 height=17 border=0 align="bottom" alt="Steps"> Creating a personalized view of the Sybase Web
+
+site (including support pages)</p>
+<BLOCKQUOTE><p>Set up a MySybase profile. MySybase is a free
+
+service that allows you to create a personalized view of Sybase
+
+Web pages.</p>
+</BLOCKQUOTE>
+<ol type=1><li class=fi>Point your Web browser to <A HREF="http://www.sybase.com/support/techdocs/" TARGET="sybextern">Technical Documents</A>
+.
+</li>
+
+<li class=ds>Click MySybase and create a MySybase profile.
+</li>
+</ol>
+<br>
+<A NAME="TI9"></A><h4>Sybase EBFs and software updates</h4>
+<A NAME="TI10"></A><p><img src="images/proc.gif" width=17 height=17 border=0 align="bottom" alt="Steps"> Finding the latest information on EBFs and software
+
+updates</p>
+<ol type=1><li class=fi>Point your Web browser to <A HREF="http://www.sybase.com/support" TARGET="sybextern">the Sybase Support Page</A>
+.
+</li>
+
+<li class=ds>Select EBFs/Updates. Enter user name
+
+and password information, if prompted (for existing Web accounts)
+
+or create a new account (a free service).
+</li>
+
+<li class=ds>Select a product.
+</li>
+
+<li class=ds>Specify a time frame and click Go.
+</li>
+
+<li class=ds>Click the Info icon to display the EBF/Update
+
+report, or click the product description to download the software.
+</li>
+</ol>
+<br>
+<A NAME="TI11"></A><h4>Conventions</h4>
+<p>This manual uses the following font and syntax conventions: 
+<ul>
+<li class=fi>Classes,
+
+interfaces, methods, and packages are shown in <b>Helvetica</b> within paragraph
+
+text. For example:
+<br><br>
+<b>SybConnection</b> class
+<br><br>
+<b>SybEventHandler</b> interface
+<br><br>
+<b>setBinaryStream()</b> method
+<br><br>
+<b>com.sybase.jdbcx</b> package
+</li>
+<li class=ds>Objects, instances, and parameter names are shown
+
+in italics. For example:
+<br><br>
+"In the following example, <i>ctx</i> is
+
+a <b>DirContext</b> object."
+<br><br>
+<i>"eventHdler</i> is an instance of
+
+the <b>SybEventHandler</b> class that you implement."
+<br><br>
+"The <i>classes</i> parameter is a
+
+string that lists specific classes you want to debug."
+</li>
+<li class=ds>Code fragments are shown in a monospaced font. Variables
+
+in code fragments (that is, words that stand for values that you
+
+fill in) are italicized. For example: 
+<pre>Connection  con = DriverManager.getConnection("jdbc:
+    sybase:Tds:<i>host:port</i>",  props);</pre>
+
+
+</li>
+</ul>
+</p>
+<A NAME="TI12"></A><h4>If you need help</h4>
+<p>Each Sybase installation that has purchased a support contract
+
+has one or more designated people who are authorized to contact
+
+Sybase Technical Support. If you cannot resolve a problem using
+
+the manuals or online help, please have the designated person contact
+
+Sybase Technical Support or the Sybase subsidiary in your area.</p>
+<P>&nbsp;</P><hr noshade size=1>
+<table cols=3><tr><td colspan=2 align=left>
+Copyright &copy; 2003 Sybase, Inc. All rights reserved.&nbsp;&nbsp;&nbsp;
+</td><td colspan=1>
+<A HREF="prjdbcp2.htm"><IMG SRC="images/arrow-right.gif" ALIGN=right></A>
+</td></tr></table>
+</BODY>
+</HTML>
+

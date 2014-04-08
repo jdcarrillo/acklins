@@ -1,0 +1,95 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+<title>Dokument bez tytułu</title>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-1250">
+</head>
+<body bgcolor="#FFFFFF">
+<blockquote>
+<table width="75%" border="0">
+  <tr>
+    <td> <div align="left"><font  size="2"><a href="toc.html"><b>Spis treści</b></a></font></div>
+    </td>
+    <td> <div align="left"><font  size="2"><a href="overview.html"><b>Przegląd</b></a></font></div>
+    </td>
+    <td bgcolor="#FFFFFF"> <div align="left"><font  size="2"><b><a href="menu.html">Menu</a></b></font></div>
+    </td>
+    <td> <div align="left"><font  size="2"><b><a href="windows.html">Okna</a></b></font></div>
+    </td>
+    <td bgcolor="#FFFFFF"> <div align="left"><font  size="2"><b><a href="button.html">Przyciski</a></b></font></div>
+    </td>
+  </tr>
+</table>
+<hr>
+
+<h2 align="left"><font  color="#000099">Diagnostyka bazy danych</font></h2>
+
+  <p align="left"><font  size="2">Te opcje umożliwiają wygodne ustawianie parametrów diagnostycznych, pomocnych w rozwiązywaniu problemów związanych z wydajnością. Więcej informacji można znaleźć w przewodniku Wydajność i dostrajanie serwera Adaptive Server Enterprise (<i>Adaptive Server Enterprise Performance and Tuning Guide</i>). Opcje zależą od połączenia, a ich domyślnym ustawieniem jest &#132;Wyłączone&#148;.</font></p>
+  <p align="left"><font  size="2"> W celu uaktywnienia opcji należy kliknąć odpowiadający jej przycisk <font color="#000099"><b>Włączone</b></font>, a następnie kliknąć przycisk <b><font color="#000099">Zastosuj</font></b>, aby wprowadzić wybrane ustawienia. Te wartości nie są aktualizowane w wyniku ich modyfikacji w bazie danych – służą tylko do zapisu. </font></p>
+  <table width="85%" border="1" cellspacing="0" cellpadding="5" height="80">
+    <tr>
+      <td valign="top" width="12%" height="60"><b><i><font color="#660000"  size="2">UWAGA</font><font color="#660000">:</font></i></b></td>
+      <td valign="top" width="88%" height="60"><font  size="2">Zaznaczenie przycisków <font color="#000099"> <b>Włączone</b></font>|<font color="#000099"><b>Wyłączone</b></font> odpowiadających tym opcjom zostanie usunięte po kliknięciu przycisku <font color="#000099"><b>Zastosuj</b></font> i wysłaniu polecenia do bazy danych, ponieważ program <b>jisql</b> nie dysponuje informacjami na temat aktualnego stanu tych opcji. Na przykład, jeśli po kliknięciu przycisku <font color="#000099"><b>Włączone</b></font> dla opcji &#132;Wyświetlaj statystykę we/wy&#148; i kliknięciu przycisku Zastosuj ta sama instrukcja zostanie uruchomiona jako wsad w oknie wejściowym, program <b>jisql</b> nie otrzyma powiadomienia o zmianie wartości tej opcji. </font></td>
+    </tr>
+  </table>
+  <p align="left"><font  size="2">Komunikaty generowane dla tych opcji są wyświetlane zależnie od ustawienia &#132;Ostrzeżenia SQL powinny być prezentowane&#148; na karcie <a href="miscoptions.html">Inne</a> w <a href="options.html">oknie opcji</a>. <br> </font></p>
+  <table width="100%" border="1" cellpadding="5" cellspacing="0" bordercolorlight="#999999" bordercolor="#999999">
+    <tr>
+      <td width="50%" valign="top" bordercolor="#999999"> <b><font  size="2">OPCJA</font></b>
+      </td>
+      <td width="50%"><b><font  size="2">OPIS</font></b></td>
+    </tr>
+    <tr>
+      <td width="50%" valign="top"> <b><font  size="2">Pokaż plan przetwarzania kwerendy (showplan)</font></b>
+      </td>
+
+    <td width="50%"><font  size="2">Włączenie tej opcji powoduje wygenerowanie opisu planu przetwarzania dla kwerendy, który może być użyteczny w ramach diagnostyki wydajności. Opcja nie powoduje wydrukowania wyników w przypadku użycia jej wewnątrz procedury wbudowanej lub trigeru. Wartość domyślna to &#132;Wyłączone&#148;. </font></td>
+    </tr>
+    <tr>
+      <td width="50%" valign="top"> <b><font  size="2">Kompiluj, lecz nie wykonuj kwerend (noexec)</font></b>
+      </td>
+      <td width="50%">
+
+      <p><font  size="2">Włączenie tej opcji powoduje, że kwerendy są kompilowane lecz nie wykonywane. Po włączeniu tej opcji żadne polecenia nie są wykonywane do czasu jej wyłączenia.</font></p>
+      </td>
+    </tr>
+    <tr>
+
+    <td width="50%" valign="top"> <b><font  size="2">Wyświetlaj statystykę we/wy (statistics io)</font></b> </td>
+
+      <td width="50%">
+        <p><font  size="2">Kliknięcie przycisku &#132;Włączone&#148; powoduje wyświetlenie liczby skanowań, odczytów logicznych oraz odczytów fizycznych dla każdej tabeli, do której odwołuje się instrukcja kwerendy. Wyniki są zawsze wyświetlane w oknie statusu. </font></p>
+        <p><font  size="2"> Wartość domyślna to &#132;Wyłączone&#148;.</font></p>
+      </td>
+    </tr>
+    <tr>
+      <td width="50%" valign="top"> <div align="left"><b><font  size="2">Wyświetlaj informacje o pamięci podręcznej podkwerendy (statistics subquerycache) </font></b></div>
+      </td>
+
+    <td width="50%"><font  size="2">Włączenie tej opcji powoduje wyświetlanie liczby skutecznych i nieskutecznych odwołań do pamięci podręcznej oraz liczby wierszy w pamięci podręcznej każdej podkwerendy. Wartość domyślna to &#132;Wyłączone&#148;.</font></td>
+    </tr>
+    <tr>
+      <td width="50%" valign="top"> <div align="left"><b><font size="2" >Wyświetlaj czasy analizy składniowej, kompilacji i wykonania (statistics time)</font></b></div>
+      </td>
+
+    <td width="50%"><font  size="2">Włączenie tej opcji powoduje wyświetlanie czasu, który zajęła analiza składniowa i kompilacja każdego polecenia; dla każdego kroku polecenia wyświetlany jest czas jego wykonania. Czasy są podawane w milisekundach i w taktach zegara, których dokładny czas trwania zależy od komputera. Wartość domyślna to &#132;Wyłączone&#148;.</font></td>
+    </tr>
+  </table>
+
+<hr>
+<table width="75%" border="0">
+  <tr>
+    <td> <div align="left"><font  size="2"><a href="toc.html"><b>Spis treści</b></a></font></div>
+    </td>
+    <td> <div align="left"><font  size="2"><a href="overview.html"><b>Przegląd</b></a></font></div>
+    </td>
+    <td bgcolor="#FFFFFF"> <div align="left"><font  size="2"><b><a href="menu.html">Menu</a></b></font></div>
+    </td>
+    <td> <div align="left"><font  size="2"><b><a href="windows.html">Okna</a></b></font></div>
+    </td>
+    <td bgcolor="#FFFFFF"> <div align="left"><font  size="2"><b><a href="button.html">Przyciski</a></b></font></div>
+    </td>
+  </tr>
+</table>
+</blockquote> 
+</html>

@@ -1,0 +1,89 @@
+/* netscape.css */
+
+with (tags.BODY){
+	backgroundColor="#FFF8E5";
+	}
+
+with (tags.PRE){
+	fontFamily='Courier New, Courier, Helvetica';
+	fontSize="10pt";
+	marginTop="0pt";
+	marginLeft="6pt";
+	marginBottom="0pt";
+	color="blue"
+	}
+
+with (tags.H1){
+	fontFamily='Verdana, Arial, Helvetica';
+	fontSize="15pt";
+	fontWeight="bold";
+	color="brown";
+	}
+with (tags.H2){
+	fontFamily='Verdana, Arial, Helvetica';
+	fontSize="12pt";
+	fontWeight="bold";
+	color="brown";
+	}
+with (tags.H3){
+	fontFamily='Verdana, Arial, Helvetica';
+	fontSize="10pt";
+	fontWeight="bold";
+	color="brown";
+	}
+with (tags.H4){
+	fontFamily='Verdana, Arial, Helvetica';
+	fontSize="10pt";
+	fontWeight="bold";
+	color="navy";
+	}
+
+with (tags.H5){
+	fontFamily='Verdana, Arial, Helvetica';
+	fontSize="10pt";
+	fontWeight="normal";
+	color="navy";
+	}
+
+with (tags.P){
+	fontFamily='Verdana, Arial, Helvetica';
+	fontSize="10pt";
+	}
+with (tags.code){
+	fontFamily='Courier, Courier New, Verdana, Arial, Helvetica';
+	fontSize="10pt";
+	}
+with (tags.li){
+	fontFamily='Verdana, Arial, Helvetica';
+	fontSize="10pt";
+	}				
+with (classes.fi.LI){
+	marginTop="0pt";
+	}
+
+classes.ds.li.marginTop="normal";
+	
+with (tags.ul){
+	fontFamily='Verdana, Arial, Helvetica';
+	fontSize="10pt";
+	}
+with (tags.ol){
+	fontFamily='Verdana, Arial, Helvetica';
+	fontSize="10pt";
+	}
+
+with (tags.td){
+	fontFamily='Verdana, Arial, Helvetica';
+	fontSize="10pt";
+	}
+
+with (tags.th){
+	fontFamily='Verdana, Arial, Helvetica';
+	fontSize="10pt";
+	fontWeight="bold";
+	}
+
+with (classes.shaded.all) {
+	fontStyle="italic";
+	backgroundColor="#FFDDCC";
+	}

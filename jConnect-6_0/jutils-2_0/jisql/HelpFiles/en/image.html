@@ -1,0 +1,83 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+<title>Untitled Document</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+</head>  
+<BODY bgcolor="#FFFFFF">
+<BLOCKQUOTE>
+  <table width="75%" border="0">
+    <tr> 
+      <td> <font  size="2"><a href="toc.html"><b>Table of Contents</b></a></font> 
+      </td>
+      <td> <font  size="2"><a href="overview.html"><b>Overview</b></a></font> 
+      </td>
+      <td bgcolor="#FFFFFF"> <font  size="2"><b><a href="menu.html">Menus</a></b></font> 
+      </td>
+      <td> <font  size="2"><b><a href="windows.html">Windows</a></b></font> 
+      </td>
+      <td> <font  size="2"><b><a href="button.html">Buttons</a></b></font> 
+      </td>
+    </tr>
+  </table>
+<hr>
+  <h2><font  color="#000099">Image Columns</font></h2>
+  <p><font  size="2">If you select data that 
+    includes an image column and the ResultSet is presented in a table rather 
+    than as text (<A
+HREF="table.html">Table vs Text output</A>), the image column does not show the 
+    binary data. Instead, the table is labeled &quot;Click me - I'm an image.&quot; 
+    </font></p>
+  <p><font  size="2">Clicking the cell opens 
+    a new window with four choices: </font> </p>
+  <ul>
+    <li> <font  size="2"><b>Show image data 
+      as a picture</b> - If the image data represents a picture in gif or jpg 
+      format, the image will display in an image window. </font> 
+    <li> <font  size="2"><b>Show image data 
+      as hex data</b> - This opens a window that shows the data in hex format; 
+      that is the way it would display in <b>isql</b>. </font> 
+    <li> <font  size="2"><b>Save image data 
+      to a File </b> - The data will be saved in a file for later use. This is 
+      useful, for example, for a sound file or a video stream you want to view 
+      with some other program. </font> 
+    <li> <font  size="2"><b>Do nothing</b> 
+      - Closes the choice window again. </font>
+  </ul>
+  <h2><font color="#000099">Object Columns</font></h2>
+  <p><font size="2" >If a ResultSet contains 
+    column(s) with Java objects, text appears in the ResultSet's table that says 
+    '&quot;Click me - I'm an Object.&quot; When you do that, <b>jisql</b> executes 
+    the <b>toString()</b> method defined in that object and presents the values 
+    that the method returns as data in the table. If the object uses a method 
+    different than<b> toString()</b> to print out it's data, enter that name in 
+    the Option Window's <a href="outputoptions.html">Output Window Options</a> 
+    tab; that is, </font><font size="2" >change 
+    &quot;Method used in DB Object to display data&quot; to the name of the method 
+    used. </font></p>
+  <p><font size="2" >If the option &quot;'Automatically 
+    extract the data from the DB Java Object'&quot; is enabled, <b>jisql</b> extracts 
+    the data immediately when it detects Java objects in the ResultSet. You dol 
+    not see the &quot;Click me&quot; message and you do not have to click to receive 
+    the data. This slows down the creation of the ResultSet table because <b>jisql</b> 
+    has to do a roundtrip to the database for every row in order to execute the 
+    object's <b>toString()</b> (or equivalent) method.</font> </p>
+  <hr>
+  <table width="75%" border="0">
+    <tr> 
+      <td> <font  size="2"><a href="toc.html"><b>Table of Contents</b></a></font> 
+      </td>
+      <td> <font  size="2"><a href="overview.html"><b>Overview</b></a></font> 
+      </td>
+      <td bgcolor="#FFFFFF"> <font  size="2"><b><a href="menu.html">Menus</a></b></font> 
+      </td>
+      <td> <font  size="2"><b><a href="windows.html">Windows</a></b></font> 
+      </td>
+      <td> <font  size="2"><b><a href="button.html">Buttons</a></b></font> 
+      </td>
+    </tr>
+  </table>
+</BLOCKQUOTE>
+</BODY>
+</HTML>
+

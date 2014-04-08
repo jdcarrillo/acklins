@@ -1,0 +1,88 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; CHARSET=shift_jis"><HTML>
+</HEAD>
+<BODY bgcolor="#FFFFFF">
+<blockquote> <div align="left"></div>
+<table width="75%" border="0">
+  <tr>
+    <td> <div align="left"><font size="2"><a href="toc.html"><b>目次</b></a></font></div>
+    </td>
+    <td> <div align="left"><font size="2"><a href="overview.html"><b>概要</b></a></font></div>
+    </td>
+    <td bgcolor="#FFFFFF"> <div align="left"><font size="2"><b><a href="menu.html">メニュー</a></b></font></div>
+    </td>
+    <td> <div align="left"><font size="2"><b><a href="windows.html">ウィンドウ</a></b></font></div>
+    </td>
+    <td bgcolor="#FFFFFF"> <div align="left"><font size="2"><b><a href="button.html">ボタン</a></b></font></div>
+    </td>
+  </tr>
+</table>
+<hr>
+<h2><font color="#000099">［データベース・オプション］</font></h2>
+  <p><font size="2">ここに示すオプションを使って、頻繁に使用するパラメータを簡単に設定できます。 パラメータの使用法と機能の詳細ついては、Transact-SQL マニュアルを参照してください。 データベース内で変更を行った場合には、これらの設定値は更新されません。 </font></p>
+  <table width="85%" border="1" cellspacing="0" cellpadding="5" height="80">
+    <tr>
+      <td valign="top" width="12%" height="60"><b><i><font color="#660000" size="2">注意</font><font color="#660000"></td>
+      <td valign="top" width="88%" height="60"><font size="2"><font color="#000099"><b>［適用］</b></font>をクリックしてコマンドをデータベースに送信すると、各オプションの<font color="#000099"> <b>［オン］</b></font>または<font color="#000099"><b>［オフ］</b></font>ボタンのチェックマークが消えます。これは、<b>jisql</b> で各オプションの現在の状態が認識されないためです。 たとえば、［連鎖トランザクションの使用］オプションの<font color="#000099"><b>［オン］</b></font>をクリックして<b><font color="#000099">［適用］</font></b>をクリックした後、同じ文を［入力］ウィンドウで実行すると、先に行ったオプション設定の変更は <b>jisql</b> では認識されません。 </font></td>
+    </tr>
+  </table>
+  <p><font size="2">設定の変更は、<b>［適用］</b> をクリックして保存します。<br> </font></p>
+  <table width="95%" border="1" cellpadding="5" cellspacing="0" bordercolor="#999999" bordercolorlight="#999999">
+    <tr>
+    <td width="50%" valign="top" bordercolor="#999999"><b><font size="2">オプション</font></b></td>
+    <td width="50%"><b><font size="2">説明</font></b></td>
+  </tr>
+  <tr>
+    <td width="50%" valign="top"><b><font size="2">［返すローの最大数（rowcount）］</font></b></td>
+    <td width="50%"><font size="2">クエリ（<b>select</b>、<b>insert</b>、<b>update</b>、または <b>delete</b>）を中止するローの数を指定します。 このオプションを使用しない場合は、0（ゼロ）を入力します。</td>
+  </tr>
+  <tr>
+    <td width="50%" valign="top"><b><font size="2">［返すテキスト<i></i>/イメージ<i></I>のサイズの制限（textsize）］</td>
+    <td width="50%">
+      <p><font size="2"><b>select</b> 文で返す <i>text</i> または <i>image</i> データの最大サイズをバイトで指定します。</font></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="50%" valign="top"><b><font size="2">［トランザクション独立性レベル（0 - 3）］</font></b></td>
+    <td width="50%">
+      <p><font size="2"> トランザクションの処理中に、他のユーザがデータにアクセスできるレベルを指定します。</font></p>
+      <p><font size="2"><b>0</b> - トランザクションがコミットされるまで、他のトランザクションによるデータの修正はブロックされます。 ただし、コミットされていないデータの読み取りは他のトランザクションからも可能です。</font></p>
+      <p><font size="2"><b>1</b> - 1 つのトランザクションによって読み込まれているローがあり、そのトランザクションがコミットされる前に別のトランザクションによってそのローが読み込まれた場合、先に読み込んだトランザクションではローの修正ができません。</font></p>
+      <p><font size="2"><b>2</b> - あるトランザクションによってローが修正されている場合、別のトランザクションではそのローを読み込むことができません。</font></p>
+      <p><font size="2"><b>3</b> - あるトランザクションのクエリを満たす結果セットに別のトランザクションによって修正されているデータが含まれる場合、結果セットとしてローを読み込むことはできません。 これにより、トランザクションによって読み込まれたデータは、そのトランザクションが終了するまで常に有効なものとなります。</p>
+    </td>
+  </tr>
+  <tr>
+    <td width="50%" valign="top"><b><font size="2">［影響を受けるロー数の表示］</font></b></td>
+      <td width="50%"><font size="2"><b>insert</b>、<b>update</b>、または <b>delete</b> 文によって影響を受けるローの表示/非表示を切り替えます。 デフォルトの設定は［オフ］です。</font></td>
+  </tr>
+  <tr>
+    <td width="50%" valign="top"><b><font size="2">［連鎖トランザクションの使用（chained）］</font></b></td>
+    <td width="50%"><font size="2"> 連鎖モードでは、データの検索と修正に関するすべてのコマンド（<b>delete</b>、<b>insert</b>、<b>open</b>、<b>fetch</b>、<b>select</b>、および <b>update</b>）によってトランザクションが開始されます。 この動作は、多くの T-SQL アプリケーションと互換性があります。 デフォルトの設定は［オフ］です。</font></td>
+  </tr>
+  <tr>
+    <td width="50%" valign="top"><b><font size="2">［区切り識別子の認識（quoted_identifier）］ </font></b></td>
+    <td width="50%"><font size="2">このオプションを使って、データベースで区切り識別子を認識させることができます。 文中に区切り識別子を含めるには、区切り識別子を二重引用符で囲む必要があります。 ただし、このオプションを［オン］に設定した場合は、文字列または日付を二重引用符で囲まないでください。代わりにそれらの文字列は一重引用符で囲みます。 カラム内で一重引用符を挿入するには、一重引用符を 2 つ続けて挿入してください。 デフォルトの設定は［オフ］です。</font> </font></td>
+  </tr>
+</table>
+<p><font size="2">詳細については、『Transact-SQL ユーザーズ・ガイド』を参照してください。</font></p> <div align="left">
+    <table width="75%" border="0">
+      <tr>
+        <td> <div align="left"><font size="2"><a href="toc.html"><b>目次</b></a></font></div>
+        </td>
+        <td> <div align="left"><font size="2"><a href="overview.html"><b>概要</b></a></font></div>
+        </td>
+        <td bgcolor="#FFFFFF"> <div align="left"><font size="2"><b><a href="menu.html">メニュー</a></b></font></div>
+        </td>
+        <td> <div align="left"><font size="2"><b><a href="windows.html">ウィンドウ</a></b></font></div>
+        </td>
+        <td bgcolor="#FFFFFF"> <div align="left"><font size="2"><b><a href="button.html">ボタン</a></b></font></div>
+        </td>
+      </tr>
+    </table> </div>
+</blockquote>
+</BODY>
+</HTML>

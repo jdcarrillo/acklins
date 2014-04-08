@@ -1,0 +1,2927 @@
+
+<html>
+<!-- 
+Copyright (C) 2003. Sybase Inc. All rights reserved.
+Programmer's Reference
+jConnect&#153; for JDBC&#153;
+-->
+
+<HEAD>
+<script language="JavaScript">
+<!--
+
+if (navigator.appName == "Netscape"){
+     document.write('<LINK REL=STYLESHEET HREF="netscape.css" TYPE="text/javascript">');
+     }
+else{
+     document.write('<LINK REL=STYLESHEET HREF="default.css" TYPE="text/css">');
+     }
+
+//-->
+</script>
+<NOSCRIPT><LINK REL=STYLESHEET HREF="default.css" TYPE="text/css"></NOSCRIPT>
+<TITLE>Appendix A  SQL Exception  and Warning Messages</TITLE></HEAD>
+<BODY bgproperties="FIXED" bgcolor="#ffffe2">
+<P ALIGN=RIGHT><A HREF="prjdbcp30.htm"><IMG SRC="images/arrow-left.gif" align=top></A>&nbsp;&nbsp;<A HREF="prjdbcp32.htm"><IMG SRC="images/arrow-right.gif" align=top></A></P>
+
+<P ALIGN=LEFT><I> </I><HR NOSHADE SIZE=1></P>
+<A NAME="X14080"></A><H1>Appendix A  SQL Exception  and Warning Messages</H1>
+<p>The
+
+following table lists the SQL exception and warning messages that you
+
+may encounter when using jConnect.</p>
+<A NAME="TI115"></A><table cellspacing=0 cellpadding=6 border=1 frame="void" rules="all"><tr><th align="left" valign=bottom>SQL state
+</th>
+<th align="left" valign=bottom>Message/description/action
+</th>
+</tr>
+<tr><td valign=top>010AF
+</td>
+<td valign=top><code>SEVERE WARNING: An
+
+assertion has failed, please use devclasses todetermine the source
+
+of this serious bug. Message =</code>
+ _____.
+<br><br>
+<strong>Description: </strong>An internal assertion
+
+in the jConnect driver has failed.
+<br><br>
+<strong>Action:</strong> Use the devclasses debug classes
+
+to determine the reason for this messageand report the problem to
+
+Sybase Technical Support.
+</td>
+</tr>
+<tr><td valign=top>010DF
+</td>
+<td valign=top><code>Attempt to set database
+
+at login failed. Error message:______.</code>
+
+<br><br>
+<strong>Description: </strong>jConnect cannot connect
+
+to the database specified in the connection URL.
+<br><br>
+<strong>Action:</strong> Be sure the database name in
+
+the URL is correct. Also, if connecting to Adaptive Server Anywhere,
+
+use the SERVICENAME connection property to specify the database.
+</td>
+</tr>
+<tr><td valign=top>010DP
+</td>
+<td valign=top><code>Duplicate
+
+connection property _____ ignored.</code>
+
+<br><br>
+<strong>Description: </strong>A connection property
+
+is defined twice. It may be defined twice in the driver connection
+
+properties list with different capitalization, for example "password" and "PASSWORD." Connection
+
+property names are not case-sensitive, and therefore jConnect does not
+
+distinguish between property names with the same name but different
+
+capitalization.
+<br><br>
+The connection property may also be defined both in the connection
+
+properties list, and in the URL. In this case, the property value
+
+in the connection property list takes precedence.
+<br><br>
+<strong>Action:</strong> Make sure your application
+
+defines the connection property only once. However, you may want
+
+you application to take advantage of the precedence of connection
+
+properties defined in the property list over those defined in the
+
+URL. In this case, you can safely ignore this warning.
+</td>
+</tr>
+<tr><td valign=top>010HA
+</td>
+<td valign=top><code>The server denied
+
+your request to use the high-availability feature. Please reconfigure
+
+your database, or do not request a high-availability session</code>
+.
+<br><br>
+<strong>Description: </strong>The server to which jConnect
+
+attempted an HA-enabled connection did not allow the connection.
+<br><br>
+<strong>Action:</strong> Reconfigure the server to support
+
+high availability failover or do not set REQUEST_HA_SESSION
+
+to true.
+</td>
+</tr>
+<tr><td valign=top>010HD
+</td>
+<td valign=top><code>Sybase high-availability
+
+failover is not supported by this type of database server.</code>
+
+<br><br>
+<strong>Description:</strong> The database to which
+
+jConnect attempted a connection does not support high availability
+
+failover.
+<br><br>
+<strong>Action:</strong> Connect only to database servers
+
+that support high availability failover.
+</td>
+</tr>
+<tr><td valign=top>010HT
+</td>
+<td valign=top><code>Hostname property
+
+truncated, maximum length is 30.</code>
+
+<br><br>
+<strong>Description:</strong> You provided a String
+
+greater than  30 characters for the HOSTNAME connection property,
+
+or the host machine on which the jConnect application is running
+
+has a name longer than 30 bytes in length.
+<br><br>
+<strong>Action:</strong> No action is necessary, since
+
+this is just a warning to indicate that jConnect is truncating the
+
+name to 30 bytes. However, if you wish to avoid this warning, you
+
+should set the HOSTNAME to a String less than or equal to 30 bytes
+
+in length.
+</td>
+</tr>
+<tr><td valign=top>010MX
+</td>
+<td valign=top><code>Metadata
+
+accessor information was not found on this database. Please install
+
+the required tables as mentioned in the jConnect documentation.
+
+Error encountered while attempting to retrieve metadata information: _____</code>
+
+<br><br>
+<strong>Description: </strong>The server may not have
+
+the necessary stored procedures for returning metadata information.
+<br><br>
+<strong>Action:</strong> Make sure that stored procedures
+
+for providing metadata are installed on the server. See "Installing
+
+Stored Procedures" in Chapter 3 of the <i>jConnect
+
+for JDBC Installation Guide</i>.
+</td>
+</tr>
+<tr><td valign=top>010P4
+</td>
+<td valign=top><code>An
+
+output parameter was received and ignored.</code>
+
+<br><br>
+<strong>Description: </strong>The query you executed
+
+returned an output parameter but the application result-processing
+
+code did not fetch it so it was ignored.
+<br><br>
+<strong>Action:</strong> If your application needs the
+
+output parameter data, you must rewrite the application so it can
+
+get it. This may require using a <b>CallableStatement</b> to
+
+execute the query, and adding calls to <b>registerOutputParameter()</b> and <b>getXXX()</b>. You
+
+can also prevent jConnect from returning this warning, and possibly
+
+get a performance improvement, by setting the DISABLE_UNPROCESSED_PARAM_WARNINGS
+
+connection property to true.
+</td>
+</tr>
+<tr><td valign=top>010PF
+</td>
+<td valign=top><code>One or more jars
+
+specified in the PRELOAD_JARS connection property could
+
+not be loaded.</code>
+
+<br><br>
+<strong>Description:</strong> This happens when using
+
+the <b>DynamicClassLoader</b> with the PRELOAD_JARS connection
+
+property set to a comma-delimited list of JAR names. When the <b>DynamicClassLoader</b> opens
+
+its connection to the server from which the classes are to be loaded,
+
+it attempts to "preload" all the JAR files mentioned
+
+in this connection property. If one or more of the JAR names specified
+
+does not exist on the server, the above error message results.
+<br><br>
+<strong>Action:</strong> Verify that every JAR file
+
+mentioned in your application's PRELOAD_JARS connection
+
+property exists and is accessible on the server.
+</td>
+</tr>
+<tr><td valign=top>010PO
+</td>
+<td valign=top><code>Property LITERAL_PARAM
+
+has been reset to "false" because DYNAMIC_PREPARE was set
+
+to "true".</code>
+
+<br><br>
+<strong>Description:</strong> If you wish to use precompiled
+
+dynamic statements, then you must allow for parameters to be sent
+
+to those statements (if the statements take parameters). Setting LITERAL_PARAMS
+
+to true forces all parameters to be sent as literal values in the
+
+SQL that you send to the server. Therefore, you cannot set both
+
+properties to true.
+<br><br>
+<strong>Action:</strong> To avoid this warning, do not
+
+set LITERAL_PARAMS to true when you wish to use dynamic
+
+SQL. See <A HREF="prjdbcp22.htm">"Performance tuning for prepared statements in dynamic SQL"</A> for
+
+more information.
+</td>
+</tr>
+<tr><td valign=top>010RC
+</td>
+<td valign=top><code>The
+
+requested ResultSet type and concurrency is not supported. They have
+
+been converted.</code>
+
+<br><br>
+
+<br><br>
+<strong>Description: </strong>You requested a type and
+
+concurrency combination for the ResultSet that is not supported.
+
+The requested values had to be converted. See <A HREF="prjdbcp10.htm#X15542">"Using cursors
+
+with result sets"</A> for more information
+
+about what ResultSet types and concurrencies are available in jConnect
+<br><br>
+<strong>Action:</strong> Request a type and concurrency
+
+combination for the ResultSet that is supported.
+</td>
+</tr>
+<tr><td valign=top>010SJ
+</td>
+<td valign=top><code>Metadata
+
+accessor information was not found on this database. Please install
+
+the required tables as mentioned in the jConnect documentation.</code>
+
+<br><br>
+<strong>Description: </strong>The metadata information
+
+is not configured on the server.
+<br><br>
+<strong>Action: </strong>If your application requires
+
+metadata, install the stored procedures for returning metadata that
+
+come with jConnect (see "Installing Stored Procedures" in
+
+Chapter 3 of the <i>jConnect for JDBC Installation Guide</i>).
+
+If you do not need metadata, set the USE_METADATA property
+
+to false.
+</td>
+</tr>
+<tr><td valign=top>010SK
+</td>
+<td valign=top><code>Database
+
+cannot set connection option _____.</code>
+
+<br><br>
+<strong>Description: </strong>Your application attempted
+
+an operation that the database you are connected to does not support.
+<br><br>
+<strong>Action:</strong> You may need to upgrade your
+
+database or make sure that the latest version of metadata information
+
+is installed on it.
+</td>
+</tr>
+<tr><td valign=top>010SL
+</td>
+<td valign=top><code>Out-of-date metadata
+
+accessor information was found on this database. Ask your database
+
+administrator to load the latest scripts.</code>
+
+<br><br>
+<strong>Description: </strong>The metadata information
+
+on the server is old and needs to be updated.
+<br><br>
+<strong>Action:</strong> Install the stored procedures
+
+for returning metadata that come with jConnect (see "Installing
+
+Stored Procedures" in Chapter 3 of the<i> jConnect
+
+for JDBC Installation Guide</i>).
+</td>
+</tr>
+<tr><td valign=top>010SM
+</td>
+<td valign=top><code>This database does
+
+not support the initial proposed set of capabilities, retrying.</code>
+
+<br><br>
+<strong>Description: </strong>Adaptive Server Enterprise
+
+versions 11.9.2 and lower had a bug that caused them to reject logins
+
+from clients that requested capabilities that the servers did not
+
+have. This warning indicates that jConnect has detected this condition
+
+and is retrying the connection using the greatest number of capabilities
+
+that the server can accept. When jConnect encounters this bug, it attempts
+
+to connect to the server twice.
+<br><br>
+<strong>Action:</strong> Clients can safely ignore this
+
+warning, but if they wish to eliminate the warning and ensure that
+
+jConnect makes only one connection attempt, they can set the ELIMINATE_010SM connection
+
+property to <i>true</i>. Please note that this property
+
+should not be set to <i>true</i> when connecting to
+
+Adaptive Server versions 12.0 and later.
+</td>
+</tr>
+<tr><td valign=top>010SN
+</td>
+<td valign=top><code>Permission
+
+to write to file was denied. File: _____.
+
+Error message: _____</code>
+
+<br><br>
+<strong>Description: </strong>Permission to write to
+
+a file specified in the PROTOCOL_CAPTURE connection property
+
+is denied because of a security violation in the VM. This can occur
+
+if an applet attempts to write to the specified file.
+<br><br>
+<strong>Action:</strong> If you are attempting to write
+
+to the file from an applet, make sure that the applet has access
+
+to the target file system.
+</td>
+</tr>
+<tr><td valign=top>010SP
+</td>
+<td valign=top><code>File
+
+could not be opened for writing. File: _____.
+
+Error message: _____</code>
+
+<br><br>
+<strong>Action:</strong> Make sure that the file name
+
+is correct and that the file is writable.
+</td>
+</tr>
+<tr><td valign=top>010SQ
+</td>
+<td valign=top><code>The connection or
+
+login was refused, retrying connection with the host/port
+
+address.</code>
+
+<br><br>
+<strong>Description: </strong>The CONNECTION_FAILOVER
+
+connection property is set to true, and jConnect was unable to connect
+
+to one of the database servers in the list of servers to which to
+
+connect. Therefore, jConnect will now try to connect to the next
+
+server in the list.
+<br><br>
+<strong>Action:</strong> No action is required, as long
+
+as jConnect is able to connect to another database server. However,
+
+you should determine why jConnect was unable to connect to the particular
+
+server that caused the connection warning to be issued.
+</td>
+</tr>
+<tr><td valign=top>010TP
+</td>
+<td valign=top><code>The
+
+connection's initial character set,_____,
+
+could not be converted by the server. The server's proposed
+
+character set,_____,
+
+will be used, with conversions performed by jConnect.</code>
+
+<br><br>
+<strong>Description: </strong>The server cannot use
+
+the character set initially requested by jConnect, and has responded
+
+with a different character set. jConnect accepts the change, and
+
+will perform the necessary character-set conversions.
+<br><br>
+The message is strictly informational and has no further consequences.
+<br><br>
+<strong>Action:</strong> To avoid this message, set
+
+the CHARSET connection property to a character set that the server
+
+supports.
+</td>
+</tr>
+<tr><td valign=top>010TQ
+</td>
+<td valign=top><code>jConnect could not
+
+determine the server's default character set. This is likely
+
+because of a metadata problem. Please install the required tables
+
+as mentioned in the jConnect documentation. The connection is defaulting
+
+to the ascii_7 character set, which can handle only characters
+
+in the range from 0x00 through 0x7F.</code>
+
+<br><br>
+<strong>Description: </strong>jConnect could not determine
+
+the server's default character set. When this occurs, the
+
+only characters that are guaranteed to translate properly are the
+
+first 127 ASCII characters. Therefore, jConnect will revert to 7-bit
+
+ASCII in this case. The message is strictly informational and has
+
+no further consequences.
+<br><br>
+<strong>Action:</strong> Install the stored procedures
+
+for returning metadata that comes with jConnect (see "Installing
+
+Stored Procedures" in Chapter 3 of the <i>jConnect
+
+for JDBC Installation Guide</i>).
+</td>
+</tr>
+<tr><td valign=top>010UF
+</td>
+<td valign=top><code>Attempt
+
+to execute use database command failed. Error message:_____</code>
+
+<br><br>
+<strong>Description: </strong>jConnect cannot connect
+
+to the database specified in the connection URL. Two possibilities
+
+are: 
+<br><br>
+
+<ul>
+<li class=fi>The name was entered
+
+incorrectly in the URL.
+</li>
+<li class=ds>USE_METADATA is true (the default condition),
+
+but the stored procedures for returning metadata have not been installed.
+
+As a result, jConnect tried to execute the <b>use</b> <i>database </i>command
+
+with the database in the URL, but the command failed. This may be
+
+because you attempted to access an Adaptive Anywhere database. SQL
+
+Anywhere databases do not support the <b>use</b> <i>database </i>command.
+
+</li>
+</ul>
+
+<br><br>
+<strong>Action:</strong> Make sure the database name
+
+in the URL is correct. Make sure that the stored procedures for
+
+returning metadata are installed on the server (see "Installing
+
+Stored Procedures" in Chapter 3 of the <i>jConnect
+
+for JDBC Installation Guide and Release Bulletin</i>). If
+
+you are attempting to access a SQL Anywhere database, either do
+
+not specify a database name in the URL, or set USE_METADATA
+
+to false.
+</td>
+</tr>
+<tr><td valign=top>010UP
+</td>
+<td valign=top><code>Unrecognized
+
+connection property _____ ignored.</code>
+
+<br><br>
+<strong>Description: </strong>You attempted to set a
+
+connection property in the URL that jConnect does not currently
+
+recognize. jConnect ignores the unrecognized property.
+<br><br>
+<strong>Action:</strong> Check the URL definition in
+
+your application to make sure it references only valid jConnect
+
+driver connection properties.
+</td>
+</tr>
+<tr><td valign=top>0100V
+</td>
+<td valign=top><code>The
+
+version of TDS protocol being used is too old.<br> Version: _____</code>
+
+<br><br>
+<strong>Description: </strong>The server does not support
+
+the required version of the TDS protocol. jConnect requires version
+
+5.0 or later.
+<br><br>
+<strong>Action:</strong> Use a server that supports
+
+the required version of TDS. See the jConnect installation guide's
+
+system requirements section for details.
+</td>
+</tr>
+<tr><td valign=top>JZ001
+</td>
+<td valign=top><code>User
+
+name property '_____' too
+
+long. Maximum length is 30.</code>
+
+<br><br>
+<strong>Action:</strong> Do not exceed the 30 byte maximum.
+</td>
+</tr>
+<tr><td valign=top>JZ002
+</td>
+<td valign=top><code>Password
+
+property '_____' too
+
+long. Maximum length is 30.</code>
+
+<br><br>
+<strong>Action:</strong> Do not exceed the 30-byte maximum.
+</td>
+</tr>
+<tr><td valign=top>JZ003
+</td>
+<td valign=top><code>Incorrect
+
+URL format. URL: _____</code>
+
+<br><br>
+<strong>Action:</strong> Verify the URL format. See <A HREF="prjdbcp7.htm#X32549">"URL connection property parameters"</A>.
+<br><br>
+If you are using the PROXY connection property, you may get
+
+a JZ003 exception while trying to connect if the format for the
+
+PROXY property is incorrect.
+<br><br>
+The PROXY format for the Cascade proxy is:
+<br><br>
+    <i>ip_address</i>:<i>port_number</i>
+<br><br>
+The PROXY format for the TDS tunnelling servlet is:
+<br><br>
+    http[s]://<i>host</i>:<i>port</i>/<i>tunneling_servlet_alias</i>
+</td>
+</tr>
+<tr><td valign=top>JZ004
+</td>
+<td valign=top><code>User
+
+name property missing in DriverManager.getConnection(..., Properties)</code>
+
+<br><br>
+<strong>Action: </strong>Provide the required user property.
+</td>
+</tr>
+<tr><td valign=top>JZ006
+</td>
+<td valign=top><code>Caught
+
+IOException: _____</code>
+
+<br><br>
+<strong>Description: </strong>An unexpected I/O
+
+error was detected from a lower layer. When such I/O exceptions
+
+are caught, they are rethrown as SQL exceptions using the ERR_IO_EXCEPTION JZ006
+
+sqlstate. These errors are often the result of network communication
+
+problems. If the I/O exception causes the database connection
+
+to be closed, jConnect will chain a JZ0C1 exception to the JZ006.
+
+Client applications can look for the JZ0C1 exception in the chain
+
+to see if the connection is still usable.
+<br><br>
+<strong>Action:</strong> Examine the text of the original
+
+I/O exception message, and proceed from there.
+</td>
+</tr>
+<tr><td valign=top>JZ008
+</td>
+<td valign=top><code>Invalid
+
+column index value _____.</code>
+
+<br><br>
+<strong>Description: </strong>You have requested a column
+
+index value of less than 1 or greater than the highest available
+
+value.
+<br><br>
+<strong>Action:</strong> Check call to the <b>getXXX() </b>method
+
+and the text of the original query, or be sure to call <b>rs.next().</b>
+</td>
+</tr>
+<tr><td valign=top>JZ009
+</td>
+<td valign=top><code>Error
+
+encountered in conversion. Error message: _____</code>
+
+<br><br>
+<strong>Description: </strong>Some of the possibilities
+
+are: 
+<br><br>
+
+<ul>
+<li class=fi>A conversion between
+
+two incompatible datatypes was attempted, such as <i>date</i> to <i>int</i>.
+</li>
+<li class=ds>There was an attempt to convert a string containing
+
+a nonnumeric character to a numeric type.
+</li>
+<li class=ds>There was a formatting error, such as an incorrectly
+
+formatted time/date string.
+
+</li>
+</ul>
+
+<br><br>
+<strong>Action:</strong> Make sure that the JDBC specification
+
+supports the attempted type conversion. Make sure that strings are
+
+correctly formatted. If a string contains non-numeric characters,
+
+do not attempt to convert it to a numeric type.
+</td>
+</tr>
+<tr><td valign=top>JZ00B
+</td>
+<td valign=top><code>Numeric
+
+overflow.</code>
+
+<br><br>
+<strong>Description: </strong>You tried to send a <b>BigInteger</b> as
+
+a TDS numeric, and the value was too large, or you tried to send
+
+a Java <i>long</i> as an <i>int</i> and
+
+the value was too large.
+<br><br>
+<strong>Action:</strong> These values cannot be stored
+
+in Sybase. For <i>long,</i> consider using a Sybase
+
+numeric. There is no solution for <b>Bignum</b>.
+</td>
+</tr>
+<tr><td valign=top>JZ00C
+</td>
+<td valign=top><code>The precision and
+
+scale specified cannot accommodate numeric value _____.</code>
+
+<br><br>
+<strong>Description: </strong>When using the setBigDecimal
+
+method, the BigDecimal value has a precision or scale that exceeds
+
+the specified precision or scale.
+<br><br>
+<strong>Action:</strong> Make sure that the specified
+
+precision and scale can accommodate the BigDecimal value.
+</td>
+</tr>
+<tr><td valign=top>JZ00E
+</td>
+<td valign=top><code>Attempt
+
+to call execute() or executeUpdate() for a statement where setCursorName()
+
+has been called.</code>
+
+<br><br>
+<strong>Action:</strong> Do not try to call <b>execute</b> or <b>executeUpdate</b> on
+
+a statement that has a cursor name set. Use a separate statement
+
+to delete or update a cursor. See <A HREF="prjdbcp10.htm#X15542">"Using cursors
+
+with result sets"</A> for more information
+</td>
+</tr>
+<tr><td valign=top>JZ00F
+</td>
+<td valign=top><code>Cursor
+
+name has already been set by setCursorName().</code>
+
+<br><br>
+<strong>Action:</strong> Do not set the cursor name
+
+twice for a statement. Close the result set of the current cursor statement.
+</td>
+</tr>
+<tr><td valign=top>JZ00G
+</td>
+<td valign=top><code>No
+
+column values were set for this row update.</code>
+
+<br><br>
+<strong>Description: </strong>You attempted to update
+
+a row in which no column values were changed.
+<br><br>
+<strong>Action:</strong> To change column values in
+
+a row, call <b>updateXX()</b> methods before calling <b>updateRow()</b>.
+</td>
+</tr>
+<tr><td valign=top>JZ00H
+</td>
+<td valign=top><code>The
+
+result set is not updatable. Use Statement.setResultSetConcurrencyType().</code>
+
+<br><br>
+<strong>Action:</strong> To change a result set from
+
+read-only to updatable, use the <b>Statement.setResultSetConcurrencyType()</b> method
+
+or add a <b>for update</b> clause to your SQL <b>select</b> statement.
+</td>
+</tr>
+<tr><td valign=top>JZ00I
+</td>
+<td valign=top><code>Invalid scale. The
+
+specidfied scale must be &gt;=0.</code>
+
+<br><br>
+<strong>Description: </strong>The scale value must be
+
+greater than zero.
+<br><br>
+<strong>Action:</strong> Be sure the scale value is
+
+not negative.
+</td>
+</tr>
+<tr><td valign=top>JZ00L
+</td>
+<td valign=top><code>Login
+
+failed. Examine the SQLWarnings chained to this exception for the
+
+reason(s).</code>
+
+<br><br>
+<strong>Action:</strong> See message text; proceed according
+
+to the reason(s) given for the login failure.
+</td>
+</tr>
+<tr><td valign=top>JZ00M
+</td>
+<td valign=top><code>Login timed out.
+
+Check that your database server is running on the host and port
+
+number you specified. Also check the database server for other conditions
+
+(such as a full tempdb) that might be causing it to hang.</code>
+
+<br><br>
+<strong>Action:</strong> Follow the recommended actions
+
+in the error message.
+</td>
+</tr>
+<tr><td valign=top>JZ010
+</td>
+<td valign=top><code>Unable
+
+to deserialize an Object value. Error text: _____</code>
+
+<br><br>
+<strong>Action:</strong> Make sure that the Java object
+
+from the database implements the <b>Serializable</b> interface and
+
+is in your local CLASSPATH variable.
+</td>
+</tr>
+<tr><td valign=top>JZ011
+</td>
+<td valign=top><code>Number
+
+format exception encountered while parsing numeric connection property _____.</code>
+
+<br><br>
+<strong>Description: </strong>A noninteger value was
+
+specified for a numeric connection property.
+<br><br>
+<strong>Action:</strong> Specify an integer value for
+
+the connection property.
+</td>
+</tr>
+<tr><td valign=top>JZ012
+</td>
+<td valign=top><code>Internal
+
+Error. Please report it to Sybase technical support. Wrong access
+
+type for connection property _____.</code>
+
+<br><br>
+<strong>Action:</strong> Please contact Sybase Technical
+
+Support.
+</td>
+</tr>
+<tr><td valign=top>JZ013
+</td>
+<td valign=top><code>Error
+
+obtaining JNDI entry: _____</code>
+
+<br><br>
+<strong>Action:</strong> Correct the JNDI URL or make
+
+a new entry in the directory service.
+</td>
+</tr>
+<tr><td valign=top>JZ014
+</td>
+<td valign=top><code>You
+
+may not setTransactionIsolation(Connection.TRANSACTION_NONE). This
+
+level cannot be set; it can only be returned by a server.</code>
+
+<br><br>
+<strong>Action:</strong> Check your application code,
+
+where it calls Connection.setTransactionIsolation(), andverify the
+
+value you are passing to the method.
+</td>
+</tr>
+<tr><td valign=top>JZ0BD
+</td>
+<td valign=top><code>Out
+
+of range or invalid value used for method parameter.</code>
+
+<br><br>
+<strong>Action:</strong> Verify that the parameter value
+
+in the method is correct.
+</td>
+</tr>
+<tr><td valign=top>JZ0BI
+</td>
+<td valign=top><strong>Message:</strong><code> setFetchSize:
+
+The fetch size should be set with the following restrictions - 0 &lt;= rows &lt;= (maximum
+
+number of rows in the ResultSet).</code>
+
+<br><br>
+<strong>Description: </strong>The client application
+
+has tried to call <b>setFetchSize</b> with an invalid
+
+number of rows.
+<br><br>
+<strong>Action:</strong> Verify that you are calling <b>setFetchSize</b> with
+
+the parameter falling within the above range of values.
+</td>
+</tr>
+<tr><td valign=top>JZ0BP
+</td>
+<td valign=top><code>Output parameters
+
+are not allowed in Batch Update Statements.</code>
+
+<br><br>
+<strong>Action:</strong> Examine your application code
+
+and check that you did not try to declare an outputparameter in
+
+your batch.
+</td>
+</tr>
+<tr><td valign=top>JZ0BR
+</td>
+<td valign=top><code>The
+
+cursor is not positioned on a row that supports the _____ method.</code>
+
+<br><br>
+<strong>Description: </strong>You attempted to call
+
+a <b>ResultSet</b> method that is invalid for the current
+
+row position (for example, calling<b> insertRow()</b> when
+
+the cursor is not on the insert row).
+<br><br>
+<strong>Action: </strong>Do not attempt to call a <b>ResultSet</b> method
+
+that is invalid for the current row position.
+</td>
+</tr>
+<tr><td valign=top>JZ0BS
+</td>
+<td valign=top><code>Batch Statements
+
+not supported.</code>
+
+<br><br>
+<strong>Action: </strong>Install or update the jConnect
+
+metadata stored procedures on your database with the latest versions.
+</td>
+</tr>
+<tr><td valign=top>JZ0BT
+</td>
+<td valign=top><code>The _____ method
+
+is not supported for ResultSets of type _____.</code>
+
+<br><br>
+<strong>Description: </strong>You attempted to call
+
+a <b>ResultSet</b> method that is invalid for the type
+
+of <b>ResultSet</b>.
+<br><br>
+<strong>Action: </strong>Do not attempt to call a <b>ResultSet</b> method
+
+that is invalid for the type of <b>ResultSet</b>.
+</td>
+</tr>
+<tr><td valign=top>JZ0C0
+</td>
+<td valign=top><code>Connection
+
+is already closed.</code>
+
+<br><br>
+<strong>Description: </strong>The application has already
+
+called <b>Connection.close() </b>on this connection
+
+object; it cannot be used any more.
+<br><br>
+<strong>Action:</strong> Fix the code so that connection
+
+object references are nulled out when a connection is closed.
+</td>
+</tr>
+<tr><td valign=top>JZ0C1
+</td>
+<td valign=top><code>An
+
+IOException occurred which closed the connection.</code>
+
+<br><br>
+<strong>Description: </strong>An unrecoverable IOException
+
+occurred which caused the Connection to be closed. The Connection
+
+cannot be used for any further database activity. If this exception
+
+occurs, it will always be found in an exception chain with the JZ006
+
+Exception (explained earlier).
+<br><br>
+<strong>Action:</strong> Determine the cause of the
+
+IOException that disrupted the Connection.
+</td>
+</tr>
+<tr><td valign=top>JZ0CL
+</td>
+<td valign=top><code>You
+
+must define the CLASS_LOADER property when using the PRELOAD_JARS property.</code>
+
+<br><br>
+<strong>Action:</strong> Make sure to specify a CLASS_LOADER
+
+when setting PRELOAD_JARS to a non-null value.
+</td>
+</tr>
+<tr><td valign=top>JZ0CU
+</td>
+<td valign=top><code>getUpdateCount
+
+can only be called once after a successful call to getMoreResults,
+
+or execute methods.</code>
+
+<br><br>
+<strong>Description: </strong>As per the JDBC API, <b>getUpdateCount</b> should
+
+be called only once per result.
+<br><br>
+<strong>Action:</strong> Make sure your code does not
+
+call <b>getUpdateCount</b> more than once per result.
+</td>
+</tr>
+<tr><td valign=top>JZ0D4
+</td>
+<td valign=top><code>Unrecognized
+
+protocol in Sybase JDBC URL:_____.</code>
+
+<br><br>
+<strong>Description: </strong>You specified a connection
+
+URL using a protocol other than TDS, which is the only protocol
+
+currently supported by jConnect.
+<br><br>
+<strong>Action:</strong> Check the URL definition. If
+
+the URL specifies TDS as a subprotocol, make sure that the entry
+
+uses the following format and capitalization:
+<br><br>
+jdbc:sybase:Tds:<i>host</i>:<i>port</i>
+<br><br>
+If the URL specifies JNDI as a subprotocol, make sure that
+
+it starts with:
+<br><br>
+jdbc:sybase:jndi:
+</td>
+</tr>
+<tr><td valign=top>JZ0D5
+</td>
+<td valign=top><code>Error
+
+loading protocol _____.</code>
+
+<br><br>
+<strong>Action:</strong> Check the settings for the
+
+CLASSPATH system variable.
+</td>
+</tr>
+<tr><td valign=top>JZ0D6
+</td>
+<td valign=top><code>Unrecognized
+
+version number _____ specified
+
+in setVersion. Choose one of the SybDriver.VERSION_* values,
+
+and make sure that the version of jConnect that you are using is
+
+at or beyond the version you specify.</code>
+
+<br><br>
+<strong>Action: </strong>See message text.
+</td>
+</tr>
+<tr><td valign=top>JZ0D7
+</td>
+<td valign=top><code>Error
+
+loading url provider _____.
+
+Error message: _____</code>
+
+<br><br>
+<strong>Action: </strong>Check the JNDI URL to make
+
+sure it is correct.
+</td>
+</tr>
+<tr><td valign=top>JZ0D8
+</td>
+<td valign=top><code>Error
+
+initializing url provider: _____</code>
+
+<br><br>
+<strong>Action: </strong>Check the JNDI URL to make
+
+sure it is correct.
+</td>
+</tr>
+<tr><td valign=top>JZ0DP
+</td>
+<td valign=top><code>This
+
+statement has no metadata because it was not dynamically prepared.
+
+Set the DYNAMIC_PREPARE connection property to true to ensure
+
+use of dynamic statements.</code>
+
+<br><br>
+<strong>Action: </strong>Refer to the error message.
+</td>
+</tr>
+<tr><td valign=top>JZ0EM
+</td>
+<td valign=top><code>End
+
+of data. </code>
+
+<br><br>
+<strong>Action: </strong>Please report this error to
+
+Sybase Technical Support.
+</td>
+</tr>
+<tr><td valign=top>JZ0F1
+</td>
+<td valign=top><code>Sybase
+
+high-availability failover connection was requested but the companion
+
+server address is missing.</code>
+
+<br><br>
+<strong>Description: </strong>When you set the REQUEST_HA_SESSION
+
+connection property to true, you must also specify a failover server.
+<br><br>
+<strong>Action: </strong>You can specify the secondary
+
+server using the SECONDARY_SERVER_HOSTPORT connection
+
+property, or you can set the secondary server using JNDI (see <A HREF="prjdbcp10.htm#CHDCJAHF">"Implementing
+
+high availability failover support"</A>).
+</td>
+</tr>
+<tr><td valign=top>JZ0F2
+</td>
+<td valign=top><code>Sybase high-availability
+
+failover has occurred. The current transaction is aborted, but the
+
+connection is still usable. Retry your transaction.</code>
+
+<br><br>
+<strong>Description:</strong> The backend database server
+
+to which you were connected has gone down, but you have failed over
+
+to a secondary server. The database connection is still usable. 
+<br><br>
+<strong>Action: </strong>Client code should catch this
+
+exception, then restart the transaction from the last committed
+
+point. Assuming you properly handle the exception, you can continue
+
+executing JDBC calls on the same Connection object.
+</td>
+</tr>
+<tr><td valign=top>JZ0H0
+</td>
+<td valign=top><code>Unable
+
+to start thread for event handler; event name = _____.</code>
+
+<br><br>
+<strong>Action: </strong>Please report this error to
+
+Sybase Technical Support.
+</td>
+</tr>
+<tr><td valign=top>JZ0H1
+</td>
+<td valign=top><code>An
+
+event notification was received but the event handler was not found;
+
+event name = _____.</code>
+
+<br><br>
+<strong>Action: </strong>Please report this error to
+
+Sybase Technical Support.
+</td>
+</tr>
+<tr><td valign=top>JZ0HC
+</td>
+<td valign=top><code>Illegal
+
+character '_____' encountered
+
+while parsing hexadecimal number.</code>
+
+<br><br>
+<strong>Description: </strong>A string that is supposed
+
+to represent a binary value contains a character that is not in
+
+the range (0-9, a-f) that is required for a hexadecimal
+
+number.
+<br><br>
+<strong>Action: </strong>Check the character values
+
+in the string to make sure they are in the required range.
+</td>
+</tr>
+<tr><td valign=top>JZ0I1
+</td>
+<td valign=top><code>I/O
+
+Layer: Error reading stream.</code>
+
+<br><br>
+<strong>Description: </strong>The connection was unable
+
+to read the amount requested. Most likely, the statement timeout
+
+period was exceeded and the connection timed out.
+<br><br>
+<strong>Action: </strong>Increase the statement timeout
+
+value.
+</td>
+</tr>
+<tr><td valign=top>JZ0I2
+</td>
+<td valign=top><code>I/O
+
+layer: Error writing stream.</code>
+
+<br><br>
+<strong>Description: </strong>The connection was unable
+
+to write the output requested. Most likely, the statement time-out
+
+period was exceeded and the connection timed out.
+<br><br>
+<strong>Action:</strong> Increase the statement time out
+
+value.
+</td>
+</tr>
+<tr><td valign=top>JZ0I3
+</td>
+<td valign=top><code>Unknown
+
+property. This message indicates an internal product problem. Report
+
+this error to Sybase Technical support.</code>
+
+<br><br>
+<strong>Action:</strong> Indicates an internal product
+
+problem. Please report this error to Sybase Technical Support.
+</td>
+</tr>
+<tr><td valign=top>JZ0I5
+</td>
+<td valign=top><code>An
+
+unrecognized CHARSET property was specified: _____.</code>
+
+<br><br>
+<strong>Description: </strong>You specified an unsupported character
+
+set code for the CHARSET connection property.
+<br><br>
+<strong>Action:</strong> Enter a valid character-set
+
+code for the connection property. See <A HREF="prjdbcp9.htm#X37477">"jConnect character-set converters"</A>.
+</td>
+</tr>
+<tr><td valign=top>JZ0I6
+</td>
+<td valign=top><code>An
+
+error occurred converting UNICODE to the charset used by the server.
+
+Error message: _____</code>
+
+<br><br>
+<strong>Action:</strong> Choose a different character
+
+set code for the CHARSET connection property on the jConnect client
+
+that can support all the characters you need to send to the server.
+
+You may need to install a different character set on the server,
+
+too. Also, if you are using jConnect version 5.5 or later, and Adaptive
+
+Server Enterprise 12.5 or later, you can send your data to the server
+
+as <i>unichar</i>/<i>univarchar</i> datatypes.
+
+Please see <A HREF="prjdbcp9.htm#BHCFJECE">"Using jConnect to pass Unicode data"</A>.
+</td>
+</tr>
+<tr><td valign=top>JZ0I7
+</td>
+<td valign=top><code>No
+
+response from proxy gateway.</code>
+
+<br><br>
+<strong>Description: </strong>The Cascade or security
+
+gateway is not responding.
+<br><br>
+<strong>Action:</strong> Make sure the gateway is properly
+
+installed and running.
+</td>
+</tr>
+<tr><td valign=top>JZ0I8
+</td>
+<td valign=top><code>Proxy
+
+gateway connection refused. Gateway response: _____</code>
+
+<br><br>
+<strong>Description: </strong>The Web server/gateway
+
+indicated by the PROXY connection property has refused your connection
+
+request.
+<br><br>
+<strong>Action:</strong> Check the access and error
+
+logs on the proxy to determine why the connection was refused. Make
+
+sure the proxy is a JDBC gateway.
+</td>
+</tr>
+<tr><td valign=top>JZ0I9
+</td>
+<td valign=top><code>This
+
+InputStream was closed.</code>
+
+<br><br>
+<strong>Description: </strong>You tried to read an InputStream
+
+obtained from <b>getAsciiStream()</b>, <b>getUnicodeStream()</b>,
+
+or <b>getBinaryStream()</b>, but the InputStream was
+
+already closed. The stream may have been closed because you moved
+
+to another column or cancelled the result set and there were not
+
+enough resources to cache the data.
+<br><br>
+<strong>Action:</strong> Increase the cache size or
+
+read columns in order.
+</td>
+</tr>
+<tr><td valign=top>JZ0IA
+</td>
+<td valign=top><code>Truncation
+
+error trying to send_____.</code>
+
+<br><br>
+<strong>Description: </strong>There was a truncation
+
+error on character set conversion prior to sending a string. The
+
+converted string is longer than the size allocated for it.
+<br><br>
+<strong>Action:</strong> Choose a different character-set
+
+code for the CHARSET connection property on the jConnect client
+
+that can support all the characters you need to send to the server.
+
+You may need to install a different character set on the server,
+
+too.
+</td>
+</tr>
+<tr><td valign=top>JZ0IR
+</td>
+<td valign=top><code>getXXX
+
+may not be called on a column after it has been updated in the result
+
+set with a java.io.Reader.</code>
+
+<br><br>
+<strong>Action:</strong> Remove the <b>getXXX</b> call
+
+on the ResultSet column which you updated using a Reader.
+</td>
+</tr>
+<tr><td valign=top>JZ0IS
+</td>
+<td valign=top><code>getXXXStream
+
+may not be called on a column after it has been updated in the result
+
+set.</code>
+
+<br><br>
+<strong>Description: </strong>After updating a column
+
+in a result set, you attempted to read the updated column value
+
+using one of the following <b>SybResultSet</b> methods: <b>getAsciiStream()</b>, <b>getUnicodeStream()</b>, <b>getBinaryStream(). </b>jConnect
+
+does not support this usage.
+<br><br>
+<strong>Action:</strong> Do not attempt to fetch input
+
+streams from columns you are updating.
+</td>
+</tr>
+<tr><td valign=top>JZ0J0
+</td>
+<td valign=top><code>Offset
+
+and/or length values exceed the actual text/image
+
+length.</code>
+
+<br><br>
+<strong>Action</strong>: Check the offset and/or
+
+length values you used to make sure they are correct.
+</td>
+</tr>
+<tr><td valign=top>JZ0LC
+</td>
+<td valign=top><code>You
+
+cannot call the ____ method
+
+on a ResultSet which is using a language cursor to fetch rows. Try
+
+setting the LANGUAGE_CURSOR connection property to false.</code>
+
+<br><br>
+<strong>Description: </strong>The application tried
+
+to call one of the ResultSet cursor scrolling methods on a ResultSet
+
+which was created with a language cursor.
+<br><br>
+<strong>Action:</strong> See the error message.
+</td>
+</tr>
+<tr><td valign=top>JZ0NC
+</td>
+<td valign=top><code>wasNull
+
+called without a preceding call to get a column.</code>
+
+<br><br>
+<strong>Description: </strong>You can only call <b>wasNull()</b> after
+
+a call to get a column, such as <b>getInt()</b> or <b>getBinaryStream()</b>.
+<br><br>
+<strong>Action:</strong> Change the code to move the
+
+call to <b>wasNull()</b>.
+</td>
+</tr>
+<tr><td valign=top>JZ0NE
+</td>
+<td valign=top><code>Incorrect
+
+URL format. URL: _____.
+
+Error message: _____</code>
+
+<br><br>
+<strong>Action: </strong>Check the format of the URL.
+
+Make sure that the port number consists only of numeric characters.
+</td>
+</tr>
+<tr><td valign=top>JZ0NF
+</td>
+<td valign=top><code>Unable
+
+to load SybSocketFactory. Make sure that you have spelled the class
+
+name correctly, that the package is fully specified, that the class
+
+is available in your class path, and that it has a public zero-argument
+
+constructor.</code>
+
+<br><br>
+<strong>Action:</strong> See message text.
+</td>
+</tr>
+<tr><td valign=top>JZ0P1
+</td>
+<td valign=top><code>Unexpected
+
+result type.</code>
+
+<br><br>
+<strong>Description: </strong>The database has returned
+
+a result that the statement cannot return to the application, or
+
+that the application is not expecting at this point. This generally
+
+indicates that the application is using JDBC incorrectly to execute
+
+the query or stored procedure. If the JDBC application is connected
+
+to an Open Server application, it may indicate an error in the Open Server
+
+application that causes the Open Server to send unexpected sequences
+
+of results.
+<br><br>
+<strong>Action:</strong> Use the <b>com.sybase.utils.Debug(true, "ALL")</b> debugging
+
+tools to try to figure out what unexpected result is seen, and to
+
+understand its causes.
+</td>
+</tr>
+<tr><td valign=top>JZ0P4
+</td>
+<td valign=top><code>Protocol
+
+error. This message indicates an internal product problem. Report
+
+this error to Sybase technical support.</code>
+
+<br><br>
+<strong>Action: </strong>See message text.
+</td>
+</tr>
+<tr><td valign=top>JZ0P7
+</td>
+<td valign=top><code>Column
+
+is not cached; use RE-READABLE_COLUMNS property.</code>
+
+<br><br>
+<strong>Description: </strong>With the REPEAT_READ
+
+connection property set to false, an attempt was made to reread
+
+a column or read a column in the wrong order.
+<br><br>
+When REPEAT_READ is false, you can only read the
+
+column value for a row once, and you can only read columns in ascending
+
+column-index order. For example, after reading column 3 for a row,
+
+you cannot read its value a second time and you cannot read column 2
+
+for the row.
+<br><br>
+<strong>Action:</strong> Either set REPEAT_READ
+
+to true, or do not attempt to reread a column value and make sure
+
+that you read columns in ascending column-index order.
+</td>
+</tr>
+<tr><td valign=top>JZ0P8
+</td>
+<td valign=top><code>The
+
+RSMDA Column Type Name you requested is unknown. </code>
+
+<br><br>
+<strong>Description: </strong>jConnect cannot determine
+
+the name of a column type in the <b>ResultSetMetaData.getColumnTypeName()</b> method.
+<br><br>
+<strong>Action:</strong> Make sure that your database
+
+has the most recent stored procedures for metadata.
+</td>
+</tr>
+<tr><td valign=top>JZ0P9
+</td>
+<td valign=top><code>A
+
+COMPUTE BY query has been detected. That type of result is unsupported
+
+and has been cancelled.</code>
+
+<br><br>
+<strong>Description: </strong>The query you executed
+
+returned COMPUTE results, which are not supported by jConnect.
+<br><br>
+<strong>Action:</strong> Change your query or stored
+
+procedure so it does not use COMPUTE BY.
+</td>
+</tr>
+<tr><td valign=top>JZ0PA
+</td>
+<td valign=top><code>The
+
+query has been cancelled and the same response discarded.</code>
+
+<br><br>
+<strong>Description: </strong>A cancel was probably
+
+issued by another statement on the connection.
+<br><br>
+<strong>Action: </strong>Check the chain of SQL exceptions
+
+and warnings on this and other statements to determine the cause.
+</td>
+</tr>
+<tr><td valign=top>JZ0PB
+</td>
+<td valign=top><code>The
+
+server does not support a requested operation.</code>
+
+<br><br>
+<strong>Description: </strong>When jConnect creates
+
+a connection with a server, it informs the server of capabilities
+
+it wants supported and the server informs jConnect of the capabilities
+
+that it supports. This error message is sent when an application
+
+requests an operation that was denied in the original capabilities
+
+negotiation.
+<br><br>
+For example, if the database does not support precompilation
+
+of dynamic SQL statements, and your code invokes <b>SybConnection.prepareStatement(</b><i>sql_stmt</i><b>, </b><i>dynamic</i><b>)</b>,
+
+and <i>dynamic</i> is set to true, jConnect generates this
+
+message.
+<br><br>
+<strong>Action: </strong>Modify your code so that it
+
+does not request an unsupported capability.
+</td>
+</tr>
+<tr><td valign=top>JZ0PC
+</td>
+<td valign=top><code>The number and size
+
+of parameters in your query require wide table support. But either
+
+the server does not offer such support, or it was not requested
+
+during the login sequence. Try setting the JCONNECT_VERSION
+
+property to &gt;=6 if you wish to request widetable support.</code>
+
+<br><br>
+<strong>Description: </strong>You are trying to execute
+
+a statement with a large number of parameters, and the server is
+
+not configured to handle that many parameters. The number of parameters
+
+that can produce this exception will vary, depending on the datatypes
+
+of the data you are sending. You will never get this exception if
+
+you are sending 481 or fewer parameters.
+<br><br>
+<strong>Action:</strong> You must run this query against
+
+an Adaptive Server 12.5 or later server. When you connect to the
+
+database, set the JCONNECT_VERSION property to VERSION_6
+
+or VERSION_LATEST.
+</td>
+</tr>
+<tr><td valign=top>JZ0PD
+</td>
+<td valign=top><code>The size of the query
+
+in your dynamic prepare is large enough that you require widetable
+
+support. But either the server does not offer such support, or it
+
+was not requested during the login sequence. Try setting the JCONNECT_VERSION
+
+property to &gt;=6 if you wish to request widetable
+
+support.</code>
+
+<br><br>
+<strong>Description: </strong>You are trying to execute
+
+a dynamic prepared statement with a large number of parameters,
+
+and the server is not configured to handle that many parameters.
+<br><br>
+<strong>Action:</strong> You must run this query against
+
+an Adaptive Server 12.5 or later server. When you connect to the
+
+database, set the JCONNECT_VERSION property to VERSION_6
+
+or VERSION_LATEST.
+</td>
+</tr>
+<tr><td valign=top>JZ0PE
+</td>
+<td valign=top><code>The number of columns
+
+in your cursor declaration OR the size of your cursor declaration
+
+itself are large enough that you require widetable support. But
+
+either the server does not offer such support, or it was not requested
+
+during the login sequence. Try setting the JCONNECT_VERSION
+
+property to &gt;= 6 if you wish to request wide table support.</code>
+
+<br><br>
+<strong>Description: </strong>This error can occur when
+
+your SELECT statement tries to return data from more than 255 columns,
+
+or when the actual length of the SELECT statement is very large
+
+(greater than approximately 65500 characters).
+<br><br>
+<strong>Action:</strong> You must run this query against
+
+a version 12.5 or later Adaptive Server. When you connect to the
+
+database, set the JCONNECT_VERSION property to VERSION_6
+
+or VERSION_LATEST.
+</td>
+</tr>
+<tr><td valign=top>JZ0PN
+</td>
+<td valign=top><code>Specified
+
+port number of ____ was out
+
+of range. Port numbers must meet the following conditions: 0&lt;= portNumber &lt;=65535.</code>
+
+<br><br>
+<strong>Action:</strong> Check the port number that
+
+is specified in the database URL.
+</td>
+</tr>
+<tr><td valign=top>JZ0R0
+</td>
+<td valign=top><code>Result
+
+set has already been closed.</code>
+
+<br><br>
+<strong>Description: </strong>The <b>ResultSet.close()</b> method
+
+has already been called on the result set object; you cannot use
+
+the result set for anything else.
+<br><br>
+<strong>Action:</strong> Fix the code so that <b>ResultSet </b>object
+
+references are set to null whenever a result set is closed.
+</td>
+</tr>
+<tr><td valign=top>JZ0R1
+</td>
+<td valign=top><code>Result
+
+set is IDLE as you are not currently accessing a row.</code>
+
+<br><br>
+<strong>Description: </strong>The application has called
+
+one of the <b>ResultSet.getXXX</b> column-data retrieval methods,
+
+but there is no current row; the application has not called <b>ResultSet.next()</b>,
+
+or <b>ResultSet.next()</b><b> </b>returned false
+
+to indicate that there is no data.
+<br><br>
+<strong>Action:</strong> Check that <b>rs.next()</b> is
+
+set to true before calling <b>rs.getXXX</b>.
+</td>
+</tr>
+<tr><td valign=top>JZ0R2
+</td>
+<td valign=top><code>No
+
+result set for this query.</code>
+
+<br><br>
+<strong>Description: </strong>You used<b> </b><b>Statement.executeQuery()</b>,
+
+but the statement returned no rows.
+<br><br>
+<strong>Action:</strong> Use<b> </b><b>executeUpdate</b> for
+
+statements returning no rows.
+</td>
+</tr>
+<tr><td valign=top>JZ0R3
+</td>
+<td valign=top><code>Column
+
+is DEAD. This is an internal error. Please report it to Sybase technical
+
+support.</code>
+
+<br><br>
+<strong>Action: </strong>See message text.
+</td>
+</tr>
+<tr><td valign=top>JZ0R4
+</td>
+<td valign=top><code>Column
+
+does not have a text pointer. It is not a text/image column or
+
+the column is NULL.</code>
+
+<br><br>
+<strong>Description: </strong>You cannot update a <i>text</i>/<i>image</i> column
+
+if it is NULL. A NULL <i>text</i>/<i>image</i> column does
+
+not contain a text pointer.
+<br><br>
+<strong>Action:</strong> Make sure that you are not
+
+trying to update or get a text pointer to a column that does not
+
+support text/image data. Make sure that you are not trying
+
+to update a <i>text</i>/<i>image</i> column
+
+that is NULL. Insert data first, then make the update.
+</td>
+</tr>
+<tr><td valign=top>JZ0R5
+</td>
+<td valign=top><code>The
+
+ResultSet is currently positioned beyond the last row. You cannot perform
+
+a get* operation to read data in this state.</code>
+
+<br><br>
+<strong>Description: </strong>The application has moved
+
+the <b>ResultSet</b> row pointer beyond the last row.
+
+In this position, there is no data to read, so any get* operations
+
+are illegal.
+<br><br>
+<strong>Action:</strong> Alter the code so that it does
+
+not attempt to read column data when the <b>ResultSet</b> is positioned
+
+beyond the last row.
+</td>
+</tr>
+<tr><td valign=top>JZ0RD
+</td>
+<td valign=top><code>You
+
+cannot call any of the ResultSet.get* methods on a row
+
+that has been deleted with the deleteRow() method.</code>
+
+<br><br>
+<strong>Description: </strong>An application is trying
+
+to retrieve data from a row that has been deleted. There is no valid
+
+data to be retrieved.
+<br><br>
+<strong>Action:</strong> Alter the code so that the
+
+application does not attempt to retrieve data from a deleted row.
+</td>
+</tr>
+<tr><td valign=top>JZ0RM
+</td>
+<td valign=top><code>refreshRow
+
+may not be called after updateRow or deleteRow.</code>
+
+<br><br>
+<strong>Description: </strong>After updating a row in
+
+the database with <b>SybCursorResult.updateRow()</b>,
+
+or deleting it with <b>SybCursorResult.deleteRow()</b>,
+
+you used <b>SybCursorResult</b>.<b>refreshRow()</b> to
+
+refresh the row from the database.
+<br><br>
+<strong>Action:</strong> Do not attempt to refresh a
+
+row after updating it or deleting it from the database.
+</td>
+</tr>
+<tr><td valign=top>JZ0S0
+</td>
+<td valign=top><code>Statement
+
+state machine: Statement is BUSY.</code>
+
+<br><br>
+<strong>Description: </strong>The only time this error
+
+is raised is from the <b>Statement.setCursorname()</b> method, if
+
+the application is trying to set the cursor name when the statement
+
+is already in use and has noncursor results that need to be read.
+<br><br>
+<strong>Action:</strong> Set the cursor name on a statement
+
+before you execute any queries on it, or call <b>Statement.cancel()</b> before
+
+setting the cursor name, to make sure that the statement isn't
+
+busy.
+</td>
+</tr>
+<tr><td valign=top>JZ0S1
+</td>
+<td valign=top><code>Statement
+
+state machine: Trying to FETCH on IDLE statement.</code>
+
+<br><br>
+<strong>Description: </strong>An internal error occurred
+
+on the statement.
+<br><br>
+<strong>Action: </strong>Close the statement and open
+
+another one.
+</td>
+</tr>
+<tr><td valign=top>JZ0S2
+</td>
+<td valign=top><code>Statement
+
+object has already been closed.</code>
+
+<br><br>
+<strong>Description: </strong>The <b>Statement.close()</b> method
+
+has already been called on the statement object; you cannot use
+
+the statement for anything else.
+<br><br>
+<strong>Action:</strong> Fix the application so that
+
+statement object references are set to null whenever a statement
+
+is closed.
+</td>
+</tr>
+<tr><td valign=top>JZ0S3
+</td>
+<td valign=top><code>The
+
+inherited method _____ cannot
+
+be used in this subclass.</code>
+
+<br><br>
+<strong>Description: </strong><b>PreparedStatement</b><b> </b>does
+
+not support <b>executeQuery(String)</b>, <b>executeUpdate(String)</b>, or <b>execute(String).</b>
+<br><br>
+<strong>Action:</strong> To pass a query string, use <b>Statement</b>,
+
+not <b>PreparedStatement</b>.
+</td>
+</tr>
+<tr><td valign=top>JZ0S4
+</td>
+<td valign=top><code>Cannot
+
+execute an empty (zero-length) query.</code>
+
+<br><br>
+<strong>Action: </strong>Do not execute an empty query
+
+("").
+</td>
+</tr>
+<tr><td valign=top>JZ0S5
+</td>
+<td valign=top><code>The
+
+local transaction method ____ cannot
+
+be used while a global transaction is active on this connection.</code>
+
+<br><br>
+<strong>Description: </strong>This exception can occur
+
+when using distributed transactions.
+<br><br>
+<strong>Action:</strong> See Chapter 7, "Distributed
+
+Transactions," in the <i>JDBC 2.0 Optional Package </i>(formerly the
+
+JDBC 2.0 Standard Extension API) for more information on diagnosing
+
+the problem.
+</td>
+</tr>
+<tr><td valign=top>JZ0S6
+</td>
+<td valign=top><code>The
+
+local transaction method _____ cannot
+
+be used on a pre-System 12 XAConnection.</code>
+
+<br><br>
+<strong>Description: </strong>This exception can occur
+
+when using distributed transactions.
+<br><br>
+<strong>Action:</strong> See Chapter 7, "Distributed
+
+Transactions," in the <i>JDBC 2.0 Optional Package</i>(formerly the
+
+JDBC 2.0 Standard Extension API) for more information on diagnosing
+
+the problem.
+</td>
+</tr>
+<tr><td valign=top>JZ0S8
+</td>
+<td valign=top><code>An
+
+escape sequence in a SQL Query was malformed: '_____'.</code>
+
+<br><br>
+<strong>Description: </strong>This error results from
+
+bad escape syntax.
+<br><br>
+<strong>Action:</strong> Check JDBC documentation for
+
+correct syntax.
+</td>
+</tr>
+<tr><td valign=top>JZ0S9
+</td>
+<td valign=top><code>Cannot
+
+execute an empty (zero-length) query.</code>
+
+<br><br>
+<strong>Action: </strong>Do not execute an empty query
+
+("").
+</td>
+</tr>
+<tr><td valign=top>JZ0SA
+</td>
+<td valign=top><code>Prepared
+
+Statement: Input parameter not set, index: _____.</code>
+
+<br><br>
+<strong>Action:</strong> Make sure that each input parameter
+
+has a value.
+</td>
+</tr>
+<tr><td valign=top>JZ0SB
+</td>
+<td valign=top><code>Parameter
+
+index out of range: _____.</code>
+
+<br><br>
+<strong>Description: </strong>You have attempted to
+
+get, set, or register a parameter that goes beyond the maximum number
+
+of parameters.
+<br><br>
+<strong>Action:</strong> Check the number of parameters
+
+in your query.
+</td>
+</tr>
+<tr><td valign=top>JZ0SC
+</td>
+<td valign=top><code>Callable
+
+Statement: attempt to set the return status as an InParameter.</code>
+
+<br><br>
+<strong>Description: </strong>You have prepared a call
+
+to a stored procedure that returns a status, but you are trying
+
+to set parameter 1, which is the return status.
+<br><br>
+<strong>Action: </strong>Parameters that you can set
+
+start at 2 with this type of call.
+</td>
+</tr>
+<tr><td valign=top>JZ0SD
+</td>
+<td valign=top><code>No
+
+registered parameter found for output parameter.</code>
+
+<br><br>
+<strong>Description: </strong>This indicates an application
+
+logic error. You attempted to call <b>getXXX() </b>or <b>wasNull()</b> on
+
+a parameter, but you have not read any parameters yet, or there
+
+are no output parameters.
+<br><br>
+<strong>Action: </strong>Check to make sure that the
+
+application has registered output parameters on the CallableStatement,
+
+that the statement has been executed, and that the output parameters
+
+were read.
+</td>
+</tr>
+<tr><td valign=top>JZ0SE
+</td>
+<td valign=top><code>Invalid
+
+object type specified for setObject().</code>
+
+<br><br>
+<strong>Description: </strong>Illegal type argument
+
+passed to <b>PreparedStatement.setObject.</b>
+<br><br>
+<strong>Action:</strong> Check the JDBC documentation.
+
+The argument must be a constant from <b>j</b><b>ava.sql.Types</b>.
+</td>
+</tr>
+<tr><td valign=top>JZ0SF
+</td>
+<td valign=top><code>No
+
+Parameters expected. Has query been sent?</code>
+
+<br><br>
+<strong>Description: </strong>You tried to set a parameter
+
+on a statement with no parameters.
+<br><br>
+<strong>Action: </strong>Make sure the query has been
+
+sent before you set the parameters.
+</td>
+</tr>
+<tr><td valign=top>JZ0SG
+</td>
+<td valign=top><code>An
+
+RPC did not return as many output parameters as the application had
+
+registered for it.</code>
+
+<br><br>
+<strong>Description: </strong>This error occurs if you
+
+call <b>CallableStatement.registerOutParam()</b> for
+
+more parameters than you declared as "OUTPUT" parameters
+
+in the stored procedure. See <A HREF="prjdbcp18.htm#CHDDFEHG">"RPC returns fewer output
+
+parameters than registered"</A> for more information.
+<br><br>
+<strong>Action:</strong> Check your stored procedures
+
+and <b>registerOutParameter</b> calls. Make sure that
+
+you have declared all of the appropriate parameters as "OUTPUT." Look
+
+at the line of code that reads:
+<br><br>
+<code>create procedure yourproc (@p1
+
+int OUTPUT, ...</code>
+
+<br><br>
+<IMG SRC="images/note.gif" width=17 height=17 border=0 align="bottom" alt="Note">&nbsp;&nbsp; If you receive this error while using Adaptive Server
+
+Anywhere (previously known as SQL Anywhere), upgrade to Adaptive
+
+Server Anywhere version 5.5.04.
+</td>
+</tr>
+<tr><td valign=top>JZ0SH
+</td>
+<td valign=top><code>A
+
+static function escape was used, but the metadata accessor information
+
+was not found on this server.</code>
+
+<br><br>
+<strong>Action:</strong> Install metadata accessor information
+
+before using static function escapes.
+</td>
+</tr>
+<tr><td valign=top>JZ0SI
+</td>
+<td valign=top><code>A
+
+static function escape _____ was
+
+used which is not supported by this server.</code>
+
+<br><br>
+<strong>Action: </strong>Do not use this escape.
+</td>
+</tr>
+<tr><td valign=top>JZ0SJ
+</td>
+<td valign=top><code>Metadata
+
+accessor information was not found on this database.</code>
+
+<br><br>
+<strong>Action:</strong> Install metadata information
+
+before making metadata calls.
+</td>
+</tr>
+<tr><td valign=top>JZ0SK
+</td>
+<td valign=top><code>The
+
+oj escape is not supported for this type of database server. Workaround:
+
+use server-specific outer join syntax, if supported. Consult server
+
+documentation.</code>
+
+<br><br>
+<strong>Action: </strong>Read the error message. Also,
+
+install the latest version of the jConnect metadata.
+</td>
+</tr>
+<tr><td valign=top>JZ0SL
+</td>
+<td valign=top><code>Unsupported
+
+SQL type _____.</code>
+
+<br><br>
+<strong>Description: </strong>The application has declared
+
+a parameter to be of a type that jConnect does not support.
+<br><br>
+<strong>Action: </strong>If possible, try declaring
+
+the parameter to be of a different type. Do not use <b>Types.NULL</b> or <b>PreparedStatement.setObject
+
+(null)</b>.
+</td>
+</tr>
+<tr><td valign=top>JZ0SM
+</td>
+<td valign=top><code>jConnect
+
+could not execute a stored procedure because there was a problem
+
+sending the parameter(s). This problem was likely caused because
+
+the server does not support a specific datatype, or because jConnect
+
+did not request support for that datatype at connect time. Try setting
+
+the JCONNECT_VERSION connection property to a higher value.
+
+Or, if possible, try sending your procedure execution command as
+
+a language statement.</code>
+
+</td>
+</tr>
+<tr><td valign=top>JZ0SN
+</td>
+<td valign=top><code>setMaxFieldSize:
+
+field size cannot be negative.</code>
+
+<br><br>
+<strong>Action: </strong>Use a positive value or zero
+
+(unlimited) when calling <b>setMaxFieldSize</b>.
+</td>
+</tr>
+<tr><td valign=top>JZ0SO
+</td>
+<td valign=top><code>Invalid
+
+ResultSet concurrency type:_____.</code>
+
+<br><br>
+<strong>Action: </strong>Check that your declared concurrency
+
+is either <b>ResultSet.CONCUR_READ_ONLY</b> or <b>ResultSet.CONCUR_UPDATABLE</b>.
+</td>
+</tr>
+<tr><td valign=top>JZ0SP
+</td>
+<td valign=top><code>Invalid
+
+ResultSet type:_____.</code>
+
+<br><br>
+<strong>Action: </strong>Check that your declared ResultSet
+
+type is <b>ResultSet.TYPE_FORWARD_ONLY</b> or <b>ResultSet.TYPE_SCROLL_INSENSITIVE</b>.
+
+jConnect does not support the <b>ResultSet.TYPE_SCROLL_SENSITIVE</b> ResultSet
+
+type.
+</td>
+</tr>
+<tr><td valign=top>JZ0SQ
+</td>
+<td valign=top><code>In
+
+valid UDT type _____.</code>
+
+<br><br>
+<strong>Description:</strong> When calling the DatabaseMetaData.getUDTs
+
+method, jConnect will throw this Exception if the user-defined type
+
+is not either <b>Types.JAVA_OBJECT</b>, <b>Types.STRUCT</b> or <b>Types.DISTINCT</b>.
+<br><br>
+<strong>Action: </strong>Use one of the three UDTs mentioned
+
+above.
+</td>
+</tr>
+<tr><td valign=top>JZ0SR
+</td>
+<td valign=top><code>setMaxRows: max rows
+
+cannot be negative.</code>
+
+<br><br>
+<strong>Action: </strong>Use a positive value or zero
+
+(unlimited) when calling <b>setMaxRows</b>.
+</td>
+</tr>
+<tr><td valign=top>JZ0SS
+</td>
+<td valign=top><code>setQueryTimeout:
+
+query timeout cannot be negative.</code>
+
+</td>
+</tr>
+<tr><td valign=top>JZ0ST
+</td>
+<td valign=top><code>jConnect cannot send
+
+a Java object as a literal parameter in a query. Make sure that
+
+your database server supports Java objects and that the LITERAL_PARAMS
+
+connection property is set to false when you execute this query.</code>
+
+</td>
+</tr>
+<tr><td valign=top>JZ0SU
+</td>
+<td valign=top><code>A
+
+Date or Timestamp parameter was set with a year of ______,
+
+but the server can only support year values between _____ and _______.
+
+If you're trying to send data to date or timestamp columns
+
+or parameters on Adaptive Server Anywhere, you may wish to send
+
+your data as Strings, and let the server convert them.</code>
+
+<br><br>
+<strong>Description: </strong>Adaptive Server Enterprise
+
+and Adaptive Server Anywhere have different allowable ranges for
+
+datetime and date values. Datetime values must have years greater
+
+or equal to 1753. The date datatype, however, can hold years greater
+
+or equal to 1.
+<br><br>
+<strong>Action: </strong>Make sure that the date/timestamp
+
+value you are sending falls in the acceptable range.
+</td>
+</tr>
+<tr><td valign=top>JZ0T2
+</td>
+<td valign=top><code>Listener
+
+thread read error.</code>
+
+<br><br>
+<strong>Action: </strong>Check your network communications.
+</td>
+</tr>
+<tr><td valign=top>JZ0T3
+</td>
+<td valign=top><code>Read
+
+operation timed out.</code>
+
+<br><br>
+<strong>Description: </strong>The time allotted to read
+
+the response to a query was exceeded.
+<br><br>
+<strong>Action: </strong>Increase the timeout period
+
+by calling <b>Statement.setQueryTimeout()</b>.
+</td>
+</tr>
+<tr><td valign=top>JZ0T4
+</td>
+<td valign=top><code>Write
+
+operation timed out. Timeout in milliseconds: _____.</code>
+
+<br><br>
+<strong>Description: </strong>The time allotted to send
+
+a request was exceeded.
+<br><br>
+<strong>Action: </strong>Increase the timeout period
+
+by calling <b>Statement.setQueryTimeout()</b>.
+</td>
+</tr>
+<tr><td valign=top>JZ0T5
+</td>
+<td valign=top><code>Cache
+
+used to store responses is full.</code>
+
+<br><br>
+<strong>Action: </strong>Use default or larger value
+
+for the STREAM_CACHE_SIZE connection property.
+</td>
+</tr>
+<tr><td valign=top>JZ0T6
+</td>
+<td valign=top><code>Error
+
+reading tunneled TDS URL.</code>
+
+<br><br>
+<strong>Description: </strong>The tunneled protocol
+
+failed while reading the URL header.
+<br><br>
+<strong>Action: </strong>Check the URL you defined for
+
+the connection.
+</td>
+</tr>
+<tr><td valign=top>JZ0T7
+</td>
+<td valign=top><code>Listener
+
+thread read error -- caught ThreadDeath. Check network connection.</code>
+
+<br><br>
+<strong>Action:</strong> Check the network connections
+
+and try to run the application again. If the threads continue to
+
+be aborted, please contact Sybase Technical Support.
+</td>
+</tr>
+<tr><td valign=top>JZ0T8
+</td>
+<td valign=top><code>Data
+
+received for an unknown request. Please report this error to Sybase
+
+Technical Support.</code>
+
+</td>
+</tr>
+<tr><td valign=top>JZ0T9
+</td>
+<td valign=top><code>Request
+
+to send not synchronized. Please report this error to Sybase Technical
+
+Support.</code>
+
+<br><br>
+<strong>Action:</strong> See message text.
+</td>
+</tr>
+<tr><td valign=top>JZ0TC
+</td>
+<td valign=top><code>Attempted
+
+conversion between an illegal pair of types.</code>
+
+<br><br>
+<strong>Description: </strong>Conversion between a Java
+
+type and a SQL type failed.
+<br><br>
+<strong>Action:</strong> Check the requested type conversion
+
+to make sure it is supported in the JDBC specification.
+</td>
+</tr>
+<tr><td valign=top>JZ0TE
+</td>
+<td valign=top><code>Attempted conversion
+
+between an illegal pair of types. Valid database types are: '_________.'</code>
+
+<br><br>
+<strong>Description:</strong> The database column datatype
+
+and the datatype requested in the<b>ResultSet.getXXX()</b> call
+
+are not implicitly convertible.
+<br><br>
+<strong>Action:</strong> Use one of the valid datatypes
+
+listed in the error message.
+</td>
+</tr>
+<tr><td valign=top>JZ0TI
+</td>
+<td valign=top><code>jConnect cannot make
+
+a meaningful conversion between the database type of _________ and
+
+the requested type of _________.</code>
+
+<br><br>
+<strong>Description:</strong> This kind of exception
+
+can occur, for example, if an application tries to call <b>ResultSet.getObject</b> (int,
+
+Types.DATE) on a time value that is returned from the database.
+<br><br>
+<strong>Action:</strong> Make sure that the database
+
+datatype is implicitly convertible to the Object type you wish to
+
+retrieve.
+</td>
+</tr>
+<tr><td valign=top>JZ0TO
+</td>
+<td valign=top><code>Read operation timed
+
+out.</code>
+
+<br><br>
+<strong>Description:</strong> This exception occurs
+
+when there is a socket read timeout.
+<br><br>
+<strong>Action: </strong>Increase the timeout period
+
+by calling Statement.setQueryTimeout(). Also, check the query or
+
+stored proc you are executing to determine why it is taking longer
+
+than expected.
+</td>
+</tr>
+<tr><td valign=top>JZ0TS
+</td>
+<td valign=top><code>Truncation error
+
+trying to send __________.</code>
+
+<br><br>
+<strong>Description:</strong> The application specified
+
+a String that was longer than the length that the application wanted
+
+to send. Therefore, the String is truncated to the declared length.
+<br><br>
+<strong>Action:</strong> Set the length properly to
+
+avoid truncation.
+</td>
+</tr>
+<tr><td valign=top>JZ0US
+</td>
+<td valign=top><code>The
+
+SybSocketFactory connection property was set, and the PROXY connection
+
+property was set to the URL of a servlet. The jConnect driver does
+
+not support this combination. If you want to send secure HTTP from
+
+an applet running within a browser, use a proxy URL beginning with "https://".</code>
+
+<br><br>
+<strong>Action:</strong> See message text.
+</td>
+</tr>
+<tr><td valign=top>JZ0XC
+</td>
+<td valign=top><code>____________ is
+
+an unrecognized transaction coordinator type.</code>
+
+<br><br>
+<strong>Description: </strong>The metadata information
+
+indicates that the server supports distributed transactions, but
+
+jConnect does not support the protocol being used.
+<br><br>
+<strong>Action:</strong> Verify that you have installed
+
+the latest metadata scripts. If the error persists, please contact
+
+Sybase Technical Support.
+</td>
+</tr>
+<tr><td valign=top>JZ0XS
+</td>
+<td valign=top><code>The server does not
+
+support XA-style transactions. Please verify that the transaction
+
+feature is enabled and licensed on this server.</code>
+
+<br><br>
+<strong>Description: </strong>The server to which jConnect
+
+attempted a connection does not support distributed transactions.
+<br><br>
+<strong>Action:</strong> Do not use <b>XADataSource</b> with
+
+this server, or upgrade or configure the server for distributed
+
+transactions.
+</td>
+</tr>
+<tr><td valign=top>JZ0XU
+</td>
+<td valign=top><code>Current user does
+
+not have permission to do XA-style transactions. Be sure user has _______ role.</code>
+
+<br><br>
+<strong>Description: </strong>The user connected to
+
+the database is not authorized to conduct distributed transactions.
+
+Most likely because they do not have the proper role (shown in the
+
+blank).
+<br><br>
+<strong>Action:</strong> Grant the user the role shown
+
+in the error message, or have another user with that role conduct
+
+the transaction.
+</td>
+</tr>
+<tr><td valign=top>S0022
+</td>
+<td valign=top><code>Invalid
+
+column name '_____'.</code>
+
+<br><br>
+<strong>Description: </strong>You attempted to reference
+
+a column by name and there is no column with that name.
+<br><br>
+<strong>Action:</strong> Check the spelling of the column
+
+name.
+</td>
+</tr>
+<tr><td valign=top>ZZ00A
+</td>
+<td valign=top><code>The
+
+method _____ has not
+
+been completed and should not be called.</code>
+
+<br><br>
+<strong>Description: </strong>You attempted to use a
+
+method that is not implemented.
+<br><br>
+<strong>Action:</strong> Check the release bulletin
+
+that came with your version of jConnect for further information.
+
+You can also check the jConnect Web page at http://www.sybase.com
+
+to see whether a more recent version of jConnect implements the
+
+method. If not, do not use the method.
+</td>
+</tr>
+</table>
+<P>&nbsp;</P><hr noshade size=1>
+<table cols=3><tr><td colspan=2 align=left>
+Copyright &copy; 2003 Sybase, Inc. All rights reserved.&nbsp;&nbsp;&nbsp;
+</td><td colspan=1>
+<A HREF="prjdbcp32.htm"><IMG SRC="images/arrow-right.gif" ALIGN=right></A>
+</td></tr></table>
+</BODY>
+</HTML>
+

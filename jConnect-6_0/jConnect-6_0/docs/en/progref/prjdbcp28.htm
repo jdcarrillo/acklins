@@ -1,0 +1,184 @@
+
+<html>
+<!-- 
+Copyright (C) 2003. Sybase Inc. All rights reserved.
+Programmer's Reference
+jConnect&#153; for JDBC&#153;
+-->
+
+<HEAD>
+<script language="JavaScript">
+<!--
+
+if (navigator.appName == "Netscape"){
+     document.write('<LINK REL=STYLESHEET HREF="netscape.css" TYPE="text/javascript">');
+     }
+else{
+     document.write('<LINK REL=STYLESHEET HREF="default.css" TYPE="text/css">');
+     }
+
+//-->
+</script>
+<NOSCRIPT><LINK REL=STYLESHEET HREF="default.css" TYPE="text/css"></NOSCRIPT>
+<TITLE>About Web server gateways</TITLE></HEAD>
+<BODY bgproperties="FIXED" bgcolor="#ffffe2">
+<P ALIGN=RIGHT><A HREF="prjdbcp27.htm"><IMG SRC="images/arrow-left.gif" align=top></A>&nbsp;&nbsp;<A HREF="prjdbcp29.htm"><IMG SRC="images/arrow-right.gif" align=top></A></P>
+
+<P ALIGN=LEFT><I>Chapter 6  Web Server  Gateways</I><HR NOSHADE SIZE=1></P>
+<A NAME="X38435"></A><h1>About Web server gateways</h1>
+<p>If your database server runs on a different host than your
+
+Web server, or if you are developing Internet applications that
+
+must connect to a secure database server through a firewall, you
+
+need a gateway to act as a proxy, providing a path to the database
+
+server.</p>
+<p>To connect to servers using the Secure Sockets Layer (SSL)
+
+protocol, jConnect provides a Java servlet that you can install
+
+on any Web server that supports the <b>javax.servlet</b> interfaces.
+
+This servlet enables jConnect to support encryption using the Web
+
+server as the gateway.</p>
+<p><IMG SRC="images/note.gif" width=17 height=17 border=0 align="bottom" alt="Note">&nbsp;&nbsp; jConnect includes support for SSL on the client system.
+
+For information on jConnect's client-side support of SSL,
+
+see <A HREF="prjdbcp8.htm">"Implementing custom socket
+
+plug-ins"</A>.</P>
+<A NAME="TI96"></A><h2>TDS tunnelling</h2>
+<p>jConnect uses TDS to communicate with database servers. HTTP-tunnelled
+
+TDS is useful for forwarding requests. Requests from a client to a
+
+back-end server that go through the gateway contain TDS in the body
+
+of the request. The request header indicates the length of the TDS
+
+included in the request packet.</p>
+<p>TDS is a connection-oriented protocol, whereas HTTP is not.
+
+To support security features such as encryption for Internet applications,
+
+jConnect uses a TDS-tunnelling servlet to maintain a logical connection
+
+across HTTP requests. The servlet generates a session ID during
+
+the initial login request, and the session ID is included in the
+
+header of every subsequent request. Using session IDs lets you identify
+
+active sessions, and even resume a session as long as the servlet
+
+has an open connection using that specific session ID.</p>
+<p>The logical connection provided by the TDS-tunnelling servlet
+
+enables jConnect to support encrypted communication between two
+
+systems--for example, a jConnect client with the CONNECT_PROTOCOL
+
+connection property set to "https" connecting
+
+to a Web server running the TDS-tunnelling servlet.</p>
+<A NAME="TI97"></A><h2>jConnect
+
+and gateway configuration</h2>
+<p>There are several options for setting up your Web servers
+
+and Adaptive Servers. Four common configurations are described below.
+
+These examples show where to install the jConnect driver and when
+
+to use a gateway with the TDS-tunnelling servlet.</p>
+<A NAME="TI98"></A><h3>Web server and Adaptive Server on one host</h3>
+<p>In this two-tier configuration, the Web server and Adaptive
+
+Server are both installed on the same host. 
+<ul>
+<li class=fi>Install jConnect on the Web server host.
+</li>
+<li class=ds>No gateway required.
+<A NAME="TI99"></A><p><b>Figure 6-1: Web server and Adaptive Server on one host</b></caption>
+<br><IMG SRC="images/onehst16.gif">
+
+
+</li>
+</ul>
+</p>
+<A NAME="TI100"></A><h3>Dedicated JDBC Web server and Adaptive Server on
+
+one host</h3>
+<p>With this configuration, you have a separate host for your
+
+main Web server. A second host is shared by a Web server specifically
+
+for Adaptive Server access and the Adaptive Server. Links from the
+
+main server direct requests requiring SQL access to the dedicated
+
+Web server. 
+<ul>
+<li class=fi>Install jConnect
+
+on the second (Adaptive Server) host.
+</li>
+<li class=ds>No gateway required.
+<A NAME="TI101"></A><p><b>Figure 6-2: Dedicated JDBC Web server and Adaptive Server on
+
+one host</b></caption>
+<br><IMG SRC="images/sephost17.gif">
+
+
+</li>
+</ul>
+</p>
+<A NAME="TI102"></A><h3>Web server and Adaptive Server on separate hosts</h3>
+<p>In this three-tier configuration, the Adaptive Server is on
+
+a separate host from the Web server. jConnect requires a gateway
+
+to act as a proxy to the Adaptive Server. 
+<ul>
+<li class=fi>Install jConnect on the Web server host.
+</li>
+<li class=ds>Requires a TDS-tunnelling servlet or a different
+
+gateway.
+<A NAME="TI103"></A><p><b>Figure 6-3: Web server and Adaptive server on separate hosts</b></caption>
+<br><IMG SRC="images/twohost18.gif">
+
+
+</li>
+</ul>
+</p>
+<A NAME="TI104"></A><h3>Connecting to a server through a firewall</h3>
+<p>To connect to a server protected by a firewall, you must use
+
+a Web server with the TDS-tunnelling servlet to support transmission
+
+of database request responses over the Internet. 
+<ul>
+<li class=fi>Install jConnect on the Web server host.
+</li>
+<li class=ds>Requires a Web server that supports the <b>javax.servlet</b> interfaces.
+<A NAME="TI105"></A><p><b>Figure 6-4: Connecting to a server through a firewall</b></caption>
+<br><IMG SRC="images/frwall19.gif">
+
+
+</li>
+</ul>
+</p>
+<P>&nbsp;</P><hr noshade size=1>
+<table cols=3><tr><td colspan=2 align=left>
+Copyright &copy; 2003 Sybase, Inc. All rights reserved.&nbsp;&nbsp;&nbsp;
+</td><td colspan=1>
+<A HREF="prjdbcp29.htm"><IMG SRC="images/arrow-right.gif" ALIGN=right></A>
+</td></tr></table>
+</BODY>
+</HTML>
+

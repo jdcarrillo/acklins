@@ -1,0 +1,148 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+<title>Untitled Document</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+</head>   
+<BODY bgcolor="#FFFFFF">
+<blockquote>
+<div align="left"></div>
+<table width="75%" border="0">
+  <tr> 
+    <td> 
+      <div align="left"><font  size="2"><a href="toc.html"><b>Table of Contents</b></a></font></div>
+    </td>
+    <td> 
+      <div align="left"><font  size="2"><a href="overview.html"><b>Overview</b></a></font></div>
+    </td>
+    <td bgcolor="#FFFFFF"> 
+      <div align="left"><font  size="2"><b><a href="menu.html">Menus</a></b></font></div>
+    </td>
+    <td> 
+      <div align="left"><font  size="2"><b><a href="windows.html">Windows</a></b></font></div>
+    </td>
+    <td bgcolor="#FFFFFF"> 
+      <div align="left"><font  size="2"><b><a href="button.html">Buttons</a></b></font></div>
+    </td>
+  </tr>
+</table>
+<hr>
+<h2><font  color="#000099">Database Options</font></h2>
+  <p><font  size="2">These options offer a 
+    convenient way to set frequently used parameters. See the Transact-SQL manuals 
+    for details on the use and functions of these settings. These values are not 
+    updated when they change in the database. </font></p>
+  <table width="85%" border="1" cellspacing="0" cellpadding="5" height="80">
+    <tr> 
+      <td valign="top" width="12%" height="60"><b><i><font color="#660000"  size="2">NOTE</font><font color="#660000">:</font></i></b></td>
+      <td valign="top" width="88%" height="60"><font  size="2">The 
+        <font color="#000099"> <b>On</b></font>|<font color="#000099"><b>Off</b></font> 
+        buttons for options will be unmarked after you click <font color="#000099"><b>Apply</b></font> 
+        and the command is sent to the database because <b>jisql</b> can not be 
+        certain of the current state of these options. For example, you click 
+        <font color="#000099"><b>On</b></font> for &quot;Use Chained Transactions,&quot; 
+        click <b><font color="#000099">Apply</font></b>, then execute the same 
+        statement in the Input Window, <b>jisql</b> does not get notified that 
+        the option's value has changed. </font></td>
+    </tr>
+  </table>
+  <p><font  size="2">Click <b>Apply</b> to 
+    save your changes.<br>
+    </font></p>
+  <table width="95%" border="1" cellpadding="5" cellspacing="0" bordercolor="#999999" bordercolorlight="#999999">
+    <tr> 
+    <td width="50%" valign="top" bordercolor="#999999"><b><font  size="2">OPTION</font></b></td>
+    <td width="50%"><b><font  size="2">DESCRIPTION</font></b></td>
+  </tr>
+  <tr> 
+    <td width="50%" valign="top"><b><font  size="2">Maximal 
+      Number of Rows to return (rowcount)</font></b></td>
+    <td width="50%"><font  size="2">Causes 
+      the query (<b>select</b>, <b>insert</b>, <b>update</b>, or <b>delete</b>) 
+      to stop processing after the specified number of rows are affected. To turn 
+      this option off, enter 0 (zero).</font></td>
+  </tr>
+  <tr> 
+    <td width="50%" valign="top"><b><font  size="2">Limit 
+      of <i>Text </i>or <i>Image</i> size to return (textsize)</font></b></td>
+    <td width="50%"> 
+      <p><font  size="2">Specifies the limit, 
+        in bytes, of the <i>text</i> or <i>image</i> data to be returned with 
+        a <b>select</b> statement.</font></p>
+    </td>
+  </tr>
+  <tr> 
+    <td width="50%" valign="top"><b><font  size="2">Set 
+      the transaction isolation level (0 - 3)</font></b></td>
+    <td width="50%">
+      <p><font size="2" >Specifies the degree 
+        to which data can be accessed by other users during a transaction.</font></p>
+      <p><font  size="2"><b>0</b> - Other transactions 
+        are blocked from modifying the data until the transaction commits. However, 
+        other transactions can still read the uncommitted data.</font></p>
+      <p><font  size="2"><b>1</b> - Prevents 
+        one transaction modifying a row while a second transaction reads the row 
+        before the first transaction commits the change.</font></p>
+      <p><font  size="2"><b>2</b> - Prevents 
+        one transaction from reading a row while a second transaction modifies 
+        the same row.</font></p>
+      <p><font  size="2"><b>3</b> - Prevents 
+        one transaction from reading a set of rows that satisfy a query, while 
+        a second transaction modifies the data. This ensures that data read by 
+        one transaction is valid until the end of that transaction.</font></p>
+    </td>
+  </tr>
+  <tr> 
+    <td width="50%" valign="top"><b><font  size="2">Show 
+      number of rows affected</font></b></td>
+      <td width="50%"><font  size="2">Turns 
+        the display on or off of rows affected by an <b>insert</b>, <b>update</b>, 
+        or <b>delete</b> statement. The default is &quot;Off.&quot;</font></td>
+  </tr>
+  <tr> 
+    <td width="50%" valign="top"><b><font  size="2">Use 
+      Chained Transactions (chained)</font></b></td>
+    <td width="50%"><font size="2" >In chained 
+      mode, all data retrieval and modification commands (<b>delete</b>, <b>insert</b>, 
+      <b>open</b>, <b>fetch</b>, <b>select</b>, and <b>update</b>) begin a transaction. 
+      This behavior is incompatible with many T-SQL applications. The default 
+      is &quot;Off.&quot;</font></td>
+  </tr>
+  <tr> 
+    <td width="50%" valign="top"><b><font  size="2">Recognize 
+      delimited identifiers (quoted_identifier) </font></b></td>
+    <td width="50%"><font  size="2">This option 
+      allows the database to recognize delimited identifiers. Each time you use 
+      the quoted identifier in a statement, you must enclose it in double quotes. 
+      When this option is set to &quot;On,&quot; do not use double quotes around 
+      character or date strings; use single quotes instead. To insert a single 
+      quote into a column, use two consecutive single quotation marks. The default 
+      is &quot;Off.&quot; </font></td>
+  </tr>
+</table>
+<p><font  size="2">For more information, see 
+  the <i>Transact-SQL User's Guide</i>.</font></p>
+  <div align="left">
+    <table width="75%" border="0">
+      <tr> 
+        <td> 
+          <div align="left"><font  size="2"><a href="toc.html"><b>Table of Contents</b></a></font></div>
+        </td>
+        <td> 
+          <div align="left"><font  size="2"><a href="overview.html"><b>Overview</b></a></font></div>
+        </td>
+        <td bgcolor="#FFFFFF"> 
+          <div align="left"><font  size="2"><b><a href="menu.html">Menus</a></b></font></div>
+        </td>
+        <td> 
+          <div align="left"><font  size="2"><b><a href="windows.html">Windows</a></b></font></div>
+        </td>
+        <td bgcolor="#FFFFFF"> 
+          <div align="left"><font  size="2"><b><a href="button.html">Buttons</a></b></font></div>
+        </td>
+      </tr>
+    </table>
+  </div>
+</blockquote>
+</BODY>
+</HTML>

@@ -1,0 +1,55 @@
+#! /bin/sh
+if [ "$JAVA_HOME" = "" ] 
+then
+    echo "Please specify JAVA_HOME"
+    exit
+else
+    java="$JAVA_HOME/bin/java"
+fi
+# check if jisql is already in the classpath
+classpath=${CLASSPATH} 
+jisql=`echo ${CLASSPATH} | grep jisql.jar`
+if [ "$jisql" = "" ]
+then
+    # not in; find it
+    if [ -f "./jisql.jar" ]
+    then
+        classpath=./jisql.jar:$classpath
+    else
+        echo "jisql.jar not found. Please add it to your classpath"
+        exit
+    fi
+fi 
+version=`java -classpath $classpath:${CLASSPATH} com.sybase.jisql.util.CheckEnvironment swing -v | grep not` 
+if [ "$version:" != ":" ]
+    # JDKs 1.2 and higher have swing built in so don't add it
+then
+    # check if swing is already in the classpath
+    swing=`echo ${CLASSPATH} | grep swingall.jar`
+    if [ "$swing:" = ":" ]
+    then
+        # not in; look at SWING_HOME
+        if [ "$SWING_HOME:" = ":" ]
+        then
+            if [ -f "./swingall.jar" ]
+            then
+	        classpath=./swingall.jar:$classpath
+	    else
+	        echo "swingall.jar not found. Please add it to your classpath or set SWING_HOME"
+	        exit
+            fi
+        else
+            classpath=${SWING_HOME}/swingall.jar:$classpath
+        fi
+    fi
+fi
+
+os=`uname -s`
+options=""
+if [ "$os" = "Linux" ]
+then 
+#Blackdown's jvm has minimum memory size which is way too small
+    options="-mx32000000 -ms32000000"
+fi
+$java $options -classpath $classpath:${CLASSPATH} com.sybase.jisql.Jisql "$@"
+

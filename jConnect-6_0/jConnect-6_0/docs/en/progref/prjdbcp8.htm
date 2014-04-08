@@ -1,0 +1,303 @@
+
+<html>
+<!-- 
+Copyright (C) 2003. Sybase Inc. All rights reserved.
+Programmer's Reference
+jConnect&#153; for JDBC&#153;
+-->
+
+<HEAD>
+<script language="JavaScript">
+<!--
+
+if (navigator.appName == "Netscape"){
+     document.write('<LINK REL=STYLESHEET HREF="netscape.css" TYPE="text/javascript">');
+     }
+else{
+     document.write('<LINK REL=STYLESHEET HREF="default.css" TYPE="text/css">');
+     }
+
+//-->
+</script>
+<NOSCRIPT><LINK REL=STYLESHEET HREF="default.css" TYPE="text/css"></NOSCRIPT>
+<TITLE>Implementing custom socket  plug-ins</TITLE></HEAD>
+<BODY bgproperties="FIXED" bgcolor="#ffffe2">
+<P ALIGN=RIGHT><A HREF="prjdbcp7.htm"><IMG SRC="images/arrow-left.gif" align=top></A>&nbsp;&nbsp;<A HREF="prjdbcp9.htm"><IMG SRC="images/arrow-right.gif" align=top></A></P>
+
+<P ALIGN=LEFT><I>Chapter 2  Programming  Information</I><HR NOSHADE SIZE=1></P>
+<A NAME="X11145"></A><h1>Implementing custom socket  plug-ins</h1>
+<p>This section discusses how to plug a custom socket implementation
+
+into an application to customize the communication between a client
+
+and server. <b>javax.net.ssl.SSLSocket</b> is an example
+
+of a socket that you could customize to enable encryption.</p>
+<p><b>com.sybase.jdbcx.SybSocketFactory</b> is a
+
+Sybase extension interface that contains the <b>createSocket(String,
+
+int, Properties)</b> method that returns a <b>java.net.Socket</b>.For
+
+a jConnect version 4.1 or later driver to load a custom socket,
+
+an application must: 
+<ul>
+<li class=fi>Implement
+
+this interface
+</li>
+<li class=ds>Define the <b>createSocket(..)</b> method
+
+</li>
+</ul>
+</p>
+<p>jConnect uses the new socket for its subsequent input/output
+
+operations. Classes that implement <b>SybSocketFactory</b> create
+
+sockets and provide a general framework for the addition of public
+
+socket-level functionality. 
+<pre>/**
+ * Returns  a socket connected to a ServerSocket on the named host,
+ * at  the given port.
+ * @param host  the server  host
+ * @param port  the server port
+ * @param  props  Properties passed in through the connection
+ * @returns  Socket
+ * @exception IOException, UnknownHostException
+ */
+ public  java.net.Socket createSocket(String host, int port, Properties props) throws  IOException, UnknownHostException;</pre>
+</p>
+<p>Passing in properties allows instances of <b>SybSocketFactory</b> to
+
+use connection properties to implement an intelligent socket.</p>
+<p>When you implement <b>SybSocketFactory</b> to
+
+produce a socket, the same application code can use different kinds
+
+of sockets by passing the different kinds of factories or pseudo-factories
+
+that create sockets to the application. You can customize factories
+
+with parameters used in socket construction. For example, you could
+
+customize factories to return sockets with different networking
+
+time outs or security parameters already configured. The sockets returned
+
+to the application can be subclasses of <b>java.net.Socket</b> to
+
+directly expose new APIs for features such as compression, security,
+
+record marking, statistics collection, or firewall tunnelling (<b>javax.net.SocketFactory</b>).</p>
+<p><IMG SRC="images/note.gif" width=17 height=17 border=0 align="bottom" alt="Note">&nbsp;&nbsp; <b>SybSocketFactory</b> is intended to be
+
+an overly simplified <b>javax.net.SocketFactory</b>,
+
+enabling applications to bridge from <b>java.net.*</b> to <b>javax.net.*</b> if
+
+desired.</P>
+<p>To use a custom socket with jConnect: 
+<ol>
+<li class=fi>Provide a Java class that implements <b>com.sybase.jdbcx.SybSocketFactory</b>. See <A HREF="prjdbcp8.htm#X32974">"Creating and configuring a
+
+custom socket"</A>.
+</li>
+<li class=ds>Set the SYBSOCKET_FACTORY connection property
+
+so that jConnect can use your implementation to obtain a socket.
+
+</li>
+</ol>
+</p>
+<A NAME="X14197"></A><h2>SYBSOCKET_FACTORY  connection property</h2>
+<p>To use a custom socket with jConnect, set the SYBSOCKET_FACTORY connection
+
+property to a string that is either: 
+<ul>
+<li class=fi>The name of a class that implements <b>com.sybase.jdbcx.SybSocketFactory</b>
+<br><br>
+or
+</li>
+<li class=ds>DEFAULT, which instantiates a new <b>java.net.Socket(
+
+)</b>
+
+</li>
+</ul>
+</p>
+<p>See <A HREF="prjdbcp7.htm#X40297">"Setting connection properties"</A> for
+
+instructions on how to set SYBSOCKET_FACTORY.</p>
+<A NAME="X32974"></A><h2>Creating and configuring a  custom socket</h2>
+<p>Once jConnect obtains a custom socket, it uses the socket
+
+to connect to a server. Any configuration of the socket must be
+
+completed before jConnect obtains it.</p>
+<p>This section explains how to plug in an SSL socket implementation,
+
+such as <b>javax.net.ssl.SSLSocket</b>, with jConnect.</p>
+<p><IMG SRC="images/note.gif" width=17 height=17 border=0 align="bottom" alt="Note">&nbsp;&nbsp; Currently, only Adaptive Server version 12.5 and later
+
+supports SSL.</P>
+<p>The following example shows how an implementation of SSL can
+
+create an instance of <b>SSLSocket</b>, configure it,
+
+and then return it. In the example, the <b>MySSLSocketFactory</b> class
+
+implements <b>SybSocketFactory</b> and extends <b>javax.net.ssl.SSLSocketFactory</b> to
+
+implement SSL. It contains two <b>createSocket</b> methods--one
+
+for <b>SSLSocketFactory</b> and one for <b>SybSocketFactory</b>--that: 
+<ul>
+<li class=fi>Create an SSL socket
+</li>
+<li class=ds>Invoke <b>SSLSocket.setEnableCipherSuites(
+
+)</b> to specify the cipher suites available for encryption
+</li>
+<li class=ds>Return the socket to be used by jConnect
+
+</li>
+</ul>
+</p>
+<A NAME="TI18"></A><h3>Example</h3>
+<p>
+<pre>public class MySSLSocketFactory extends  SSLSocketFactory
+   implements SybSocketFactory
+ {
+ /**
+ * Create  a socket, set the cipher suites it can use, return 
+ * the  socket.
+ * Demonstrates how cither suites could  be hard-coded into the
+ * implementation.
+ *
+ * See  javax.net.SSLSocketFactory#createSocket
+ */</pre>
+
+<pre>public Socket createSocket(String host, int port)
+   throws  IOException, UnknownHostException
+ {
+   // Prepare  an array containing the cipher suites that are to 
+   // be  enabled.
+   String enableThese[] =
+   {
+       "SSL_DH_DSS_EXPORT_WITH_DES40_CBC_SHA",
+       "SSL_RSA_EXPORT_WITH_RC2_CBC_40_MD5",
+       "SSL_DH_RSA_EXPORT_WITH_DES40_CBC_SHA"
+   }
+   ;
+   Socket  s =
+       SSLSocketFactory.getDefault().createSocket(host,  port);
+   ((SSLSocket)s).setEnabledCipherSuites(enableThese);
+   return  s;
+ }</pre>
+
+<pre>/**
+ * Return  an SSLSocket.
+ * Demonstrates how to set cipher  suites based on connection
+ * properties like:
+ * Properties _props = new  Properties();
+ * Set other url, password, etc.  properties.
+ * _props.put(("CIPHER_SUITES_1",
+ *    "SSL_DH_DSS_EXPORT_WITH_DES40_CBC_SHA");
+ * _props.put("CIPHER_SUITES_2",
+ *    "SSL_RSA_EXPORT_WITH_RC2_CBC_40_MD5");
+ * _props.put("CIPHER_SUITES_3",
+ *     "SSL_DH_RSA_EXPORT_WITH_DES40_CBC_SHA");
+ * _conn = _driver.getConnection(url, _props);
+ *
+ * See  com.sybase.jdbcx.SybSocketFactory#createSocket
+ */</pre>
+
+<pre>public Socket createSocket(String host, int port, 
+   Properties  props)
+   throws IOException, UnknownHostException
+ {
+   // check  to see if cipher suites are set in the connection
+   // properites
+   Vector  cipherSuites = new Vector();
+   String  cipherSuiteVal = null;
+   int  cipherIndex = 1;
+   do
+   {
+       if((cipherSuiteVal = props.getProperty("CIPHER_SUITES_"
+           + cipherIndex++)) == null)
+       {
+           if(cipherIndex &lt;= 2)
+           {
+               // No  cipher suites available
+               // return  what the object considers its default
+               // SSLSocket,  with cipher suites enabled.
+               return  createSocket(host, port);
+           }
+           else
+           {
+               // we  have at least one cipher suite to enable
+               // per  request on the connection
+               break;
+           }
+           else
+           }
+               // add  to the cipher suit Vector, so that
+               // we  may enable them together
+               cipherSuites.addElement(cipherSuiteVal);
+           }
+       }
+       while(true);</pre>
+
+<pre>      // lets  you create a String[] out of the created vector
+       String  enableThese[] = new String[cipherSuites.size()];
+       cipherSuites.copyInto(enableThese);</pre>
+
+<pre>      // enable  the cipher suites
+       Socket  s =
+           SSLSocketFactory.getDefault().createSocket
+             (host,  port);
+       ((SSLSocket)s).setEnabledCipherSuites(enableThese);</pre>
+
+<pre>      // return  the SSLSocket
+       return  s;
+   }</pre>
+
+<pre>  // other  methods
+ }</pre>
+</p>
+<p>Since jConnect requires no information about the kind of socket
+
+it is, you must complete any configuration before you return a socket.</p>
+<p>For additional information, see: 
+<ul>
+<li class=fi><i>Encrypt.java</i> - located in
+
+the <i>sample2</i> (jConnect 5.x) subdirectories of your
+
+jConnect directory, this sample shows you how to use the <b>SybSocketFactory</b> interface
+
+with jConnect applications.
+</li>
+<li class=ds><i>MySSLSocketFactory.java</i> - also located
+
+in the <i>sample2</i> (jConnect 5.x) subdirectories<i> </i>of
+
+your jConnect directory, this is a sample implementation of the <b>SybSocketFactory </b>interface
+
+that you can plug in to your application and use.
+
+</li>
+</ul>
+</p>
+<P>&nbsp;</P><hr noshade size=1>
+<table cols=3><tr><td colspan=2 align=left>
+Copyright &copy; 2003 Sybase, Inc. All rights reserved.&nbsp;&nbsp;&nbsp;
+</td><td colspan=1>
+<A HREF="prjdbcp9.htm"><IMG SRC="images/arrow-right.gif" ALIGN=right></A>
+</td></tr></table>
+</BODY>
+</HTML>
+

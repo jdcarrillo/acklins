@@ -1,0 +1,79 @@
+<HTML>
+<BODY bgcolor="#FFFFFF">
+<BLOCKQUOTE>
+  <table width="75%" border="0">
+    <tr> 
+      <td> <font face="Default" size="2"><a href="toc.html"><b>&Iacute;ndice</b></a></font> 
+      </td>
+      <td> <font face="Default" size="2"><a href="overview.html"><b>Vis&atilde;o 
+        Geral</b></a></font> </td>
+      <td bgcolor="#FFFFFF"> <font face="Default" size="2"><b><a href="menu.html">Menus</a></b></font> 
+      </td>
+      <td> <font face="Default" size="2"><b><a href="windows.html">Janelas</a></b></font> 
+      </td>
+      <td> <font face="Default" size="2"><b><a href="button.html">Bot&otilde;es</a></b></font> 
+      </td>
+    </tr>
+  </table>
+<hr>
+  <h2><font face="Default" color="#000099">Colunas de Imagens</font></h2>
+  <p><font face="Default" size="2">Se voc&ecirc; selecionar dados que cont&ecirc;m 
+    uma coluna de imagens e o ResultSet for apresentado numa tabela e n&atilde;o 
+    como texto (<A
+HREF="table.html">Sa&iacute;da em formato tabela ou em formato texto</A>), a coluna de imagens n&atilde;o 
+    mostrar&aacute; os dados bin&aacute;rios. Em vez disso, a tabela ser&aacute; 
+    denominada &quot;Clique em mim - Sou uma imagem.&quot; </font></p>
+  <p><font face="Default" size="2">Clicar na c&eacute;lula abre uma nova janela 
+    com quatro op&ccedil;&otilde;es: </font> </p>
+  <ul>
+    <li> <font face="Default" size="2"><b>Mostrar dados de imagem como uma figura</b> 
+      - Se os dados de imagem representarem uma figura em formato gif ou jpg, 
+      a imagem ser&aacute; exibida numa janela de imagem. </font> 
+    <li> <font face="Default" size="2"><b>Mostrar dados de imagem como dados hexadecimais</b> 
+      - Isto abre uma janela que mostra os dados em formato hexadecimal; esta 
+      &eacute; a maneira como seriam exibidos no <b>isql</b>. </font> 
+    <li> <font face="Default" size="2"><b>Salvar dados de imagem num Arquivo </b> 
+      - Os dados ser&atilde;o salvos num arquivo para uso posterior. Isto &eacute; 
+      &uacute;til, por exemplo, no caso de um arquivo de som ou de um fluxo de 
+      v&iacute;deo que voc&ecirc; queira visualizar com algum outro programa. 
+      </font> 
+    <li> <font face="Default" size="2"><b>N&atilde;o fazer nada</b> - Fecha novamente 
+      a janela de op&ccedil;&otilde;es. </font> 
+  </ul>
+  <h2><font color="#000099">Colunas de Objetos</font></h2>
+  <p><font size="2" face="Default">Se um ResultSet contiver uma ou mais colunas 
+    com objetos Java, aparece um texto na tabela do ResultSet dizendo '&quot;Clique 
+    em mim- Sou um Objeto.&quot; Quando voc&ecirc; faz isso, o <b>jisql</b> executa 
+    o m&eacute;todo <b>toString()</b> definido nesse objeto e apresenta os valores 
+    que o m&eacute;todo retorna como dados na tabela. Se os objetos usarem um 
+    m&eacute;todo que n&atilde;o seja o <b> toString()</b> para imprimir seus 
+    dados, digite esse nome na guia <a href="outputoptions.html">Op&ccedil;&otilde;es 
+    de Janela de Sa&iacute;da</a> da Janela Op&ccedil;&atilde;o; ou seja, </font><font size="2" face="Default">mude 
+    o &quot;Método usado no objeto DB para exibir dados&quot; para o nome 
+    do m&eacute;todo usado. </font></p>
+  <p><font size="2" face="Default"> Se a op&ccedil;&atilde;o &quot;Extrair automaticamente os dados do Objeto Java DB&quot; estiver ativada, o <b>jisql</b> extrai os 
+    dados imediatamente quando detetar objetos Java no ResultSet. Voc&ecirc; n&atilde;o 
+    v&ecirc; a mensagem &quot;Clique em mim&quot; e n&atilde;o tem de clicar para 
+    receber os dados. Isso desacelera a cria&ccedil;&atilde;o da tabela ResultSet, 
+    pois o <b>jisql</b> tem de fazer uma viagem de ida e volta at&eacute; a base 
+    de dados para cada linha, a fim de executar o m&eacute;todo <b>toString()</b> 
+    (ou equivalente) com o objeto.</font> </p>
+  <hr>
+  <table width="75%" border="0">
+    <tr> 
+      <td> <font face="Default" size="2"><a href="toc.html"><b>&Iacute;ndice</b></a></font> 
+      </td>
+      <td> <font face="Default" size="2"><a href="overview.html"><b>Vis&atilde;o 
+        Geral</b></a></font> </td>
+      <td bgcolor="#FFFFFF"> <font face="Default" size="2"><b><a href="menu.html">Menus</a></b></font> 
+      </td>
+      <td> <font face="Default" size="2"><b><a href="windows.html">Janelas</a></b></font> 
+      </td>
+      <td> <font face="Default" size="2"><b><a href="button.html">Bot&otilde;es</a></b></font> 
+      </td>
+    </tr>
+  </table>
+</BLOCKQUOTE>
+</BODY>
+</HTML>
+

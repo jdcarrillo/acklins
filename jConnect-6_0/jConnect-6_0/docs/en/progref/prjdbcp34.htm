@@ -1,0 +1,182 @@
+
+<html>
+<!-- 
+Copyright (C) 2003. Sybase Inc. All rights reserved.
+Programmer's Reference
+jConnect&#153; for JDBC&#153;
+-->
+
+<HEAD>
+<script language="JavaScript">
+<!--
+
+if (navigator.appName == "Netscape"){
+     document.write('<LINK REL=STYLESHEET HREF="netscape.css" TYPE="text/javascript">');
+     }
+else{
+     document.write('<LINK REL=STYLESHEET HREF="default.css" TYPE="text/css">');
+     }
+
+//-->
+</script>
+<NOSCRIPT><LINK REL=STYLESHEET HREF="default.css" TYPE="text/css"></NOSCRIPT>
+<TITLE>Running  jConnect sample programs and code</TITLE></HEAD>
+<BODY bgproperties="FIXED" bgcolor="#ffffe2">
+<P ALIGN=RIGHT><A HREF="prjdbcp33.htm"><IMG SRC="images/arrow-left.gif" align=top></A>&nbsp;&nbsp;&nbsp;</P>
+
+<P ALIGN=LEFT><I>Appendix B  jConnect  Sample Programs</I><HR NOSHADE SIZE=1></P>
+<A NAME="X39532"></A><h1>Running  jConnect sample programs and code</h1>
+<p>jConnect includes several sample programs that illustrate many
+
+of the topics covered in this chapter, and to help you understand
+
+how jConnect works with various JDBC classes and methods. In addition,
+
+this section includes a sample code fragment for your reference.</p>
+<A NAME="TI118"></A><h2>Sample applications </h2>
+<p>When you install jConnect, you can also the install sample
+
+programs. These samples include the source code so that you can
+
+review how jConnect implements various JDBC classes and methods.
+
+See the <i>jConnect for JDBC Installation Guide</i> for
+
+complete instructions for installing the sample programs.</p>
+<p><IMG SRC="images/note.gif" width=17 height=17 border=0 align="bottom" alt="Note">&nbsp;&nbsp; The jConnect sample programs are intended for demonstration
+
+purposes only.</P>
+<p>The sample programs are installed in the <i>sample2</i> subdirectory under
+
+your jConnect installation directory. The file <i>index.html</i> in
+
+the <i>sample2</i> subdirectory contains a complete
+
+list of the samples that are available along with a description
+
+of each sample. <i>index.html</i> also lets you view
+
+and run the sample programs as applets.</p>
+<A NAME="TI119"></A><h3>Running the sample applets</h3>
+<p>Using your Web browser, you can run some of the sample programs
+
+as applets. This enables you to view the source code while viewing
+
+the output results.</p>
+<p>To run the samples as applets, you need to start the Web server
+
+gateway.</p>
+<p>Use your Web browser to open <i>index.html</i>:</p>
+<p>Enter:</p>
+<p><i>http://localhost:8000/sample2/index.html</i></p>
+<A NAME="TI120"></A><h3>Running the sample programs with Adaptive Server
+
+Anywhere</h3>
+<p>All of the sample programs are compatible with Adaptive Server,
+
+but only a limited number are compatible with Adaptive Server Anywhere.
+
+Refer to <i>index.html</i> in the <i>sample2</i> subdirectory
+
+for a current list of the sample programs that are compatible with
+
+Adaptive Server Anywhere.</p>
+<p>To run the sample programs that are available for Adaptive
+
+Server Anywhere, you must install the <i>pubs2_any.sql</i> script
+
+on your Adaptive Server Anywhere server. This script is located
+
+in the<i> sample2</i> subdirectory.</p>
+<p>For Windows, go to DOS command window and enter: 
+<pre>java IsqlApp -U dba -P <i>password</i> 
+ -S  jdbc:sybase:Tds:[<i>hostname</i>]:[<i>port</i>] 
+ -I %JDBC_HOME%\sample2\pubs2_any.sql  -c go</pre>
+</p>
+<p>For UNIX, enter: 
+<pre>java IsqlApp -U  dba -P <i>password</i> 
+ -S jdbc:sybase:Tds:[<i>hostname</i>]:[<i>port</i>] 
+ -I $JDBC_HOME/sample2/pubs2_any.sql  -c go</pre>
+</p>
+<A NAME="TI121"></A><h2>Sample code</h2>
+<p>The following sample code illustrates how to invoke the jConnect
+
+driver, make a connection, issue a SQL statement, and process results. 
+<pre>import java.io.*;
+ import java.sql.*;
+  
+    public class SampleCode
+   {
+        public static void main(String args[])
+        {
+           try
+           {
+            /*
+            * Open  the connection. May throw a SQLException.
+            */
+               DriverManager.registerDriver(</pre>
+
+<pre>              (Driver) Class.forName(</pre>
+
+<pre>               "com.sybase.jdbc2.jdbc.SybDriver").newInstance());</pre>
+
+<pre></pre>
+
+<pre>                Connection con = DriverManager.getConnection(
+                   "jdbc:sybase:Tds:myserver:3767", "sa", "");
+            /*
+            * Create  a statement object, the container for the SQL
+             * statement. May throw a SQLException.
+             */
+              Statement stmt = con.createStatement();
+            /*
+            * Create  a result set object by executing the query.
+             * May throw a SQLException.
+            */
+               ResultSet rs = stmt.executeQuery("Select 1");
+            /*
+            * Process  the result set.
+            */
+ 
+               if (rs.next())
+              {
+                  int value = rs.getInt(1);
+                  System.out.println("Fetched value " + value);
+               }</pre>
+
+<pre>            rs.close()</pre>
+
+<pre>            stmt.close()</pre>
+
+<pre>            con.close()
+           }//end try
+      /*
+        * Exception handling.
+       */
+           catch (SQLException sqe)
+          {
+               System.out.println("Unexpected exception : " +
+                           sqe.toString() + ", sqlstate = " +
+                               sqe.getSQLState());
+               System.exit(1);
+          }//end  catch</pre>
+    
+<pre>          catch (Exception e)
+           {
+              e.printStackTrace();</pre>
+
+<pre>              System.exit(1);
+           }//end catch
+
+           System.exit(0);
+      }
+  }</pre>
+</p>
+<P>&nbsp;</P><hr noshade size=1>
+<table cols=3><tr><td colspan=2 align=left>
+Copyright &copy; 2003 Sybase, Inc. All rights reserved.&nbsp;&nbsp;&nbsp;
+</td><td colspan=1 align=right>
+&nbsp;
+</td></tr></table>
+</BODY>
+</HTML>

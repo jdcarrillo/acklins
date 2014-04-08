@@ -1,0 +1,1421 @@
+
+<html>
+<!-- 
+Copyright (C) 2003. Sybase Inc. All rights reserved.
+Programmer's Reference
+jConnect&#153; for JDBC&#153;
+-->
+
+<HEAD>
+<script language="JavaScript">
+<!--
+
+if (navigator.appName == "Netscape"){
+     document.write('<LINK REL=STYLESHEET HREF="netscape.css" TYPE="text/javascript">');
+     }
+else{
+     document.write('<LINK REL=STYLESHEET HREF="default.css" TYPE="text/css">');
+     }
+
+//-->
+</script>
+<NOSCRIPT><LINK REL=STYLESHEET HREF="default.css" TYPE="text/css"></NOSCRIPT>
+<TITLE>Establishing a connection</TITLE></HEAD>
+<BODY bgproperties="FIXED" bgcolor="#ffffe2">
+<P ALIGN=RIGHT><A HREF="prjdbcp6.htm"><IMG SRC="images/arrow-left.gif" align=top></A>&nbsp;&nbsp;<A HREF="prjdbcp8.htm"><IMG SRC="images/arrow-right.gif" align=top></A></P>
+
+<P ALIGN=LEFT><I>Chapter 2  Programming  Information</I><HR NOSHADE SIZE=1></P>
+<A NAME="X39384"></A><h1>Establishing a connection</h1>
+<p>This section describes how to establish a connection to an
+
+Adaptive Server or Adaptive Server Anywhere database using jConnect.</p>
+<A NAME="X40297"></A><h2>Setting connection properties</h2>
+<p><A HREF="prjdbcp7.htm#X39944">Table 2-2</A> lists
+
+the connection properties for jConnect and indicates their default
+
+values. <i>You must set the connection properties before
+
+you make a connection.</i>
+</p>
+<p>There are two ways to set the driver connection properties: 
+<ul>
+<li class=fi>Use the <b>DriverManager.getConnection(
+
+) </b>method in your application.
+</li>
+<li class=ds>When you define the URL.
+
+</li>
+</ul>
+</p>
+<p><IMG SRC="images/note.gif" width=17 height=17 border=0 align="bottom" alt="Note">&nbsp;&nbsp; Driver connection properties set in the URL do not override
+
+any corresponding connection properties set in the application using
+
+the <b>DriverManager.getConnection( ) </b>method.</P>
+<p>To
+
+obtain a current list of properties for any driver, use the <b>Driver.getDriverPropertyInfo(String
+
+url, Properties props), </b>which<b> </b>returns
+
+an array of <b>DriverPropertyInfo</b> objects. The array
+
+lists: 
+<ul>
+<li class=fi>Driver properties
+</li>
+<li class=ds>Current settings on which the driver properties
+
+are based
+</li>
+<li class=ds>The URL and <b>props</b> passed in
+
+</li>
+</ul>
+</p>
+<p>Driver connection property names are not case-sensitive (jConnect
+
+uses the <b>String.equalsIgnoreCase(String)</b> method
+
+to compare property names).</p>
+<A NAME="X39944"></A><table cellspacing=0 cellpadding=6 border=1 frame="void" rules="all"><caption>Table 2-2: Connection properties</caption>
+<tr><th align="left" valign=bottom>Property
+</th>
+<th align="left" valign=bottom>Description
+</th>
+<th align="left" valign=bottom>Default value
+</th>
+</tr>
+<tr><td valign=top>APPLICATIONNAME
+</td>
+<td valign=top>A user-defined
+
+property. The server side can be programmed to interpret the value
+
+given to this property.
+</td>
+<td valign=top>Null
+</td>
+</tr>
+<tr><td valign=top>BE_AS_JDBC_COMPLIANT_<br>AS_POSSIBLE (only
+
+for jConnect version 5.5 or later)
+</td>
+<td valign=top>Adjusts other properties
+
+to ensure that jConnect methods respond in a way that is as compliant
+
+as possible with the JDBC 2.1 standard.
+<br><br>
+These properties are affected (and overridden) when this property
+
+is set to <i>true</i>:
+<br><br>
+
+<ul>
+<li class=fi>CANCEL_ALL (set to <i>false</i>)
+</li>
+<li class=ds>LANGUAGE CURSOR (set to <i>true</i> for jConnect
+
+4.x, set to <i>false</i> for jConnect 5.x)
+</li>
+<li class=ds>SELECT_OPENS_CURSOR (set to <i>true</i>)
+</li>
+<li class=ds>FAKE_METADATA (set to <i>true</i>)
+</li>
+<li class=ds>GET_BY_NAME_USES_COLUMN_LABEL (set
+
+to <i>false</i>)
+
+</li>
+</ul>
+
+</td>
+<td valign=top>False
+</td>
+</tr>
+<tr><td valign=top>CANCEL_ALL
+</td>
+<td valign=top>Determines
+
+the behavior of the <b>Statement.cancel( )</b> method.
+
+See <A HREF="prjdbcp6.htm#X22271">"CANCEL_ALL connection property"</A>.
+</td>
+<td valign=top>Depends on version setting
+
+(see <A HREF="prjdbcp6.htm#X15095">"Setting the jConnect version"</A>.
+</td>
+</tr>
+<tr><td valign=top>CHARSET
+</td>
+<td valign=top>Specifies
+
+the character set for strings passed to the database. If the CHARSET
+
+value is null, jConnect will use the server's default character set
+
+to send string data to the server. If you specify a CHARSET, the
+
+database must be able to handle characters in that format. If the
+
+database cannot do so, a message will be generated indicating that
+
+character conversion cannot be properly completed. Note that when
+
+using jConnect 5.5 with unichar enabled, jConnect will detect when
+
+a client is trying to send characters to the server that cannot
+
+be represented in the character set that is being used for the Connection.
+
+When that occurs, jConnect will send the character data to the server
+
+as unichar data; this allows clients to insert unicode data into
+
+unichar/univarchar columns and parameters. 
+</td>
+<td valign=top>Null
+</td>
+</tr>
+<tr><td valign=top>CHARSET_CONVERTER_CLASS
+</td>
+<td valign=top>Use this
+
+property to specify the character-set converter class you want jConnect
+
+to use. jConnect uses the version setting from <b>SybDriver.setVersion()</b>,
+
+or the version passed in with the JCONNECT_VERSION property,
+
+to determine the default character-set converter class to use. See <A HREF="prjdbcp9.htm#X22159">"Selecting
+
+a character-set converter"</A> for details.
+</td>
+<td valign=top>Version dependent
+</td>
+</tr>
+<tr><td valign=top>CLASS_LOADER
+</td>
+<td valign=top>Set this property to a DynamicClassLoader object
+
+that you create. The DynamicClassLoader is used to load Java classes
+
+that are stored in the database, but which are not in the CLASSPATH at
+
+application start-up time. See<A HREF="prjdbcp11.htm#CHDJFEEH">"Dynamic class loading"</A> for more information.
+</td>
+<td valign=top>Null
+</td>
+</tr>
+<tr><td valign=top>CONNECTION_FAILOVER
+</td>
+<td valign=top>For use with
+
+the Java Naming and Directory Interface (JNDI). See <A HREF="prjdbcp7.htm#X27092">"CONNECTION_FAILOVER
+
+connection property"</A>.
+</td>
+<td valign=top>True
+</td>
+</tr>
+<tr><td valign=top>DISABLE_UNICHAR_SENDING (Only
+
+for jConnect version 5.5 or later)
+</td>
+<td valign=top>When a client application
+
+sends unichar characters to the server (along with non-unichar characters),
+
+there is a slight performance hit for any character data sent to
+
+the database. Because this property defaults to<i> true</i>,
+
+clients who wish to send unichar data to the database <i>must</i>
+ set
+
+this property value to <i>false</i>. See <A HREF="prjdbcp9.htm#BHCFJECE">"Using jConnect to pass Unicode data"</A>.
+</td>
+<td valign=top>True
+</td>
+</tr>
+<tr><td valign=top>DISABLE_UNPROCESSED_<br>PARAM_WARNINGS
+</td>
+<td valign=top>During results processing
+
+for a stored procedure, jConnect often reads return values other
+
+than row data. If you do not process the return value, jConnect
+
+raises a warning. To disable these warnings (which can help performance),
+
+set this property to <i>true</i>.
+</td>
+<td valign=top>False
+</td>
+</tr>
+<tr><td valign=top>DYNAMIC_PREPARE
+</td>
+<td valign=top>Determines
+
+whether dynamic SQL prepared statements are precompiled in the database.
+
+See <A HREF="prjdbcp22.htm#X30815">"DYNAMIC_PREPARE connection
+
+property"</A>.
+</td>
+<td valign=top>False
+</td>
+</tr>
+<tr><td valign=top>ESCAPE_PROCESSING_DEFAULT
+</td>
+<td valign=top>By default,
+
+jConnect parses all SQL statements submitted to the database for
+
+valid JDBC function escapes. If your application is not going to
+
+use JDBC function escapes in its SQL calls, you can set this connection
+
+property to <i>false</i> to circumvent this processing.
+
+This can provide a slight performance benefit.
+</td>
+<td valign=top>True
+</td>
+</tr>
+<tr><td valign=top>EXPIRESTRING
+</td>
+<td valign=top>A read-only
+
+property that contains the license expiration date. Expiration is
+
+never except for evaluation copies of jConnect.
+</td>
+<td valign=top>Never
+</td>
+</tr>
+<tr><td valign=top>FAKE_METADATA (Only
+
+for jConnect version 5.5 or later)
+</td>
+<td valign=top>When you call the <b>ResultSetMetaData</b> methods <b>getCatalogName,
+
+getSchemaName,</b> and <b>getTableName</b> and
+
+this property is set to <i>true</i>, the call will
+
+return empty strings ("") because the server does not supply useful
+
+metadata.
+<br><br>
+When this property is set to <i>false</i>, calling
+
+these methods throws a "Not Implemented" SQLException.
+<br><br>
+<IMG SRC="images/note.gif" width=17 height=17 border=0 align="bottom" alt="Note">&nbsp;&nbsp; If you have enabled wide tables and are using an Adaptive
+
+Server 12.5 or later, this property setting is ignored, because
+
+the server does supply useful metadata.
+</td>
+<td valign=top>False
+</td>
+</tr>
+<tr><td valign=top>GET_BY_NAME_USES_<br>COLUMN_LABEL (Only
+
+for jConnect version 5.5 or later)
+</td>
+<td valign=top>Provides backward compatibility
+
+with versions of jConnect earlier than 5.5.
+<br><br>
+With Adaptive Server version 12.5, jConnect has access to
+
+more metadata than was previously available. Previous to version
+
+12.5, <i>column name</i> and <i>column alias</i> meant
+
+the same thing. jConnect can now differentiate between the two when used
+
+with a 12.5 or later Adaptive Server with wide tables enabled.
+<br><br>
+To preserve backward compatibility, set this property to <i>true</i>.If
+
+you want calls to getByte, getInt, get* (<i>String columnName</i>)
+
+to look at the actual name for the column (called for in the JDBC
+
+2.0 specification), set this property to <i>false</i>.
+</td>
+<td valign=top>True
+</td>
+</tr>
+<tr><td valign=top>HOSTNAME
+</td>
+<td valign=top>The name
+
+of the current host.
+</td>
+<td valign=top>None<br>The max
+
+length is 30 characters and if exceeded, it will be truncated to
+
+30
+</td>
+</tr>
+<tr><td valign=top>HOSTPROC
+</td>
+<td valign=top>Identifies
+
+the application's process on the host machine.
+</td>
+<td valign=top>None
+</td>
+</tr>
+<tr><td valign=top>IGNORE_DONE_IN_PROC
+</td>
+<td valign=top>When set to <i>true</i>,
+
+intermediate update results (as in stored procedures) are not returned,
+
+only the final result set.
+</td>
+<td valign=top>False
+</td>
+</tr>
+<tr><td valign=top>IS_CLOSED_TEST
+</td>
+<td valign=top>Allows you to specify what
+
+query, if any, is sent to the database when <b>Connection.isClosed()</b> is called.
+
+For additional information , see the <A HREF="prjdbcp12.htm#BHCIAIBF">"Connection.isClosed() and
+
+the IS_CLOSED_TEST connection property"</A>.
+</td>
+<td valign=top>Null
+</td>
+</tr>
+<tr><td valign=top>JCONNECT_VERSION
+</td>
+<td valign=top>Use this
+
+property to set version-specific characteristics. See <A HREF="prjdbcp6.htm#X19884">"JCONNECT_VERSION connection property"</A>.
+</td>
+<td valign=top>5
+</td>
+</tr>
+<tr><td valign=top>LANGUAGE
+</td>
+<td valign=top>Set this
+
+property for error messages returned from the server and for jConnect
+
+messages. It must match a language in <i>syslanguages</i>.
+</td>
+<td valign=top>Version dependent (see <A HREF="prjdbcp6.htm#X15095">"Setting the jConnect version"</A>).
+</td>
+</tr>
+<tr><td valign=top>LANGUAGE_CURSOR
+</td>
+<td valign=top>Set this
+
+property to <i>true</i> if you want jConnect to use "language
+
+cursors" instead of "protocol cursors."<br>See <A HREF="prjdbcp23.htm">"Cursor
+
+performance"</A>.
+</td>
+<td valign=top>False
+</td>
+</tr>
+<tr><td valign=top>LITERAL_PARAMS
+</td>
+<td valign=top>Use this
+
+property primarily when using jConnect with Adaptive Server Anywhere version
+
+5.5. ASA 5.5 requires you to send prepared statement parameters
+
+as literals. For all other Sybase databases (including ASA 6 and
+
+later), this property can be set to <i>false</i>.
+<br><br>
+When set to true, any parameters set by the <b>setXXX</b><i> </i>methods
+
+in the <b>PreparedStatement</b> interface are inserted
+
+literally into the SQL statement when it is executed.
+<br><br>
+If set to <i>false</i>, parameter markers are
+
+left in the SQL statement and the parameter values are sent to the
+
+server separately.
+</td>
+<td valign=top>False
+</td>
+</tr>
+<tr><td valign=top>USE_METADATA
+</td>
+<td valign=top>When set
+
+to<i> true</i>, a <b>DatabaseMetaData</b> object will
+
+be created and initialized when you establish a connection. The <b>DatabaseMetaData</b> object
+
+is necessary to connect to a specified database.
+<br><br>
+jConnect uses <b>DatabaseMetaData</b> for some features,
+
+including Distributed Transaction Management support (JTA/JTS)
+
+and dynamic class loading (DCL).
+<br><br>
+If you receive error 010SJ, which indicates that your application
+
+requires metadata, install the stored procedures for returning metadata
+
+that come with jConnect (see "Installing Stored Procedures" in
+
+Chapter 3 of the <i>jConnect for JDBC Installation Guide</i>).
+</td>
+<td valign=top>true
+</td>
+</tr>
+<tr><td valign=top>PACKETSIZE
+</td>
+<td valign=top>Network packet
+
+size.
+</td>
+<td valign=top>512
+</td>
+</tr>
+<tr><td valign=top>PASSWORD
+</td>
+<td valign=top>Login password.
+<br><br>
+Set automatically if using the <b>getConnection(String,
+
+String, String</b><b>)</b> method, or explicitly
+
+if using <b>getConnection(String, Props)</b><b>.</b>
+</td>
+<td valign=top>None
+</td>
+</tr>
+<tr><td valign=top>PRELOAD_JARS
+</td>
+<td valign=top>A comma-separated list of
+
+jar file names that are associated with the CLASS_LOADER
+
+that you specify. These jars are loaded at connect time, and are
+
+available for use by any other Connection using the same jConnect
+
+driver. See <A HREF="prjdbcp11.htm#BHCFBIAE">"Preloading JARS"</A> for more information.
+</td>
+<td valign=top>Null
+</td>
+</tr>
+<tr><td valign=top>PROTOCOL_CAPTURE
+</td>
+<td valign=top>The PROTOCOL_CAPTURE
+
+connection property is used to specify a file for capturing TDS
+
+communication between an application and an Adaptive Server.
+</td>
+<td valign=top>Null
+</td>
+</tr>
+<tr><td valign=top>PROXY
+</td>
+<td valign=top>Gateway address.
+
+For the HTTP protocol, the URL is <i>http://host:port</i>.
+<br><br>
+To use the HTTPS protocol that supports encryption, the URL
+
+is https://<i>host</i>:<i>port</i>/<i>servlet_alias</i>.
+</td>
+<td valign=top>None
+</td>
+</tr>
+<tr><td valign=top>REMOTEPWD
+</td>
+<td valign=top>Remote server
+
+passwords for access through server-to-server remote procedure calls.
+
+See <A HREF="prjdbcp10.htm#X40032">"Performing server-to-server remote procedure calls"</A>.
+</td>
+<td valign=top>None
+</td>
+</tr>
+<tr><td valign=top>REPEAT_READ
+</td>
+<td valign=top>Determines
+
+whether the driver keeps copies of columns and output parameters
+
+so that columns can be read out of order or repeatedly. See <A HREF="prjdbcp21.htm#X38325">"REPEAT_READ connection
+
+property"</A>.
+</td>
+<td valign=top>True
+</td>
+</tr>
+<tr><td valign=top>REQUEST_HA_SESSION
+</td>
+<td valign=top>This property indicates
+
+whether the connecting client wants to begin an HA failover session
+
+with a version 12 or later Adaptive Server configured for failover. See <A HREF="prjdbcp10.htm#CHDCJAHF">"Implementing
+
+high availability failover support"</A>.
+<br><br>
+Setting this property to <i>true</i> causes
+
+jConnect to attempt a failover login. If you do not set this connection
+
+property, a failover session will not start, even if the server
+
+is configured for failover.
+<br><br>
+You cannot reset the property once a connection has been made.If
+
+you want more flexibility for requesting failover sessions, code
+
+the client application to set REQUEST_HA_SESSION
+
+at runtime.
+</td>
+<td valign=top>False
+</td>
+</tr>
+<tr><td valign=top>RMNAME
+</td>
+<td valign=top>This property is used to
+
+set the Resource Manager name when using distributed transactions
+
+(XA). This property will override a Resource Manager name that may
+
+be set in an LDAP server entry. See <A HREF="prjdbcp11.htm#CHDIFEIE">"Distributed transaction management
+
+support"</A> for more information.
+</td>
+<td valign=top>Null
+</td>
+</tr>
+<tr><td valign=top>SECONDARY_SERVER_<br>HOSTPORT
+</td>
+<td valign=top>Sets the hostname and port
+
+for the secondary server when the client is using an HA failover session.
+
+The value for this property should be in the form of <b>hostName:portNumber</b>.
+
+This property is ignored unless you have also set REQUEST_HA_SESSION
+
+to true. See <A HREF="prjdbcp10.htm#CHDCJAHF">"Implementing
+
+high availability failover support"</A> for more information.
+</td>
+<td valign=top>Null
+</td>
+</tr>
+<tr><td valign=top>SELECT_OPENS_CURSOR
+</td>
+<td valign=top>If set to <i>true</i>,
+
+calls to<b> <br>Statement.executeQuery( ) </b>will
+
+automatically generate a cursor when the query contains a "FOR
+
+UPDATE" clause.
+<br><br>
+If you have previously called <b>Statement.setFetchSize(
+
+)</b> or<br><b>Statement.setCursorName( )</b> on
+
+the same statement, a setting of <i>true</i> for SELECT_OPENS_CURSOR
+
+has no effect.
+<br><br>
+<IMG SRC="images/note.gif" width=17 height=17 border=0 align="bottom" alt="Note">&nbsp;&nbsp; You may experience some performance degradation when
+
+SELECT_OPENS_CURSOR is set to <i>true</i>.
+<br><br>
+See <A HREF="prjdbcp10.htm#X15542">"Using cursors
+
+with result sets"</A> for
+
+more information on using cursors with jConnect.
+</td>
+<td valign=top>False
+</td>
+</tr>
+<tr><td valign=top>SERIALIZE_REQUESTS
+</td>
+<td valign=top>If set to <i>true</i>,
+
+jConnect waits for responses from the server before sending additional
+
+requests.
+</td>
+<td valign=top>False
+</td>
+</tr>
+<tr><td valign=top>SERVICENAME
+</td>
+<td valign=top>The name
+
+of a back-end database server that a DirectConnect gateway serves.
+
+Also used to indicate which database should be used upon connecting
+
+to Adaptive Server
+
+Anywhere.
+</td>
+<td valign=top>None
+</td>
+</tr>
+<tr><td valign=top>SESSION_ID
+</td>
+<td valign=top>When this
+
+property is set, jConnect assumes that an application is trying
+
+to resume communication on an existing TDS session held open by
+
+the TDS-tunnelling gateway. jConnect skips the login negotiations
+
+and forwards all requests from the application to the specified session
+
+ID.
+</td>
+<td valign=top>Null
+</td>
+</tr>
+<tr><td valign=top>SESSION_TIMEOUT
+</td>
+<td valign=top>Use this
+
+property to specify the amount of time (in seconds) that an http-tunnelled
+
+session (created using the jConnect TDS-tunnelling servlet) will
+
+remain alive while idle. After the specified time, the connection
+
+will be automatically closed. For more information about the TDS-tunnelling
+
+servlet, see page <A HREF="prjdbcp30.htm">&#167;<!--   --></A>.
+</td>
+<td valign=top>Null
+</td>
+</tr>
+<tr><td valign=top>SQLINITSTRING
+</td>
+<td valign=top>Use this
+
+property to define a set of commands to be passed to the database
+
+server when a Connection is opened. These must be SQL commands that
+
+can be executed using the <b>Statement.executeUpdate( )</b> method.
+</td>
+<td valign=top>Null
+</td>
+</tr>
+<tr><td valign=top>STREAM_CACHE_SIZE
+</td>
+<td valign=top>Maximum size
+
+used to cache statement response streams.
+</td>
+<td valign=top>Null (unlimited cache size)
+</td>
+</tr>
+<tr><td valign=top>SYBSOCKET_FACTORY
+</td>
+<td valign=top>Use this
+
+property to enable jConnect to use your custom socket implementation.
+<br><br>
+Set SYBSOCKET_FACTORY either to: 
+<ul>
+<li class=fi>The name of a class that implements <b>com.sybase.jdbcx.SybSocketFactory;</b> or
+</li>
+<li class=ds>"DEFAULT," which instantiates
+
+a new<br> <b>java.net.Socket(</b><b> )</b>
+
+</li>
+</ul>
+
+<br><br>
+See <A HREF="prjdbcp8.htm">"Implementing custom socket
+
+plug-ins"</A>.
+</td>
+<td valign=top>Null
+</td>
+</tr>
+<tr><td valign=top>USER
+</td>
+<td valign=top>Login ID.
+<br><br>
+Set automatically if using the <b>getConnection(String,
+
+String, String)</b> method, or explicitly if using <b>getConnection(String,
+
+Props)</b><b>.</b>
+</td>
+<td valign=top>None
+</td>
+</tr>
+<tr><td valign=top>VERSIONSTRING
+</td>
+<td valign=top>Read-only
+
+version information for the JDBC driver.
+</td>
+<td valign=top>jConnect driver version
+</td>
+</tr>
+</table>
+<p>The following code is an example of setting connection properties.
+
+The sample programs provided with jConnect also contain examples
+
+of setting these properties.  
+<pre> Properties props = new Properties();
+   props.put("user", "<i>userid</i>");
+ <i> </i> props.put("password",  "<i>user_password</i>");
+ /*
+  * If  the program is an applet that wants to access
+  * a  server that is not on the same host as the
+  * web  server, then it uses a proxy gateway.
+  */
+   props.put("proxy", "<i>localhost</i>:<i>port</i>");
+ /*
+  * Make  sure you set connection properties before
+  * attempting  to make a connection. You can also
+  * set the  properties in the URL.
+  */
+ Connection  con = DriverManager.getConnection
+   ("jdbc:sybase:Tds:<i>host:port</i>",  props);</pre>
+</p>
+<A NAME="TI15"></A><h2>Connecting to
+
+Adaptive Server</h2>
+<p>In your Java application, define a URL using the jConnect
+
+driver to connect to an Adaptive Server. The basic format of the
+
+URL is: 
+<pre>jdbc:sybase:Tds:<i>host</i>:<i>port</i></pre>
+</p>
+<p>where:</p>
+<p><b>jdbc:sybase</b> identifies the driver.</p>
+<p><b>Tds</b> is the Sybase communication protocol
+
+for Adaptive Server.</p>
+<p><i>host:port</i> is the Adaptive Server host
+
+name and listening port. See <i>$SYBASE/interfaces</i> (UNIX)
+
+or <i>%SYBASE%\ini\sql.ini </i>(Windows)
+
+for the entry that your database or Open Server application uses.
+
+Obtain the <i>host:port</i> from the "query" entry.</p>
+<p>You can connect to a specific database using this format: 
+<pre>jdbc:sybase:Tds:<i>host</i>:<i>port/database</i> </pre>
+</p>
+<p><IMG SRC="images/note.gif" width=17 height=17 border=0 align="bottom" alt="Note">&nbsp;&nbsp; To connect to a specific database using Adaptive
+
+Server Anywhere 6.x and later or DirectConnect, use the SERVICENAME
+
+connection property to specify the database name instead of "/database."</P>
+<A NAME="TI16"></A><h4>Example</h4>
+<p>The following code creates a connection to an Adaptive Server
+
+on host "myserver" listening on port 3697: 
+<pre>SysProps.put("user","<i>userid</i>");
+SysProps.put("password","<i>user_password</i>");
+String  url = "jdbc:sybase:Tds:myserver:3697";
+Connection_con =
+    DriverManager.getConnection(url,SysProps);</pre>
+</p>
+<A NAME="X32549"></A><h3>URL connection property parameters</h3>
+<p>You can specify the values for the jConnect driver connection
+
+properties when you define a URL.</p>
+<p><IMG SRC="images/note.gif" width=17 height=17 border=0 align="bottom" alt="Note">&nbsp;&nbsp; Driver connection properties set in the URL do not override
+
+any corresponding connection properties set in the application using
+
+the <b>DriverManager.getConnection( ) </b>method.</P>
+<p>To set a connection property in the URL, append the property
+
+name and its value to the URL definition. Use this syntax: 
+<pre>jdbc:sybase:Tds:<i>host</i>:<i>port</i>/<i>database</i>?
+ <i>  property_name</i>=<i>value</i></pre>
+</p>
+<p>To set multiple connection properties, append each additional
+
+connection property and value, preceded by "&amp;." For
+
+example: 
+<pre>jdbc:sybase:Tds:myserver:1234/mydatabase?
+   LITERAL_PARAMS=true&amp;PACKETSIZE=512&amp;HOSTNAME=myhost</pre>
+</p>
+<p>If the value for one of the connection properties contains "&amp;," precede
+
+the "&amp;" in the connection property value
+
+with a backslash (\). For example, if your host name is "a&amp;bhost," use
+
+this syntax: 
+<pre>jdbc:sybase:Tds:myserver:1234/mydatabase?
+   LITERAL_PARAMS=true&amp;PACKETSIZE=512&amp;HOSTNAME=
+   a\&amp;bhost</pre>
+</p>
+<p>Do not use quotes for connection property values, even if
+
+they are strings. For example, use: 
+<pre>HOSTNAME=myhost</pre>
+</p>
+<p>not: 
+<pre>HOSTNAME="myhost"</pre>
+</p>
+<A NAME="X11031"></A><h2>Connecting to Adaptive Server Anywhere</h2>
+<p>To use jConnect with Adaptive Server Anywhere, you should
+
+upgrade to Adaptive Server Anywhere version 6.x and later.</p>
+<A NAME="TI17"></A><h3>Connecting to Adaptive Server Anywhere 5.x.x</h3>
+<p>If you have to connect to Adaptive Server Anywhere version
+
+5.x.x through jConnect, you must run the Adaptive Server Anywhere Open Server
+
+Gateway dbos50, which is distributed with Adaptive Server Anywhere.</p>
+<p>
+<ol>
+<li class=fi>Install Open Server
+
+Gateway 5.5.x3 or later and the Open Server DLLs. Use Open Server
+
+DLLs, version 11.1.
+</li>
+<li class=ds>Add an entry for the gateway to your <i>%SYBASE%\ini\sql.ini</i> file
+
+(using, for example, <b>sqledit</b>).
+</li>
+<li class=ds>Start the gateway by entering: 
+<pre>start dbos50 <i>gateway-demo</i> </pre>
+
+<br><br>
+where <i>gateway-demo</i> is the gateway name
+
+defined in step 2.
+</li>
+<li class=ds>When the Open Server Gateway is running, you can
+
+define a connection as follows: 
+<pre>jdbc:sybase:Tds:<i>host</i>:<i>port</i></pre>
+
+<br><br>
+<i>host</i> is the host name where the Adaptive
+
+Server Anywhere and Open Server gateway is running, and <i>port</i> is
+
+the port number defined in <i>sql.ini</i>.
+
+</li>
+</ol>
+</p>
+<p><IMG SRC="images/note.gif" width=17 height=17 border=0 align="bottom" alt="Note">&nbsp;&nbsp; To support multiple Adaptive Server Anywhere databases,
+
+use <b>sqledit</b> to add an entry with a different
+
+port for each database, then run the Open Server Gateway for each
+
+database.</P>
+<A NAME="X39594"></A><h2>Connecting  to a server using JNDI</h2>
+<p>In jConnect 4.0 and later, you can use the Java Naming and
+
+Directory Interface (JNDI) to provide connection information, which
+
+offers: 
+<ul>
+<li class=fi>A centralized location
+
+where you can specify host names and ports for connecting to a server.
+
+You do not need to hard code a specific host and port number in
+
+an application.
+</li>
+<li class=ds>A centralized location where you can specify connection
+
+properties and a default database for all applications to use.
+</li>
+<li class=ds>The jConnect CONNECTION_FAILOVER
+
+property for handling unsuccessful connection attempts. When CONNECTION_FAILOVER
+
+is set to true, jConnect attempts to connect to a sequence of host/port
+
+server addresses in the JNDI name space until one succeeds.
+
+</li>
+</ul>
+</p>
+<p>To use jConnect with JNDI, you need to make sure that certain
+
+information is available in any directory service that JNDI accesses
+
+and that required information is set in the <b>javax.naming.Context</b> class.
+
+This section covers the following topics: 
+<ul>
+<li class=fi><A HREF="prjdbcp7.htm#X23898">Connection URL for using JNDI</A>
+</li>
+<li class=ds><A HREF="prjdbcp7.htm#X21236">Required directory service
+
+information</A>
+</li>
+<li class=ds><A HREF="prjdbcp7.htm#X27092">CONNECTION_FAILOVER
+
+connection property</A>
+</li>
+<li class=ds><A HREF="prjdbcp7.htm#X25688">Providing JNDI context
+
+information</A>
+
+</li>
+</ul>
+</p>
+<A NAME="X23898"></A><h3>Connection URL for using JNDI</h3>
+<p>To specify that jConnect use JNDI to obtain connection information,
+
+place "jndi" as the URL's subprotocol
+
+after "sybase": 
+<pre>jdbc:sybase:jndi:<i>protocol-information-for-use-with-JNDI</i></pre>
+</p>
+<p>Anything that follows "jndi" in the URL
+
+is handled through JNDI. For example, to use JNDI with the Lightweight
+
+Directory Access Protocol (LDAP), you might enter: 
+<pre>jdbc:sybase:jndi:ldap://<i>LDAP_hostname</i>:<i>port_number/servername=
+</i>  Sybase11,o=MyCompany,c=US</pre>
+</p>
+<p>This URL tells JNDI to obtain information from an LDAP server,
+
+gives the host name and port number of the LDAP server to use, and
+
+provides the name of a database server in an LDAP-specific form.</p>
+<A NAME="X21236"></A><h3>Required directory service  information</h3>
+<p>When you use JNDI with jConnect, JNDI needs to return the
+
+following information for the target database server: 
+<ul>
+<li class=fi>A host name and port number
+
+to connect to
+</li>
+<li class=ds>The name of the database to use
+</li>
+<li class=ds>Any connection properties that individual applications
+
+are not allowed to set on their own
+
+</li>
+</ul>
+</p>
+<p>This information needs to be stored according to a fixed format
+
+in any directory service used for providing connection information.
+
+The required format consists of a numerical object identifier (OID),
+
+which identifies the type of information being provided (for example,
+
+the destination database), followed by the formatted information
+
+(see "Example 1" on page 23). </p>
+<p><IMG SRC="images/note.gif" width=17 height=17 border=0 align="bottom" alt="Note">&nbsp;&nbsp; You can use the alias name for to reference the attribute
+
+instead of the OID. See "Example 2" on page 24.</P>
+<p><A HREF="prjdbcp7.htm#BHCDHEIF">Table 2-3</A> shows
+
+the required formatting.</p>
+<A NAME="BHCDHEIF"></A><table cellspacing=0 cellpadding=6 border=1 frame="void" rules="all"><caption>Table 2-3: Directory service information for JNDI</caption>
+<tr><th align="left" valign=bottom>Attribute
+
+description
+</th>
+<th align="left" valign=bottom>Alias
+</th>
+<th align="left" valign=bottom>OID (object_id)
+</th>
+</tr>
+<tr><td valign=top>Interfaces
+
+entry replacement in LDAP directory services
+</td>
+<td valign=top>sybaseServer
+</td>
+<td valign=top>1.3.6.1.4.1.897.4.1.1
+</td>
+</tr>
+<tr><td valign=top>Collection
+
+point for sybaseServer LDAP attributes
+</td>
+<td valign=top>sybaseServer
+</td>
+<td valign=top>1.3.6.1.4.1.897.4.2
+</td>
+</tr>
+<tr><td valign=top>Version Attribute
+</td>
+<td valign=top>sybaseVersion
+</td>
+<td valign=top>1.3.6.1.4.1.897.4.2.1
+</td>
+</tr>
+<tr><td valign=top>Servername
+
+Attribute
+</td>
+<td valign=top>sybaseServer
+</td>
+<td valign=top>1.3.6.1.4.1.897.4.2.2 
+</td>
+</tr>
+<tr><td valign=top>Service Attribute
+</td>
+<td valign=top>sybaseService
+</td>
+<td valign=top>1.3.6.1.4.1.897.4.2.3 
+</td>
+</tr>
+<tr><td valign=top>Status Attribute
+</td>
+<td valign=top>sybaseStatus
+</td>
+<td valign=top>1.3.6.1.4.1.897.4.2.4 
+</td>
+</tr>
+<tr><td valign=top><i>Address Attribute</i>
+
+</td>
+<td valign=top>sybaseAddress
+</td>
+<td valign=top>1.3.6.1.4.1.897.4.2.5
+</td>
+</tr>
+<tr><td valign=top>Security Mechanism Attribute
+</td>
+<td valign=top>sybaseSecurity
+</td>
+<td valign=top>1.3.6.1.4.1.897.4.2.6
+</td>
+</tr>
+<tr><td valign=top>Retry Count Attribute
+</td>
+<td valign=top>sybaseRetryCount
+</td>
+<td valign=top>1.3.6.1.4.1.897.4.2.7 
+</td>
+</tr>
+<tr><td valign=top>Loop Delay Attribute
+</td>
+<td valign=top>sybaseRetryDelay
+</td>
+<td valign=top>1.3.6.1.4.1.897.4.2.8
+</td>
+</tr>
+<tr><td valign=top><i>jConnect Connection
+
+Protocol</i>
+
+</td>
+<td valign=top>sybaseJconnectProtocol
+</td>
+<td valign=top>1.3.6.1.4.1.897.4.2.9 
+</td>
+</tr>
+<tr><td valign=top><i>jConnect Connection
+
+Property</i>
+
+</td>
+<td valign=top>sybaseJconnectProperty
+</td>
+<td valign=top>1.3.6.1.4.1.897.4.2.10 
+</td>
+</tr>
+<tr><td valign=top><i>Database Name</i>
+
+</td>
+<td valign=top>sybaseDatabasename
+</td>
+<td valign=top>1.3.6.1.4.1.897.4.2.11 
+</td>
+</tr>
+<tr><td valign=top>High Availability Failover Servername
+
+Attribute
+</td>
+<td valign=top>sybaseHAservername
+</td>
+<td valign=top>1.3.6.1.4.1.897.4.2.15
+</td>
+</tr>
+<tr><td valign=top>ResourceManager Name
+</td>
+<td valign=top>sybaseResourceManagerName
+</td>
+<td valign=top>1.3.6.1.4.1.897.4.2.16 
+</td>
+</tr>
+<tr><td valign=top>ResourceManager Type
+</td>
+<td valign=top>sybaseResourceManagerType
+</td>
+<td valign=top>1.3.6.1.4.1.897.4.2.17
+</td>
+</tr>
+<tr><td valign=top>JDBCDataSource Interface
+</td>
+<td valign=top>sybaseJdbcDataSource-<br>Interface
+</td>
+<td valign=top>1.3.6.1.4.1.897.4.2.18 
+</td>
+</tr>
+<tr><td valign=top>ServerType
+</td>
+<td valign=top>sybaseServerType
+</td>
+<td valign=top>1.3.6.1.4.1.897.4.2.19 
+</td>
+</tr>
+</table>
+<p><IMG SRC="images/note.gif" width=17 height=17 border=0 align="bottom" alt="Note">&nbsp;&nbsp; Attributes in italics are required.</P>
+<p>The following examples show connection information entered
+
+for the database server SYBASE11 under an LDAP directory service.
+
+Example 1 uses the attribute's OID, Example 2 uses the
+
+attribute's alias, which is case insensitive. You can use
+
+either the OID or the alias.</p>
+<p><strong>Example 1</strong></p>
+<p>
+<pre>dn: servername=SYBASE11,o=MyCompany,c=US
+ servername:SYBASE11
+ 1.3.6.1.4.1.897.4.2.5:TCP#1#giotto  1266
+ 1.3.6.1.4.1.897.4.2.5:TCP#1#giotto  1337
+ 1.3.6.1.4.1.897.4.2.5:TCP#1#standby1  4444
+ 1.3.6.1.4.1.897.4.2.10:REPEAT_READ=false&amp;PACKETSIZE=1024
+ 1.3.6.1.4.1.897.4.2.10:CONNECTION_FAILOVER=true
+ 1.3.6.1.4.1.897.4.2.11:pubs2
+ 1.3.6.1.4.1.897.4.2.9:Tds</pre>
+</p>
+<p><strong>Example 2</strong></p>
+<p>
+<pre>dn: servername=SYBASE11,o=MyCompany,c=US
+ servername:SYBASE11
+ sybaseAddress:TCP#1#giotto  1266
+ sybaseAddress:TCP#1#giotto  1337
+ sybaseAddress:TCP#1#standby1  4444
+ sybaseJconnectProperty:REPEAT_READ=false&amp;PACKETSIZE=1024
+ sybaseJconnectProperty:CONNECTION_FAILOVER=true
+ sybaseDatabasename:pubs2
+ sybaseJconnectProtocol:Tds</pre>
+</p>
+<p>In these examples, SYBASE11 can be accessed through either
+
+port 1266 or port 1337 on host "giotto" and
+
+it can be accessed through port 4444 on host "standby1." Two
+
+connection properties, REPEAT_READ and PACKETSIZE, are
+
+set within one entry. The CONNECTION_FAILOVER connection property
+
+is set as a separate entry. Applications connecting to SYBASE11
+
+are initially connected with the pubs2 database.
+
+You do not need to specify a connection protocol, but if you do,
+
+you must enter the attribute as "<code>Tds</code>
+",
+
+not "<code>TDS</code>
+".</p>
+<A NAME="X27092"></A><h3>CONNECTION_FAILOVER  connection property</h3>
+<p>CONNECTION_FAILOVER is a Boolean-valued connection
+
+property you can use when jConnect uses JNDI to get connection information.</p>
+<p>If CONNECTION_FAILOVER is set to true, jConnect makes
+
+multiple attempts to connect to a server. If one attempt to connect
+
+to a host and port number associated with a server fails, jConnect
+
+uses JNDI to get the next host and port number associated with the
+
+server and attempts to connect through them. Connection attempts
+
+proceed sequentially through all the hosts and ports associated
+
+with a server.</p>
+<p>For example, suppose CONNECTION_FAILOVER is set to true,
+
+and a database server is associated with the following hosts and
+
+port numbers, as in the earlier LDAP example: 
+<pre>1.3.6.1.4.1.897.4.2.5:TCP#1#giotto  1266
+1.3.6.1.4.1.897.4.2.5:TCP#1#giotto  1337
+1.3.6.1.4.1.897.4.2.5:TCP#1#standby  4444</pre>
+</p>
+<p>To get a connection to the server, jConnect tries to connect
+
+to the host "giotto" at port 1266. If this fails,
+
+jConnect tries port 1337 on "giotto." If this
+
+fails, jConnect tries to connect to host "standby1" through
+
+port 4444.</p>
+<p>The default for CONNECTION_FAILOVER is true.</p>
+<p>If CONNECTION_FAILOVER is set to false, jConnect
+
+attempts to connect to an initial host and port number. If the attempt
+
+fails, jConnect throws a SQL exception and does not try again.</p>
+<A NAME="X25688"></A><h3>Providing JNDI context  information</h3>
+<p>To use jConnect with JNDI, a developer should be familiar
+
+with the JNDI specification from Sun Microsystems, available from
+
+the Web:</p>
+<p>http://java.sun.com/products/jndi</p>
+<p>In particular, the developer needs to make sure that required
+
+initialization properties are set in <b>javax.naming.directory.DirContext</b> when
+
+JNDI and jConnect are used together. These properties can be set
+
+either at the system level or at runtime.</p>
+<p>Two key properties are: 
+<ul>
+<li class=fi>Context.INITIAL_CONTEXT_FACTORY
+<br><br>
+This property takes the fully qualified class name of the
+
+initial context factory for JNDI to use. This determines the JNDI
+
+driver that is used with the URL specified in the Context.PROVIDER_URL
+
+property.
+</li>
+<li class=ds>Context.PROVIDER_URL
+<br><br>
+This property takes the URL of the directory service that
+
+the driver (for example, the LDAP driver) is to access. The URL
+
+should be a string, such as "ldap://ldaphost:427".
+
+</li>
+</ul>
+</p>
+<p>The following example shows how to set context properties
+
+at runtime and how to get a connection using JNDI and LDAP. In the
+
+example, the INITIAL_CONTEXT_FACTORY context property
+
+is set to invoke Sun Microsystem's implementation of an
+
+LDAP service provider. The PROVIDER_URL context property
+
+is set to the URL of an LDAP directory service located on the host "ldap_server1" at
+
+port 983. 
+<pre>Properties props = new  Properties();
+ 
+ /* We want  to use LDAP, so INITIAL_CONTEXT_FACTORY is set  to the
+ * class name of an LDAP context factory.  In this case, the 
+ * context factory is provided  by Sun's implementation of a 
+ * driver  for LDAP directory service.
+ */
+ props.put(Context.INITIAL_CONTEXT_FACTORY,
+   "com.sun.jndi.ldap.LdapCtxFactory");
+ 
+ /* Now,  we set PROVIDER_URL to the URL of the LDAP server that 
+ * is  to provide directory information for the connection.
+ */
+ props.put(Context.PROVIDER_URL,  "ldap://ldap_server1:983");
+ 
+ /* Set  up additional context properties, as needed. */
+ props.put("user",  "xyz");
+ props.put("password", "123");
+ 
+ /* get  the connection */
+ Connection con = DriverManager.getConnection
+   ("jdbc:sybase:jndi:ldap://ldap_server1:983" +
+   "/servername=Sybase11,o=MyCompany,c=US",props); </pre>
+</p>
+<p>The connection string passed to <b>getConnection( )</b> contains
+
+LDAP-specific information, which the developer must provide.</p>
+<p>When JNDI properties are set at runtime, as in the preceding
+
+example, jConnect passes them to JNDI to be used in initializing
+
+a server, as in the following jConnect code: 
+<pre>javax.naming.directory.DirContext  ctx =
+   new javax.naming.directory.InitialDirContext(props);</pre>
+</p>
+<p>jConnect then obtains the connection information it needs
+
+from JNDI by invoking <b>DirContext.getAtributes( )</b>,
+
+as in the following example, where <i>ctx</i> is a <b>DirContext</b> object: 
+<pre>javax.naming.directory.Attributes attrs =
+   ctx.getAttributes(ldap://ldap_server1:983/servername=
+     Sybase11,  SYBASE_SERVER_ATTRIBUTES);</pre>
+</p>
+<p>In the example, SYBASE_SERVER_ATTRIBUTES
+
+is an array of strings defined within jConnect. The array values
+
+are the OIDs for the required directory information listed in <A HREF="prjdbcp7.htm#BHCDHEIF">Table 2-3</A>.</p>
+<P>&nbsp;</P><hr noshade size=1>
+<table cols=3><tr><td colspan=2 align=left>
+Copyright &copy; 2003 Sybase, Inc. All rights reserved.&nbsp;&nbsp;&nbsp;
+</td><td colspan=1>
+<A HREF="prjdbcp8.htm"><IMG SRC="images/arrow-right.gif" ALIGN=right></A>
+</td></tr></table>
+</BODY>
+</HTML>
+

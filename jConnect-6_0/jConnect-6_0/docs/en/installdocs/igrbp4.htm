@@ -1,0 +1,972 @@
+
+<html>
+<!-- 
+Copyright (C) 2003. Sybase Inc. All rights reserved.
+Installation Guide
+jConnect&#153; for JDBC&#153;
+-->
+
+<HEAD>
+<script language="JavaScript">
+<!--
+
+if (navigator.appName == "Netscape"){
+     document.write('<LINK REL=STYLESHEET HREF="netscape.css" TYPE="text/javascript">');
+     }
+else{
+     document.write('<LINK REL=STYLESHEET HREF="default.css" TYPE="text/css">');
+     }
+
+//-->
+</script>
+<NOSCRIPT><LINK REL=STYLESHEET HREF="default.css" TYPE="text/css"></NOSCRIPT>
+<TITLE>Installing jConnect for  JDBC</TITLE></HEAD>
+<BODY bgproperties="FIXED" bgcolor="#ffffe2">
+<P ALIGN=RIGHT><A HREF="igrbp3.htm"><IMG SRC="images/arrow-left.gif" align=top></A>&nbsp;&nbsp;<A HREF="igrbp5.htm"><IMG SRC="images/arrow-right.gif" align=top></A></P>
+
+<P ALIGN=LEFT><I>Chapter 1  Installation Instructions</I><HR NOSHADE SIZE=1></P>
+<A NAME="CHECABHA"></A><h1>Installing jConnect for  JDBC</h1>
+<p>To install jConnect for JDBC, complete the following tasks:</p>
+<p>
+<ol>
+<li class=fi><A HREF="igrbp4.htm#BABBGFDA">Install the Java Development
+
+Kit</A>
+</li>
+<li class=ds><A HREF="igrbp4.htm#BABDDAAI">Install
+
+jConnect products</A>
+</li>
+<li class=ds><A HREF="igrbp4.htm#BABJIBHE">Set environment variables</A>
+</li>
+<li class=ds><A HREF="igrbp4.htm#BABDFIDJ">Install stored procedures</A>
+</li>
+<li class=ds><A HREF="igrbp4.htm#BABBIDCD">Review the installation contents</A>
+</li>
+<li class=ds><A HREF="igrbp4.htm#X16792">Test the jConnect installation</A>
+
+</li>
+</ol>
+</p>
+<A NAME="BABBGFDA"></A><h2>Install the Java Development  Kit</h2>
+<p>Before installing jConnect, you must download and install
+
+the Java Development Kit (JDK). </p>
+<A NAME="TI16"></A><p><img src="images/proc.gif" width=17 height=17 border=0 align="bottom" alt="Steps"> Installing the Java Development Kit</p>
+<ol type=1><li class=fi>Download the current JDK from Sun's
+
+Java Software Web site at the following URL:
+<br><br>
+<i>http://java.sun.com/products/index.html</i>
+
+</li>
+
+<li class=ds>Install the JDK using the installation instructions
+
+provided.
+<br><br>
+When you install jConnect 5.x, you receive JDBC 2.0 compatible
+
+classes. Developers should use JDK version 1.2 and later to develop
+
+JDBC 2.0 applications with jConnect 5.x.
+</li>
+
+<li class=ds>After installing the JDK, define the JAVA_HOME
+
+environment variable to point to the JDK installation directory.
+
+See your operating system documentation for instructions.
+</li>
+</ol>
+<br>
+<A NAME="BABDDAAI"></A><h2>Install  jConnect products</h2>
+<p>This section explains how to download jConnect products from
+
+the Web or from a CD. </p>
+<p><IMG SRC="images/note.gif" width=17 height=17 border=0 align="bottom" alt="Note">&nbsp;&nbsp; If you cannot use the Web to install jConnect, contact
+
+Sybase Technical Support to request a CD. Once you receive the CD,
+
+see "lnstalling jConnect from a CD" on page 7
+
+for installation instructions.If you install jConnect from the Web and then receive it as
+
+part of an Adaptive Server Enterprise or other Sybase product release,
+
+use the installation instructions provided with the Sybase product
+
+to install jConnect, and verify that you want to overwrite the directory
+
+where you initially installed jConnect.</P>
+<A NAME="TI17"></A><p><img src="images/proc.gif" width=17 height=17 border=0 align="bottom" alt="Steps"> Installing jConnect from the Web</p>
+<ol type=1><li class=fi>Go to the jConnect download Web page at
+
+the following URL:
+<br><br>
+<i>http://www.sybase.com/products/middleware/jconnectforjdbc</i>
+
+</li>
+
+<li class=ds>Click Downloads in the Information box on the
+
+left side of the window.
+</li>
+
+<li class=ds>When you see the registration page, read the jConnect
+
+License Agreement, then complete and submit the provided registration
+
+form. You may see a message that your registration has been successful.
+</li>
+
+<li class=ds>When you go to the download page, click the name
+
+of the product(s) you want to download: 
+<br><br>
+
+<ul>
+<li class=fi><i>jconnect52.zip </i>-- jConnect
+
+5.2 driver, English documentation, and sample code 
+</li>
+<li class=ds><i>jconnect55.zip</i> -- jConnect
+
+5.5 driver, English documentation, and sample code 
+</li>
+<li class=ds><i>docsEN.zip</i> -- jConnect
+
+documentation (English)
+</li>
+<li class=ds><i>docsINT.zip</i> -- jConnect
+
+documentation in other languages (French, German, and Japanese) 
+
+</li>
+</ul>
+
+</li>
+
+<li class=ds>Download the <i>zip</i> files using
+
+your browser. 
+</li>
+
+<li class=ds>Extract the <i>zip</i> files into
+
+a directory on your machine.
+<br><br>
+To extract <i>zip</i> files, you need a <i>zip</i>-file
+
+extraction utility. Most UNIX and Linux platforms provide an <b>unzip</b> utility
+
+as part of their standard tools. Windows users can use WinZip.
+</li>
+
+<li class=ds>After installing jConnect:
+<br><br>
+
+<ul>
+<li class=fi>Set the JDBC_HOME and CLASSPATH
+
+environment variables. See "Setting Environment Variables" on
+
+page 10.
+</li>
+<li class=ds>Review your installation contents. See "Reviewing
+
+Installation Contents" on page 15.
+
+</li>
+</ul>
+
+</li>
+</ol>
+<br>
+<A NAME="BABICFCB"></A><p><img src="images/proc.gif" width=17 height=17 border=0 align="bottom" alt="Steps"> lnstalling jConnect
+
+from a CD</p>
+<p><p><IMG SRC="images/note.gif" width=17 height=17 border=0 align="bottom" alt="Note">&nbsp;&nbsp; Use these instructions <i>only</i>
+ if
+
+you requested a jConnect CD because you cannot download jConnect
+
+from the Web. Do not use these instructions to install the version
+
+of jConnect included with Adaptive Server Enterprise or other Sybase
+
+products. Instead, use the installation guide provided with the product.</P>
+</p>
+<ol type=1><li class=fi>Log in to the machine on which you want
+
+to install jConnect. Use a login with Administrator privileges or
+
+the ID you use for all installations.
+</li>
+
+<li class=ds>Place the Sybase jConnect CD in the CD-ROM drive.
+</li>
+
+<li class=ds>Access the CD from your system:
+<br><br>
+For UNIX or Linux:
+<br><br>
+
+<ul>
+<li class=fi>Mount the CD by typing the command for
+
+your platform.
+
+</li>
+</ul>
+
+<br><br>
+For Windows:
+<br><br>
+
+<ul>
+<li class=fi>Use My Computer or the Windows Explorer
+
+to access the CD-ROM drive.
+
+</li>
+</ul>
+
+</li>
+
+<li class=ds>When you can view the contents of the CD, click
+
+the name of the product(s) you want to install: 
+<br><br>
+
+<ul>
+<li class=fi><i>jconnect52.zip</i> -- jConnect
+
+5.2 driver, English documentation, and sample code
+</li>
+<li class=ds><i>jconnect55.zip </i>-- jConnect
+
+5.5 driver, English documentation, and sample code
+</li>
+<li class=ds><i>docsEN.zip</i> -- jConnect
+
+documentation (English)
+</li>
+<li class=ds><i>docsINT.zip</i> -- jConnect
+
+documentation in other languages (French, German, and Japanese) 
+
+</li>
+</ul>
+
+</li>
+
+<li class=ds>Extract the <i>zip</i> files into
+
+a directory on your machine.
+<br><br>
+To extract <i>zip</i> files, you need a <i>zip</i>-file
+
+extraction utility. Most UNIX and Linux platforms provide an <b>unzip</b> utility
+
+as part of their standard tools. Windows users can use WinZip. 
+</li>
+
+<li class=ds>After installing jConnect:
+<br><br>
+
+<ul>
+<li class=fi>Set the JDBC_HOME and CLASSPATH
+
+environment variables. See "Setting Environment Variables" on
+
+page 10.
+</li>
+<li class=ds>Review your installation contents. See "Reviewing
+
+Installation Contents" on page 15.
+
+</li>
+</ul>
+<br>
+</li>
+</ol>
+<br>
+<A NAME="BABJIBHE"></A><h2>Set environment variables</h2>
+<p>To use the jConnect classes you installed, you must set the
+
+JDBC_HOME and CLASSPATH environment variables.</p>
+<A NAME="TI18"></A><h3>Setting JDBC_HOME</h3>
+<p>JDBC_HOME represents the directory in which you install
+
+jConnect. </p>
+<p><IMG SRC="images/note.gif" width=17 height=17 border=0 align="bottom" alt="Note">&nbsp;&nbsp; The <i>zip</i> file is not aware of your
+
+directory structure and installs everything below a directory with
+
+the specific jConnect driver's name.</P>
+<p>For example, if you unzipped <i>jconnect55.zip</i> in <i>C:\Sybase</i> on
+
+Windows, you would set JDBC_HOME to: </p>
+<p>
+<pre>C:\Sybase\jConnect-5_5</pre>
+</p>
+<p>On UNIX or Linux, if you installed the <i>zip</i> file
+
+into <i>/usr/local/Sybase</i>,
+
+you would set JDBC_HOME to:</p>
+<p>
+<pre>usr/local/Sybase/jConnect-5_5</pre>
+</p>
+<A NAME="CHEDJEGG"></A><h3>Setting the CLASSPATH</h3>
+<p><IMG SRC="images/note.gif" width=17 height=17 border=0 align="bottom" alt="Note">&nbsp;&nbsp; If you are using JRE or jView instead of JDK, see the
+
+documentation for those products for instructions on setting the
+
+CLASSPATH variable.</P>
+<p>CLASSPATH is the location of the jConnect runtime classes
+
+and/or <i>jar</i> files, and the Java home
+
+library for JDK 1.2.x or later. This section describes what you
+
+need in your CLASSPATH depending on which versions of JDK and jConnect
+
+you are using.</p>
+<p><IMG SRC="images/note.gif" width=17 height=17 border=0 align="bottom" alt="Note">&nbsp;&nbsp; On Windows NT, Windows 95, and older Windows systems,
+
+make sure that file and directory names are no longer than eight
+
+characters plus a three-character suffix ("8.3 format"),
+
+or that you use abbreviated ("mangled") names as
+
+displayed in a DOS directory listing (for example, <i>progra~1 </i>instead
+
+of <i>program files</i>).</P>
+<p>To use jConnect 5.x with JDK versions 1.2 and later, set the
+
+CLASSPATH:</p>
+<p>
+<ul>
+<li class=fi>On UNIX or Linux:
+<br><br>
+<i>$JDBC_HOME/classes/jconn2.jar</i>
+</li>
+<li class=ds>On Windows:
+<br><br>
+<i>%JDBC_HOME%\classes\jconn2.jar</i>
+
+</li>
+</ul>
+</p>
+<p>JDK versions 1.2 and later do not require you to set the location
+
+of the Java runtime classes in your CLASSPATH.</p>
+<p>To run the samples or the TDS-tunnelling servlet, set the
+
+CLASSPATH environment variable:</p>
+<p>
+<ul>
+<li class=fi>On UNIX or Linux:
+<br><br>
+<i>$JDBC_HOME/classes/jconn2.jar:$JDBC_HOME/classes</i>
+</li>
+<li class=ds>On Windows:
+<br><br>
+<i>%JDBC_HOME%\classes\jconn2.jar;%JDBC_HOME%\classes</i> 
+
+</li>
+</ul>
+</p>
+<p><IMG SRC="images/note.gif" width=17 height=17 border=0 align="bottom" alt="Note">&nbsp;&nbsp; Sybase does not recommend running JDK 1.1.x with jConnect
+
+5.x.</P>
+<p>In addition, the CLASSPATH should include the location of
+
+any application classes you have defined.</p>
+<p>As explained in the next section, if you use Netscape, some
+
+restrictions may apply to the way you set your CLASSPATH environment
+
+variable.</p>
+<A NAME="TI19"></A><h4>Restrictions when using Netscape</h4>
+<p>The Java VM security manager will not allow a version of jConnect
+
+installed in your local file system to create a connection to a
+
+server, even if the server is your local system. This can create
+
+a problem if you use Netscape to run an applet that uses jConnect.</p>
+<p>When Netscape needs to load jConnect to create a connection
+
+to a server, it looks for a CLASSPATH defined in its environment
+
+to find the jConnect classes. If it finds a CLASSPATH that you have
+
+defined to point to your local jConnect installation, it loads jConnect
+
+directly from the local file system, rather than from the server,
+
+and tries to create a connection. This generates a security error
+
+and the connection fails.</p>
+<p>Therefore, if you are using Netscape to run jConnect applets,
+
+do not set the CLASSPATH to the local jConnect directory.</p>
+<A NAME="BABDFIDJ"></A><h2>Install stored procedures</h2>
+<p>For jConnect to function properly, you must install stored
+
+procedures and tables on the Adaptive Server Enterprise or Adaptive
+
+Server Anywhere database to which your application will be connecting.
+
+jConnect provides the following scripts to install the required
+
+stored procedures and tables:
+<ul>
+<li class=fi><i>sql_server.sql</i> installs
+
+stored procedures on Adaptive Server Enterprise versions 11.9.2
+
+and earlier.
+</li>
+<li class=ds><i>sql_server12.sql</i> installs
+
+stored procedures on Adaptive Server Enterprise version 12.0.
+</li>
+<li class=ds><i>sql_server12.5.sql</i> installs
+
+stored procedures on Adaptive Server Enterprise versions 12.5.x.
+</li>
+<li class=ds><i>sql_asa.sql</i> installs
+
+stored procedures on SQL Anywhere and Adaptive Server Anywhere databases.
+
+</li>
+</ul>
+</p>
+<p>To run the scripts: 
+<ol>
+<li class=fi>Make
+
+sure that your JAVA_HOME, JDBC_HOME, and CLASSPATH environment
+
+variables are set.
+</li>
+<li class=ds>To connect to a SQL Anywhere database earlier than
+
+version 6.0, start an Open Server gateway.
+</li>
+<li class=ds>Use the <b>IsqlApp</b> sample application
+
+according to the instructions in the following sections, based on
+
+the target database and your platform.
+
+</li>
+</ol>
+</p>
+<A NAME="TI20"></A><h3>On an Adaptive Server Enterprise database</h3>
+<p>To install stored procedures for metadata in an Adaptive Server
+
+Enterprise database using Windows, go to a DOS prompt and enter
+
+the following command on one line from the <i>%JDBC_HOME%\classes</i> directory:</p>
+<p><strong>Adaptive Server Enterprise version 12.5.x:</strong>
+<pre>java IsqlApp -U sa -P <i>password</i> -S  jdbc:sybase:
+     Tds:[<i>hostname</i>]:[<i>port</i>] -I %JDBC_HOME%\sp\sql_server12.5.sql  -c go</pre>
+<strong>Adaptive Server Enterprise version 12.0:</strong>
+<pre>java IsqlApp -U sa -P <i>password</i> -S  jdbc:sybase:
+     Tds:[<i>hostname</i>]:[<i>port</i>] -I %JDBC_HOME%\sp\sql_server12.sql  -c go</pre>
+<strong>Adaptive Server Enterprise version 11.9.2
+
+and earlier:</strong>
+<pre>java IsqlApp -U  sa -P <i>password</i> -S jdbc:sybase:
+     Tds:[<i>hostname</i>]:[<i>port</i>] -I %JDBC_HOME%\sp\sql_server.sql  -c go</pre>
+</p>
+<p>On UNIX or Linux, enter the following command from your <i>$JDBC_HOME/classes</i> directory:</p>
+<p><strong>Adaptive Server Enterprise version 12.5.x:</strong>
+<pre>java IsqlApp -U sa -P <i>password</i> -S  jdbc:sybase:
+     Tds:[<i>hostname</i>]:[<i>port</i>] -I $JDBC_HOME/sp/sql_server12.5.sql  -c go</pre>
+<strong>Adaptive Server Enterprise version 12.0:</strong>
+<pre>java IsqlApp -U sa -P <i>password</i> -S  jdbc:sybase:
+     Tds:[<i>hostname</i>]:[<i>port</i>] -I $JDBC_HOME/sp/sql_server12.sql  -c go</pre>
+<strong>Adaptive Server Enterprise version 11.9.2
+
+and earlier:</strong>
+<pre>java IsqlApp -U  sa -P <i>password</i> -S jdbc:sybase:
+     Tds:[<i>hostname</i>]:[<i>port</i>] -I $JDBC_HOME/sp/sql_server.sql  -c go</pre>
+</p>
+<A NAME="TI21"></A><h3>On a SQL Anywhere or Adaptive Server Anywhere database</h3>
+<p>To install stored procedures for metadata in a SQL Anywhere
+
+or Adaptive Server Anywhere database using Windows, go to a DOS
+
+prompt and enter the following command on one line from the <i>%JDBC_HOME%\classes</i> directory: 
+<pre>java IsqlApp -U dba -P <i>password</i> -S  jdbc:sybase:
+     Tds:[<i>hostname</i>]:[<i>port</i>] -I %JDBC_HOME%\sp\sql_asa.sql  -c go</pre>
+</p>
+<p>On a UNIX or Linux system, enter the following command on
+
+one line from your <i>$JDBC_HOME/classes</i> directory: 
+<pre>java IsqlApp -U dba -P <i>password</i> -S  jdbc:sybase:
+     Tds:[<i>hostname</i>]:[<i>port</i>] -I $JDBC_HOME/sp/sql_asa.sql  -c go</pre>
+</p>
+<A NAME="BABBIDCD"></A><h2>Review the installation contents</h2>
+<p>After completing the jConnect installation, review the contents
+
+listed in this section.</p>
+<A NAME="TI22"></A><h3>Packages</h3>
+<p>For jConnect version 5.x, the following packages are found
+
+inside <i>jar</i> files: <i>jconn2.jar</i> for
+
+the release build,<i> jconn2d.jar</i> for the debug
+
+build.</p>
+<p>
+<ul>
+<li class=fi><b>com.sybase.jdbc2.jdbc</b>
+</li>
+<li class=ds><b>com.sybase.jdbc2.tds</b>
+</li>
+<li class=ds><b>com.sybase.jdbc2.timedio</b>
+</li>
+<li class=ds><b>com.sybase.jdbc2.utils</b>
+</li>
+<li class=ds><b>com.sybase.jdbcx</b>
+
+</li>
+</ul>
+</p>
+<p>The jConnect driver, <b>com.sybase.jdbc2.jdbc.SybDriver</b>,
+
+is in the <b>com.sybase.jdbc2.jdbc</b> package.</p>
+<A NAME="TI23"></A><h3>Directories and files</h3>
+<p><A HREF="igrbp4.htm#CHEHDHJC">Table 1-3</A> lists the
+
+directories and files in <i>jconnect55.zip</i>.</p>
+<A NAME="CHEHDHJC"></A><table cellspacing=0 cellpadding=6 border=1 frame="void" rules="all"><caption>Table 1-4: jconnect55.zip installation</caption>
+<tr><th align="left" valign=bottom>Name
+</th>
+<th align="left" valign=bottom>Type
+</th>
+<th align="left" valign=bottom>Description
+</th>
+</tr>
+<tr><td valign=top><i>jconnect-5_5</i>
+</td>
+<td valign=top>Directory
+</td>
+<td valign=top>Contains all of the jConnect version
+
+5.5 files and subdirectories.
+</td>
+</tr>
+<tr><td valign=top><i>classes</i>
+</td>
+<td valign=top>Subdirectory
+</td>
+<td valign=top>The following jConnect
+
+5.5 components are installed in the <i>classes</i> subdirectory: 
+<ul>
+<li class=fi><i>jconn2.jar </i>file
+
+that contains jConnect 5.5 classes.
+</li>
+<li class=ds><i>sample2</i> subdirectory with jConnect
+
+5.5 class files for sample applets and applications, including the <b>Isql</b> applet.
+</li>
+<li class=ds><i>gateway2</i> subdirectory for compiled
+
+TDS-tunnelling servlet
+
+</li>
+</ul>
+
+</td>
+</tr>
+<tr><td valign=top><i>devclasses</i>
+</td>
+<td valign=top>Subdirectory
+</td>
+<td valign=top><i>jconn2d.jar</i> file
+
+that contains the same jConnect 5.5 components as <i>jconn2.jar</i>,
+
+but debug mode is turned on.
+</td>
+</tr>
+<tr><td valign=top><i>docs</i>
+</td>
+<td valign=top>Subdirectory
+</td>
+<td valign=top>Contains the <i>en</i> subdirectory,
+
+which contains the English javadoc documentation, and the <i>en/progref</i> subdirectory,
+
+which contains the <i> jConnect for JDBC Programmer's
+
+Reference</i> in HTML and PDF format.
+</td>
+</tr>
+<tr><td valign=top><i>gateway2</i>
+</td>
+<td valign=top>Subdirectory
+</td>
+<td valign=top>Contains source code for
+
+the TDS-tunnelling servlet.
+</td>
+</tr>
+<tr><td valign=top><i>sample2</i>
+</td>
+<td valign=top>Subdirectory
+</td>
+<td valign=top>Contains source code for
+
+sample Java applications.
+</td>
+</tr>
+<tr><td valign=top><i>sp</i>
+</td>
+<td valign=top>Subdirectory
+</td>
+<td valign=top>Contains <b>isql</b> scripts
+
+that install stored procedures for function escapes and <b>DatabaseMetaData</b> methods
+
+on a database server. The scripts are: 
+<ul>
+<li class=fi><b>sql_asa.sql</b> (Adaptive
+
+Server Anywhere)
+</li>
+<li class=ds><b>sql_server12.5.sql</b> (Adaptive
+
+Server Enterprise version 12.5.x)
+</li>
+<li class=ds><b>sql_server12.sql</b> (Adaptive
+
+Server Enterprise version 12.0)
+</li>
+<li class=ds><b>sql_server.sql</b> (pre-version
+
+12.0 Adaptive Server Enterprise)
+
+</li>
+</ul>
+
+</td>
+</tr>
+<tr><td valign=top><i>tools</i>
+</td>
+<td valign=top>Subdirectory
+</td>
+<td valign=top>Contains a perl script (<i>decode-tli</i>)
+
+that UNIX or Linux users can apply to parse an <i>interfaces</i> file
+
+into a readable format.
+</td>
+</tr>
+<tr><td valign=top><i>netimpct.gif</i>
+</td>
+<td valign=top>Graphic file
+</td>
+<td valign=top>jConnect graphic.
+</td>
+</tr>
+<tr><td valign=top><i>index.html</i>
+</td>
+<td valign=top>HTML file
+</td>
+<td valign=top>Contains links to jConnect documentation
+
+and to jConnect samples.
+</td>
+</tr>
+</table>
+<p><A HREF="igrbp4.htm#BABFDBCC">Table 1-4</A> lists
+
+the directories and files in <i>jconnect52.zip</i>.</p>
+<A NAME="BABFDBCC"></A><table cellspacing=0 cellpadding=6 border=1 frame="void" rules="all"><caption>Table 1-5: jconnect52.zip installation</caption>
+<tr><th align="left" valign=bottom>Name
+</th>
+<th align="left" valign=bottom>Type
+</th>
+<th align="left" valign=bottom>Description
+</th>
+</tr>
+<tr><td valign=top><i>jconnect-5_2</i>
+</td>
+<td valign=top>Directory
+</td>
+<td valign=top>Contains all of the jConnect version
+
+5.2 files and subdirectories.
+</td>
+</tr>
+<tr><td valign=top><i>classes</i>
+</td>
+<td valign=top>Subdirectory
+</td>
+<td valign=top>The following jConnect
+
+5.2 components are installed in the <i>classes</i> subdirectory: 
+<ul>
+<li class=fi><i>jconn2.jar </i>file
+
+that contains jConnect 5.2 classes.
+</li>
+<li class=ds><i>sample2</i> subdirectory with jConnect
+
+5.2 class files for sample applets and applications, including the <b>Isql</b> applet.
+</li>
+<li class=ds><i>gateway2</i> subdirectory for compiled
+
+TDS-tunnelling servlet
+
+</li>
+</ul>
+
+</td>
+</tr>
+<tr><td valign=top><i>devclasses</i>
+</td>
+<td valign=top>Subdirectory
+</td>
+<td valign=top><i>jconn2d.jar</i> file
+
+that contains the same jConnect 5.2 components as <i>jconn2.jar</i>,
+
+but debug mode is turned on.
+</td>
+</tr>
+<tr><td valign=top><i>docs</i>
+</td>
+<td valign=top>Subdirectory
+</td>
+<td valign=top>Contains the <i>en</i> subdirectory,
+
+which contains the English javadoc documentation, and the <i>en/progref</i> subdirectory,
+
+which contains the <i> jConnect for JDBC Programmer's
+
+Reference</i> in HTML and PDF format.
+</td>
+</tr>
+<tr><td valign=top><i>gateway2</i>
+</td>
+<td valign=top>Subdirectory
+</td>
+<td valign=top>Contains source code for
+
+the TDS-tunnelling servlet.
+</td>
+</tr>
+<tr><td valign=top><i>sample2</i>
+</td>
+<td valign=top>Subdirectory
+</td>
+<td valign=top>Contains source code for
+
+sample Java applications.
+</td>
+</tr>
+<tr><td valign=top><i>sp</i>
+</td>
+<td valign=top>Subdirectory
+</td>
+<td valign=top>Contains <b>isql</b> scripts
+
+that install stored procedures for function escapes and <b>DatabaseMetaData</b> methods
+
+on a database server. The scripts are: 
+<ul>
+<li class=fi><b>sql_asa.sql</b> (Adaptive
+
+Server Anywhere)
+</li>
+<li class=ds><b>sql_server12.5.sql</b> (Adaptive
+
+Server Enterprise version 12.5.x)
+</li>
+<li class=ds><b>sql_server12.sql</b> (Adaptive
+
+Server Enterprise version 12.0)
+</li>
+<li class=ds><b>sql_server.sql</b> (pre-version
+
+12.0 Adaptive Server Enterprise)
+
+</li>
+</ul>
+
+</td>
+</tr>
+<tr><td valign=top><i>tools</i>
+</td>
+<td valign=top>Subdirectory
+</td>
+<td valign=top>Contains a perl script (<i>decode-tli</i>)
+
+that UNIX or Linux users can apply to parse an <i>interfaces</i> file
+
+into a readable format.
+</td>
+</tr>
+<tr><td valign=top><i>netimpct.gif</i>
+</td>
+<td valign=top>Graphic file
+</td>
+<td valign=top>jConnect graphic.
+</td>
+</tr>
+<tr><td valign=top><i>index.html</i>
+</td>
+<td valign=top>HTML file
+</td>
+<td valign=top>Contains links to jConnect documentation
+
+and to jConnect samples.
+</td>
+</tr>
+</table>
+<A NAME="TI24"></A><h3>JDBC 2.0 samples</h3>
+<p>You can find JDBC 2.0 code samples in the <i>sample2</i> subdirectory
+
+under the jConnect installation directory. For more information,
+
+see "Running jConnect Sample Programs and Code," in
+
+Appendix B of the <i> jConnect for JDBC Programmer's
+
+Reference</i>.</p>
+<A NAME="X16792"></A><h2>Test the jConnect installation</h2>
+<p>After jConnect is installed, test the installation by running
+
+the <b>Version</b> program.</p>
+<p><IMG SRC="images/note.gif" width=17 height=17 border=0 align="bottom" alt="Note">&nbsp;&nbsp; The <b>Version</b> program connects to a
+
+demonstration database that Sybase has made available on the Internet.
+
+You must have Internet access to run the <b>Version</b> program
+
+successfully, or explicitly run it with <b>[-U <i>username</i>]</b> <br><b>[-P <i>password</i>]</b><b> [-S <i>servername</i>]</b> commands
+
+to point it to your database.</P>
+<p>From the DOS prompt for Windows, or at a UNIX or Linux prompt,
+
+change to the JDBC_HOME directory. Make sure your CLASSPATH
+
+variable is set for running the sample programs--see <A HREF="igrbp4.htm#CHEDJEGG">"Setting the CLASSPATH"</A> for details--and
+
+enter the following text:</p>
+<p>
+<pre>java sample2.SybSample Version</pre>
+</p>
+<p>This should bring up a SybSample window. At the top of the
+
+window, the Running Sybase Sample text box should display the source
+
+code for <b>Version</b> as the program runs. The middle
+
+text box-- Sample Output--should display version
+
+information. For example: 
+<pre>Using JDBC  driver version 5.5
+jConnect (TM) for JDBC(TM)/5.5...</pre>
+</p>
+<p>
+<ul>
+<li class=fi>If the previous message
+
+appears in the Sample Output text box, you have successfully installed
+
+jConnect.
+</li>
+<li class=ds>If you get the previous message but the source code
+
+for <b>Version</b> does not appear in the Running Sybase
+
+Sample text box, and the Status text box at the bottom of the window
+
+shows: 
+<pre>java.io.FileNotFoundException:  Version.java</pre>
+
+<br><br>
+you successfully installed jConnect but probably did not enter
+
+the command to run the <b>Version</b> program from the <i>sample2</i> directory
+
+under <i>JDBC_HOME</i>.
+</li>
+<li class=ds>If the SybSample window does not appear and you
+
+get the following error message,
+<br><br>
+
+<pre>Can't find class sample2.SybSample </pre>
+
+<br><br>
+check your CLASSPATH to be sure that it is set correctly.
+</li>
+<li class=ds>Using Windows, if the SybSample window does not
+
+come up, and you get one of the following error messages,   
+<pre>"Name specified is not recognized as  an internal or external command" (Windows NT)</pre>
+
+<br><br>
+
+<pre>"Bad command or file  name" (Windows 95)</pre>
+
+<br><br>
+make sure that your path includes the <i>bin</i> subdirectory
+
+of your JDK home directory.
+<br><br>
+When you have verified that your installation was successful,
+
+click Close to exit the SybSample window.
+
+</li>
+</ul>
+</p>
+<A NAME="TI25"></A><h3>Verifying the jConnect version</h3>
+<p>To check the exact build version of your jConnect installation,
+
+execute the following command from your <i>$JDBC_HOME/classes</i> directory
+
+on UNIX or Linux or your <i>%JDBC_HOME%\classes</i> directory
+
+on Windows:</p>
+<p>
+<pre>java -jar jconn2.jar</pre>
+</p>
+<p>This command prints a version string like the following:</p>
+<p>
+<pre>jConnect (TM) for JDBC(TM)/5.5(Build 25200/P/EBF11473/JDK12/Tue  Sep 16 15:18:30 2003</pre>
+</p>
+<p>Here the version number is 5.5. The 5-digit number following
+
+the letters "EBF" indicates the exact version of jConnect. This
+
+number increases as subsequent EBFs are released. Sybase recommends
+
+that you check the Sybase download Web site periodically for updated
+
+versions of jConnect and download the latest version.</p>
+<P>&nbsp;</P><hr noshade size=1>
+<table cols=3><tr><td colspan=2 align=left>
+Copyright &copy; 2003 Sybase, Inc. All rights reserved.&nbsp;&nbsp;&nbsp;
+</td><td colspan=1>
+<A HREF="igrbp5.htm"><IMG SRC="images/arrow-right.gif" ALIGN=right></A>
+</td></tr></table>
+</BODY>
+</HTML>
+

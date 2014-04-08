@@ -1,0 +1,203 @@
+
+<html>
+<!-- 
+Copyright (C) 2003. Sybase Inc. All rights reserved.
+Programmer's Reference
+jConnect&#153; for JDBC&#153;
+-->
+
+<HEAD>
+<script language="JavaScript">
+<!--
+
+if (navigator.appName == "Netscape"){
+     document.write('<LINK REL=STYLESHEET HREF="netscape.css" TYPE="text/javascript">');
+     }
+else{
+     document.write('<LINK REL=STYLESHEET HREF="default.css" TYPE="text/css">');
+     }
+
+//-->
+</script>
+<NOSCRIPT><LINK REL=STYLESHEET HREF="default.css" TYPE="text/css"></NOSCRIPT>
+<TITLE>Migrating jConnect applications</TITLE></HEAD>
+<BODY bgproperties="FIXED" bgcolor="#ffffe2">
+<P ALIGN=RIGHT><A HREF="prjdbcp24.htm"><IMG SRC="images/arrow-left.gif" align=top></A>&nbsp;&nbsp;<A HREF="prjdbcp26.htm"><IMG SRC="images/arrow-right.gif" align=top></A></P>
+
+<P ALIGN=LEFT><I>Chapter 5  Migrating  jConnect Applications</I><HR NOSHADE SIZE=1></P>
+<A NAME="X38009"></A><h1>Migrating jConnect applications</h1>
+<A NAME="CHDGGFAG"></A><h2>Migrating applications to  jConnect 4.5 and 5.5</h2>
+<p>If
+
+you upgrade to jConnect 4.5 or 5.5 from earlier versions, the following table
+
+shows which upgrade paths require you to make changes and recompile
+
+the source code.</p>
+<p><b>Legend:</b></p>
+<p><b>A   </b>  Change
+
+CLASSPATH for new installation structure</p>
+<p><b>B</b>     Recompile
+
+to use new jConnect 5.x driver</p>
+<p><b>C</b>     Verify
+
+that the new driver is first in your CLASSPATH.</p>
+<p>See below for additional details.</p>
+<A NAME="TI86"></A><table cellspacing=0 cellpadding=6 border=1 frame="void" rules="all"><tr><th align="left" valign=bottom>Upgrading
+
+from 
+</th>
+<th align="left" valign=bottom>To jConnect
+
+version
+</th>
+</tr>
+<tr><td valign=top>jConnect
+
+version
+</td>
+<td valign=top><i>4.5</i>
+
+</td>
+<td valign=top><i>5.2</i>
+
+</td>
+<td valign=top><i>5.5</i>
+
+</td>
+</tr>
+<tr><td valign=top><i>4.2/4.5</i>
+
+</td>
+<td valign=top>A
+</td>
+<td valign=top>BC
+</td>
+<td valign=top>BC
+</td>
+</tr>
+<tr><td valign=top><i>5.2</i>
+
+</td>
+<td valign=top>-
+</td>
+<td valign=top>-
+</td>
+<td valign=top>A
+</td>
+</tr>
+</table>
+<A NAME="CHDGIEFC"></A><h4>A. Use the new Sybase extensions.</h4>
+<p>
+<ol>
+<li class=fi>Change package imports
+
+from
+<br><br>
+<b>import com.sybase.jdbc.*</b>
+<br><br>
+to
+<br><br>
+<b>import com.sybase.jdbcx.*;</b>
+</li>
+<li class=ds>Use new Sybase extentions APIs. See <A HREF="prjdbcp26.htm">"Sybase extensions "</A>.
+
+</li>
+</ol>
+</p>
+<A NAME="TI87"></A><h4>A. Change CLASSPATH for new JDBC_HOME installation  structure</h4>
+<p>Set JDBC_HOME to the top directory of the jConnect
+
+driver you installed. <br>For example:</p>
+<p><strong>For jConnect 4.5:</strong></p>
+<p>
+<pre>JDBC_HOME=jConnect-4_5</pre>
+<strong>For
+
+jConnect 5.5:</strong></p>
+<p>
+<pre>JDBC_HOME=&lt;jConnect  installation directory&gt;</pre>
+</p>
+<p>For more information on setting JDBC_HOME, see "Setting
+
+Environment Variables" in Chapter 1 of the <i>jConnect
+
+for JDBC Installation Guide</i>.</p>
+<A NAME="TI88"></A><table cellspacing=0 cellpadding=6 border=1 frame="void" rules="all"><tr><th align="left" valign=bottom>Version change
+</th>
+<th align="left" valign=bottom>
+<br><br>
+CLASSPATH includes
+</th>
+</tr>
+<tr><td valign=top>From
+</td>
+<td valign=top>4.2/4.5
+</td>
+<td valign=top><i>JDBC_HOME/classes</i>
+</td>
+</tr>
+<tr><td valign=top>To
+</td>
+<td valign=top>5.2
+</td>
+<td valign=top><i>JDBC_HOME/jconn2.jar</i>
+</td>
+</tr>
+<tr><td valign=top>From
+</td>
+<td valign=top>4.2
+</td>
+<td valign=top><i>JDBC_HOME/classes</i>
+</td>
+</tr>
+<tr><td valign=top>To
+</td>
+<td valign=top>4.5
+</td>
+<td valign=top><i>JDBC_HOME/classes</i>
+</td>
+</tr>
+<tr><td valign=top>From
+</td>
+<td valign=top>5.2
+</td>
+<td valign=top><i>JDBC_HOME/classes/jconn2.jar</i>
+</td>
+</tr>
+<tr><td valign=top>To
+</td>
+<td valign=top>5.5
+</td>
+<td valign=top><i>JDBC_HOME/classes/jconn2.jar</i>
+</td>
+</tr>
+</table>
+<A NAME="TI89"></A><h4>B. Recompile to use new jConnect 5.x driver</h4>
+<p>Change the source code where the driver is loaded from:
+<pre>Class.forName("com.sybase.jdbc.SybDriver");</pre>
+to
+<pre>Class.forName("com.sybase.jdbc2.jdbc.SybDriver");</pre>
+</p>
+<A NAME="TI90"></A><h4>C. Verify that new jConnect driver is in CLASSPATH</h4>
+<p>To verify that the new jConnect driver is first in your CLASSPATH,
+
+display your CLASSPATH and find the directory where you installed
+
+the new jConnect driver. </p>
+<p>Verify that the classes for the new driver (in the <i>classes/jconn2.jar</i> for
+
+5.x) appear in the CLASSPATH before the classes for any previously
+
+installed driver.</p>
+<P>&nbsp;</P><hr noshade size=1>
+<table cols=3><tr><td colspan=2 align=left>
+Copyright &copy; 2003 Sybase, Inc. All rights reserved.&nbsp;&nbsp;&nbsp;
+</td><td colspan=1>
+<A HREF="prjdbcp26.htm"><IMG SRC="images/arrow-right.gif" ALIGN=right></A>
+</td></tr></table>
+</BODY>
+</HTML>
+

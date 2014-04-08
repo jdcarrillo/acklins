@@ -1,0 +1,85 @@
+
+<html>
+<!-- 
+Copyright (C) 2003. Sybase Inc. All rights reserved.
+Programmer's Reference
+jConnect&#153; for JDBC&#153;
+-->
+
+<HEAD>
+<script language="JavaScript">
+<!--
+
+if (navigator.appName == "Netscape"){
+     document.write('<LINK REL=STYLESHEET HREF="netscape.css" TYPE="text/javascript">');
+     }
+else{
+     document.write('<LINK REL=STYLESHEET HREF="default.css" TYPE="text/css">');
+     }
+
+//-->
+</script>
+<NOSCRIPT><LINK REL=STYLESHEET HREF="default.css" TYPE="text/css"></NOSCRIPT>
+<TITLE>Stored  procedure errors</TITLE></HEAD>
+<BODY bgproperties="FIXED" bgcolor="#ffffe2">
+<P ALIGN=RIGHT><A HREF="prjdbcp17.htm"><IMG SRC="images/arrow-left.gif" align=top></A>&nbsp;&nbsp;<A HREF="prjdbcp19.htm"><IMG SRC="images/arrow-right.gif" align=top></A></P>
+
+<P ALIGN=LEFT><I>Chapter 3  Troubleshooting</I><HR NOSHADE SIZE=1></P>
+<A NAME="X34562"></A><h1>Stored  procedure errors</h1>
+<p>This section addresses problems that may arise when you are
+
+trying to use jConnect and stored procedures.</p>
+<A NAME="CHDDFEHG"></A><h2>RPC returns fewer output  parameters than registered</h2>
+<p>
+<pre>SQLState: JZ0SG - An RPC did  not return as many output parameters as the application had registered  for it.</pre>
+</p>
+<p>This error occurs if you call <b>CallableStatement.registerOutParam(
+
+)</b> for more parameters than you have declared as "OUTPUT" parameters
+
+in the stored procedure. Make sure that you have declared all of
+
+the appropriate parameters as "OUTPUT." Look at
+
+the line of code that reads: 
+<pre> create  procedure yourproc (@p1 int OUTPUT, ...</pre>
+</p>
+<p><IMG SRC="images/note.gif" width=17 height=17 border=0 align="bottom" alt="Note">&nbsp;&nbsp; If you receive this error while using Adaptive Server
+
+Anywhere (previously known as SQL Anywhere), upgrade to Adaptive
+
+Server Anywhere version 5.5.04 or later.</P>
+<A NAME="TI77"></A><h2>Fetch/state errors when output params returned</h2>
+<p>If a query does not return row data, then it should use the <b>CallableStatement.executeUpdate(
+
+)</b> or <b>execute( )</b> methods rather than
+
+the <b>executeQuery( )</b> method.</p>
+<p>As required by the JDBC standards, jConnect throws a SQL exception
+
+if an <b>executeQuery( )</b> has no result sets.</p>
+<A NAME="CHDEGBEA"></A><h2>Stored procedure executed  in unchained transaction mode</h2>
+<p>
+<pre>Sybase Error 7713 - Stored Procedure  can only be executed in unchained transaction mode.</pre>
+</p>
+<p>JDBC attempts to put the connection in <b>autocommit(true)</b> mode.
+
+The application can change the connection to chained mode using <b>Connection.setAutoCommit(false)</b> or
+
+by using a <b>"set chained on"</b> language command.
+
+This error occurs if the stored procedure was not created in a compatible
+
+mode.</p>
+<p>To fix the problem, use: 
+<pre>sp_procxmode <i>procedure_name,"</i>anymode"</pre>
+</p>
+<P>&nbsp;</P><hr noshade size=1>
+<table cols=3><tr><td colspan=2 align=left>
+Copyright &copy; 2003 Sybase, Inc. All rights reserved.&nbsp;&nbsp;&nbsp;
+</td><td colspan=1>
+<A HREF="prjdbcp19.htm"><IMG SRC="images/arrow-right.gif" ALIGN=right></A>
+</td></tr></table>
+</BODY>
+</HTML>
+

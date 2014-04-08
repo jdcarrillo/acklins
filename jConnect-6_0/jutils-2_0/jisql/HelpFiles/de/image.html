@@ -1,0 +1,87 @@
+<HTML>
+<BODY bgcolor="#FFFFFF">
+<BLOCKQUOTE>
+  <table width="75%" border="0">
+    <tr> 
+      <td> <font face="Default" size="2"><a href="toc.html"><b>Inhaltsverzeichnis</b></a></font> 
+      </td>
+      <td> <font face="Default" size="2"><a href="overview.html"><b>&Uuml;berblick</b></a></font> 
+      </td>
+      <td bgcolor="#FFFFFF"> <font face="Default" size="2"><b><a href="menu.html">Men&uuml;s</a></b></font> 
+      </td>
+      <td> <font face="Default" size="2"><b><a href="windows.html">Fenster</a></b></font> 
+      </td>
+      <td> <font face="Default" size="2"><b><a href="button.html">Schaltfl&auml;chen</a></b></font> 
+      </td>
+    </tr>
+  </table>
+<hr>
+  <h2><font face="Default" color="#000099">Bildspalten (Image-Objektspalten)</font></h2>
+  <p><font face="Default" size="2">Wenn Sie Daten abrufen, die eine Bildspalte enthalten, und
+die Ergebnismenge in einer Tabelle, und nicht einem
+Textfeld pr&auml;sentiert wird, (<A
+HREF="table.html">Ausgabe als Tabelle oder Text</A>), zeigt die Bildspalte die
+Bin&auml;rdaten nicht. Anstatt dessen wird die Tabelle
+&quot;Klick mich - Ich bin ein Image&quot; benannt. </font></p>
+  <p><font face="Default" size="2">Mit einem Klick auf die Tabellenzelle wird ein Fenster
+ge&ouml;ffnet, in dem vier Auswahlm&ouml;glichkeiten pr&auml;sentiert
+werden: </font> </p>
+  <ul>
+    <li> <font face="Default" size="2"><b>Zeige 'image'-Daten als Bild</b> - Wenn die
+"image"-Daten ein Bild im Format gif oder jpg darstellen,
+wird das Bild in einem Bildfenster pr&auml;sentiert. </font> 
+    <li> <font face="Default" size="2"><b>Zeige 'image'-Daten im Hex-Format</b> - Damit wird ein
+Fenster ge&ouml;ffnet, in dem die Bilddaten im Hex-Format
+dargestellt werden. So w&uuml;rde die Anzeige auch in
+<b>isql</b> erfolgen. </font> 
+    <li> <font face="Default" size="2"><b>'Image'-Daten in Datei sichern</b> - Die Daten werden in
+einer Datei gespeichert und k&ouml;nnen sp&auml;ter weiterverarbeitet
+werden. Dies ist beispielsweise bei einer Tondatei oder bei
+Video-Daten sinnvoll, f&uuml;r die Sie spezielle Anwendungen
+verwenden wollen. </font> 
+    <li> <font face="Default" size="2"><b>Nichts tun</b> - Damit wird das Fenster mit den
+Auswahlm&ouml;glichkeiten geschlossen. </font>
+  </ul>
+  <h2><font color="#000099">Objektspalten</font></font></h2>
+  <p><font size="2" face="Default">Wenn eine Ergebnismenge Spalten mit Java-Objekten enth&auml;lt,
+erscheint in der Ergebnismengentabelle der Text &quot;Klick
+mich - Ich bin ein Objekt&quot;. Wenn Sie klicken, f&uuml;hrt
+<b>jisql</b> die Methode <b>toString()</b> aus, die in
+diesem Objekt definiert ist, und pr&auml;sentiert die Werte, die
+die Methode zur&uuml;ckgibt, als Daten in der Tabelle. Wenn das
+Objekt eine andere Methode als <b>toString()</b>
+verwendet, um seine Daten auszugeben, geben Sie diesen
+Namen im Register <a href="outputoptions.html">Optionen
+f&uuml;r das Ausgabefenster</a> im Fenster "Optionen" ein, d.h.
+also </font><font size="2" face="Default">&auml;ndern Sie die &quot;Methode, die im DB-Objekt
+zur Datenanzeige verwendet wird&quot; auf den Namen der
+benutzten Methode. </font></p>
+  <p><font size="2" face="Default">Wenn die Option &quot;Automatisch Daten aus DB-Java-Objekt
+extrahieren&quot; aktiviert ist, extrahiert <b>jisql</b>
+die Daten sofort, wenn Java-Objekte in der Ergebnismenge
+erkannt werden. Sie sehen die Meldung &quot;Klick
+mich&quot; nicht und brauchen auch nicht zu klicken, um die
+Daten zu erhalten. Dadurch wird die Erstellung der
+Ergebnismengentabelle verlangsamt, weil <b>jisql</b> f&uuml;r
+jede Zeile die gesamte Datenbank durchsuchen muss, um die
+Methode <b>toString()</b> (oder eine gleichwertige Methode)
+des Objekts auszuf&uuml;hren. </font> </p>
+  <hr>
+  <table width="75%" border="0">
+    <tr> 
+      <td> <font face="Default" size="2"><a href="toc.html"><b>Inhaltsverzeichnis</b></a></font> 
+      </td>
+      <td> <font face="Default" size="2"><a href="overview.html"><b>&Uuml;berblick</b></a></font> 
+      </td>
+      <td bgcolor="#FFFFFF"> <font face="Default" size="2"><b><a href="menu.html">Men&uuml;s</a></b></font> 
+      </td>
+      <td> <font face="Default" size="2"><b><a href="windows.html">Fenster</a></b></font> 
+      </td>
+      <td> <font face="Default" size="2"><b><a href="button.html">Schaltfl&auml;chen</a></b></font> 
+      </td>
+    </tr>
+  </table>
+</BLOCKQUOTE>
+</BODY>
+</HTML>
+

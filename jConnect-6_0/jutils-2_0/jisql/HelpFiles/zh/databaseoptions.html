@@ -1,0 +1,88 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+<title>Untitled Document</title>   
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; CHARSET=gb2312">
+</HEAD>
+<BODY bgcolor="#FFFFFF">
+<blockquote> <div align="left"></div>
+<table width="75%" border="0">
+  <tr>
+<td> <div align="left"><font  size="2"><a href="toc.html"><b>目录</b></a></font></div>
+    </td>
+<td> <div align="left"><font  size="2"><a href="overview.html"><b>概述</b></a></font></div>
+    </td>
+    <td bgcolor="#FFFFFF"> <div align="left"><font  size="2"><b><a href="menu.html">菜单</a></b></font></div>
+    </td>
+<td> <div align="left"><font  size="2"><b><a href="windows.html">窗口</a></b></font></div>
+    </td>
+    <td bgcolor="#FFFFFF"> <div align="left"><font  size="2"><b><a href="button.html">按钮</a></b></font></div>
+    </td>
+  </tr>
+</table>
+<hr>
+<h2><font  color="#000099">数据库选项</font></h2>
+  <p><font  size="2">用这些选项可以简便地设置常用参数。关于这些设置的使用和功能的详细信息，参见 Transact-SQL 手册。当在数据库中这些值发生变化时，并不更新这些值。</font></p>
+  <table width="85%" border="1" cellspacing="0" cellpadding="5" height="80">
+    <tr>
+      <td valign="top" width="12%" height="60"><b><i><font color="#660000"  size="2">注释</font><font color="#660000">：</font></i></b></td>
+      <td valign="top" width="88%" height="60"><font  size="2">单击<font color="#000099"><b>应用</b></font>并将命令发送到数据库后，选项的<font color="#000099"><b>打开</b></font>|<font color="#000099"><b>关闭</b></font>按钮无标记，这是因为 <b>jisql</b> 不能确定这些选项的当前状态。例如，单击“使用链接的事务”的<font color="#000099"><b>打开</b></font>并单击<b><font color="#000099">应用</font></b>，然后在“输入窗口”中执行同一语句后，并没有通知 <b>jisql</b> 选项的值已改变。</font></td>
+    </tr>
+  </table>
+  <p><font  size="2">单击<b>应用</b>保存所做的改变。<br></font></p>
+  <table width="95%" border="1" cellpadding="5" cellspacing="0" bordercolor="#999999" bordercolorlight="#999999">
+    <tr>
+    <td width="50%" valign="top" bordercolor="#999999"><b><font  size="2">选项</font></b></td>
+    <td width="50%"><b><font  size="2">说明</font></b></td>
+  </tr>
+  <tr>
+    <td width="50%" valign="top"><b><font  size="2">返回的最大行数 (rowcount)</font></b></td>
+    <td width="50%"><font  size="2">使查询（<b>选择</b>、<b>插入</b>、<b>更新</b>或<b>删除</b>）在处理完指定的行数后停止处理。要关闭此选项，请输入 0（零）。</font></td>
+  </tr>
+  <tr>
+    <td width="50%" valign="top"><b><font  size="2">返回的<i>文本</i>或<i>图像</i>的大小限制 (textsize)</font></b></td>
+    <td width="50%">
+      <p><font  size="2">以字节为单位指定对<b>选择</b>语句返回的<i>文本</i>或<i>图像</i>数据的限制。</font></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="50%" valign="top"><b><font  size="2">设置事务隔离级别 (0 - 3)</font></b></td>
+    <td width="50%">
+      <p><font size="2" >指定在事务期间数据可被其他用户访问的程度。</font></p>
+      <p><font  size="2"><b>0</b> - 在提交该事务之后其它事务才能修改数据。不过，其它事务仍能读取未提交的数据。</font></p>
+      <p><font  size="2"><b>1</b> - 在第一个事务提交改变之前而第二个事务读取某行时，不允许第一个事务修改该行。</font></p>
+      <p><font  size="2"><b>2</b> - 一个事务正在修改某行时，不允许另一个事务读取该行。</font></p>
+      <p><font  size="2"><b>3</b> - 在一个事务修改符合查询条件的一组行的数据时，不允许另一个事务读取这组行。这就确保在事务结束之前该事务读取的数据一直有效。</font></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="50%" valign="top"><b><font  size="2">显示处理的行数</font></b></td>
+      <td width="50%"><font  size="2">打开显示或关闭显示<b>插入</b>、<b>更新</b>或<b>删除</b>语句处理的行。缺省为“关闭”。</font></td>
+  </tr>
+  <tr>
+    <td width="50%" valign="top"><b><font  size="2">使用链接的事务 (chained)</font></b></td>
+    <td width="50%"><font size="2" >在链接模式中，所有的数据检索命令和修改命令（<b>删除</b>、<b>插入</b>、<b>打开</b>、<b>读取</b>、<b>选择</b>和<b>更新</b>）都开始一个事务。这种处理方法与许多 T-SQL 应用程序不兼容。缺省为“关闭”。</font></td>
+  </tr>
+  <tr>
+    <td width="50%" valign="top"><b><font  size="2">识别分隔标识符 (quoted_identifier)</font></b></td>
+    <td width="50%"><font  size="2">此选项使数据库识别分隔标识符。每次在语句中使用被引用的标识符时，必须将其括在双引号中。如果此选项设置为“打开”，请不要在字符或日期字符串前后使用双引号，而应使用单引号。要将单引号插入到列中，请使用两个连续的单引号标记。缺省为“关闭”。</font></td>
+  </tr>
+</table>
+<p><font  size="2">详细信息，参见 <i>Transact-SQL 用户指南</i>。</font></p> <div align="left">
+    <table width="75%" border="0">
+      <tr>
+<td> <div align="left"><font  size="2"><a href="toc.html"><b>目录</b></a></font></div>
+        </td>
+<td> <div align="left"><font  size="2"><a href="overview.html"><b>概述</b></a></font></div>
+        </td>
+        <td bgcolor="#FFFFFF"> <div align="left"><font  size="2"><b><a href="menu.html">菜单</a></b></font></div>
+        </td>
+<td> <div align="left"><font  size="2"><b><a href="windows.html">窗口</a></b></font></div>
+        </td>
+        <td bgcolor="#FFFFFF"> <div align="left"><font  size="2"><b><a href="button.html">按钮</a></b></font></div>
+        </td>
+      </tr>
+    </table> </div>
+</blockquote>
+</BODY>
+</HTML>

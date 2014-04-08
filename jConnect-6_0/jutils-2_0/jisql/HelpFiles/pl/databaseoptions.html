@@ -1,0 +1,88 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+<title>Dokument bez tytułu</title>
+<meta http-equiv="Content-Type" content="text/html; charset=Windows-1250">
+</head>
+<BODY bgcolor="#FFFFFF">
+<blockquote> <div align="left"></div>
+<table width="75%" border="0">
+  <tr>
+    <td> <div align="left"><font  size="2"><a href="toc.html"><b>Spis treści</b></a></font></div>
+    </td>
+    <td> <div align="left"><font  size="2"><a href="overview.html"><b>Przegląd</b></a></font></div>
+    </td>
+    <td bgcolor="#FFFFFF"> <div align="left"><font  size="2"><b><a href="menu.html">Menu</a></b></font></div>
+    </td>
+    <td> <div align="left"><font  size="2"><b><a href="windows.html">Okna</a></b></font></div>
+    </td>
+    <td bgcolor="#FFFFFF"> <div align="left"><font  size="2"><b><a href="button.html">Przyciski</a></b></font></div>
+    </td>
+  </tr>
+</table>
+<hr>
+<h2><font  color="#000099">Opcje bazy danych</font></h2>
+  <p><font  size="2">Te opcje zapewniają wygodny sposób ustawiania wartości często używanych parametrów. Szczegółowe informacje na temat sposobu użycia i przeznaczenia tych opcji można znaleźć w podręcznikach Transact-SQL. Te wartości nie są aktualizowane w wyniku ich modyfikacji w bazie danych. </font></p>
+  <table width="85%" border="1" cellspacing="0" cellpadding="5" height="80">
+    <tr>
+      <td valign="top" width="12%" height="60"><b><i><font color="#660000"  size="2">UWAGA</font><font color="#660000">:</font></i></b></td>
+      <td valign="top" width="88%" height="60"><font  size="2">Zaznaczenie przycisków <font color="#000099"> <b>Włączone</b></font>|<font color="#000099"><b>Wyłączone</b></font> odpowiadających poszczególnym opcjom zostanie usunięte po kliknięciu przycisku <font color="#000099"><b>Zastosuj</b></font> i wysłaniu polecenia do bazy danych, ponieważ program <b>jisql</b> nie dysponuje informacjami na temat aktualnego stanu tych opcji. Na przykład, jeśli po kliknięciu przycisku<font color="#000099"><b>Włączone</b></font> dla opcji &#132;Użyj transakcji związanych&#148; i kliknięciu przycisku <b><font color="#000099">Zastosuj</font></b> ta sama instrukcja zostanie powtórnie wykonana w oknie wejściowym, program <b>jisql</b> nie otrzyma powiadomienia o zmianie wartości opcji. </font></td>
+    </tr>
+  </table>
+  <p><font  size="2">Kliknij przycisk <b>Zastosuj</b>, aby zapisać zmiany.<br> </font></p>
+  <table width="95%" border="1" cellpadding="5" cellspacing="0" bordercolor="#999999" bordercolorlight="#999999">
+    <tr>
+    <td width="50%" valign="top" bordercolor="#999999"><b><font  size="2">OPCJA</font></b></td>
+    <td width="50%"><b><font  size="2">OPIS</font></b></td>
+  </tr>
+  <tr>
+    <td width="50%" valign="top"><b><font  size="2">Maksymalna liczba zwracanych wierszy (rowcount)</font></b></td>
+    <td width="50%"><font  size="2">Powoduje zatrzymanie wykonywania kwerendy (<b>select</b>, <b>insert</b>, <b>update</b> lub <b>delete</b>) po przetworzeniu określonej liczby wierszy. Aby wyłączyć tę opcję, należy wprowadzić 0 (zero).</font></td>
+  </tr>
+  <tr>
+    <td width="50%" valign="top"><b><font  size="2">Limit rozmiaru zwracanych danych typu <i>text</i> lub <i>image</i> (textsize)</font></b></td>
+    <td width="50%">
+      <p><font  size="2">Określa wyrażony w bajtach maksymalny rozmiar danych typu <i>text</i> lub <i>image</i>, jakie mogą być zwrócone w wyniku działania instrukcji <b>select</b>.</font></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="50%" valign="top"><b><font  size="2">Ustaw poziom izolacji transakcji (0 - 3)</font></b></td>
+    <td width="50%">
+      <p><font size="2" >Określa poziom, do jakiego dane w trakcie transakcji mogą być dostępne dla innych użytkowników.</font></p>
+      <p><font  size="2"><b>0</b> - Inne transakcje nie mogą modyfikować danych do czasu zatwierdzenia danej transakcji. Mogą jednak odczytywać dane w postaci niezatwierdzonej.</font></p>
+      <p><font  size="2"><b>1</b> - Zapobiega zmodyfikowaniu wiersza przez transakcję w czasie, gdy wiersz jest odczytywany przez drugą transakcję, zanim pierwsza transakcja zatwierdziła zmiany.</font></p>
+      <p><font  size="2"><b>2</b> - Zapobiega odczytaniu wiersza przez transakcję w czasie, gdy wiersz jest modyfikowany przez drugą transakcję.</font></p>
+      <p><font  size="2"><b>3</b> - Zapobiega odczytaniu przez transakcję zbioru wierszy spełniającego warunki kwerendy w czasie, gdy dane są modyfikowane przez drugą transakcję. Pozwala to zapewnić, że dane odczytywane przez transakcję zachowują aktualność do czasu zakończenia tej transakcji.</font></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="50%" valign="top"><b><font  size="2">Pokaż liczbę wierszy odpowiadających specyfikacji</font></b></td>
+      <td width="50%"><font  size="2">Powoduje włączenie lub wyłączenie wyświetlania liczby wierszy objętych działaniem instrukcji <b>insert</b>, <b>update</b> lub <b>delete</b>. Wartość domyślna to &#132;Wyłączone&#148;.</font></td>
+  </tr>
+  <tr>
+    <td width="50%" valign="top"><b><font  size="2">Użyj transakcji związanych (chained)</font></b></td>
+    <td width="50%"><font size="2" >W trybie związanym wszystkie polecenia pobierania i modyfikacji danych (<b>delete</b>, <b>insert</b>, <b>open</b>, <b>fetch</b>, <b>select</b> i <b>update</b>) powodują rozpoczęcie transakcji. Ten sposób działania jest niezgodny z wieloma aplikacjami T-SQL. Wartość domyślna to &#132;Wyłączone&#148;.</font></td>
+  </tr>
+  <tr>
+    <td width="50%" valign="top"><b><font  size="2">Rozpoznaj identyfikatory z separatorami (quoted_identifier) </font></b></td>
+    <td width="50%"><font  size="2">Ta opcja pozwala na rozpoznawanie identyfikatorów z separatorami w bazie danych. Każdorazowe użycie w instrukcji identyfikatora umieszczonego w cudzysłowie wymaga użycia podwójnego cudzysłowu. Kiedy ta opcja jest włączona, to dla ciągów znakowych lub dat nie należy stosować podwójnych cudzysłowów tylko pojedyncze. Aby wstawić pojedynczy cudzysłów w kolumnie, należy użyć dwóch następujących po sobie cudzysłowów pojedynczych. Wartość domyślna to &#132;Wyłączone&#148;. </font></td>
+  </tr>
+</table>
+<p><font  size="2">Więcej informacji można znaleźć w przewodniku użytkownika <i>Transact-SQL User's Guide</i>.</font></p> <div align="left">
+    <table width="75%" border="0">
+      <tr>
+        <td> <div align="left"><font  size="2"><a href="toc.html"><b>Spis treści</b></a></font></div>
+        </td>
+        <td> <div align="left"><font  size="2"><a href="overview.html"><b>Przegląd</b></a></font></div>
+        </td>
+        <td bgcolor="#FFFFFF"> <div align="left"><font  size="2"><b><a href="menu.html">Menu</a></b></font></div>
+        </td>
+        <td> <div align="left"><font  size="2"><b><a href="windows.html">Okna</a></b></font></div>
+        </td>
+        <td bgcolor="#FFFFFF"> <div align="left"><font  size="2"><b><a href="button.html">Przyciski</a></b></font></div>
+        </td>
+      </tr>
+    </table> </div>
+</blockquote>
+</BODY>
+</HTML>

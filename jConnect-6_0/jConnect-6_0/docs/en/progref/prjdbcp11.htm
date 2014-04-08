@@ -1,0 +1,1719 @@
+
+<html>
+<!-- 
+Copyright (C) 2003. Sybase Inc. All rights reserved.
+Programmer's Reference
+jConnect&#153; for JDBC&#153;
+-->
+
+<HEAD>
+<script language="JavaScript">
+<!--
+
+if (navigator.appName == "Netscape"){
+     document.write('<LINK REL=STYLESHEET HREF="netscape.css" TYPE="text/javascript">');
+     }
+else{
+     document.write('<LINK REL=STYLESHEET HREF="default.css" TYPE="text/css">');
+     }
+
+//-->
+</script>
+<NOSCRIPT><LINK REL=STYLESHEET HREF="default.css" TYPE="text/css"></NOSCRIPT>
+<TITLE>Implementing advanced features</TITLE></HEAD>
+<BODY bgproperties="FIXED" bgcolor="#ffffe2">
+<P ALIGN=RIGHT><A HREF="prjdbcp10.htm"><IMG SRC="images/arrow-left.gif" align=top></A>&nbsp;&nbsp;<A HREF="prjdbcp12.htm"><IMG SRC="images/arrow-right.gif" align=top></A></P>
+
+<P ALIGN=LEFT><I>Chapter 2  Programming  Information</I><HR NOSHADE SIZE=1></P>
+<A NAME="X21877"></A><h1>Implementing advanced features</h1>
+<p>This section describes how to use advanced jConnect features
+
+and contains the following topics:</p>
+<p>
+<ul>
+<li class=fi><A HREF="prjdbcp11.htm#CHDJAGIE">Using event
+
+notification</A>
+</li>
+<li class=ds><A HREF="prjdbcp11.htm#X21339">Handling
+
+error messages</A>
+</li>
+<li class=ds><A HREF="prjdbcp11.htm#X38769">Storing Java objects as column data in a table</A>
+</li>
+<li class=ds><A HREF="prjdbcp11.htm#CHDJFEEH">Dynamic class loading</A>
+</li>
+<li class=ds><A HREF="prjdbcp11.htm#CHDIGCBC">JDBC
+
+2.0 optional package extensions support</A>
+
+</li>
+</ul>
+</p>
+<A NAME="CHDJAGIE"></A><h2>Using event  notification</h2>
+<p>You can use the jConnect event notification feature to have
+
+your application notified when an Open Server procedure is executed.</p>
+<p>To use this feature, you must use the <b>SybConnection</b> class,
+
+which extends the <b>Connection </b>interface. <b>SybConnection</b> contains
+
+a <b>regWatch( )</b> method for turning event notification
+
+on and a <b>regNoWatch( ) </b>method for turning event
+
+notification off.</p>
+<p>Your application must also implement the <b>SybEventHandler</b> interface.
+
+This interface contains one public method, <b>void event(String
+
+proc_name, ResultSet params)</b>, which is called
+
+when the specified event occurs. The parameters of the event are
+
+passed to <b>event( )</b> and it tells the application
+
+how to respond.</p>
+<p>To use event notification in your application, call <b>SybConnection.regWatch( )</b> to register
+
+your application in the notification list of a registered procedure.
+
+Use this syntax: 
+<pre>SybConnection.regWatch(<i>proc_name</i>,<i>eventHdlr</i>,<i>option</i>)</pre>
+
+<ul>
+<li class=fi><i>proc_name</i> is
+
+a <i>String</i> that is the name of the registered
+
+procedure that generates the notification.
+</li>
+<li class=ds><i>eventHdler</i> is an instance of
+
+the <b>SybEventHandler</b> class that you implement.
+</li>
+<li class=ds><i>option</i> is either NOTIFY_ONCE
+
+or NOTIFY_ALWAYS. Use NOTIFY_ONCE if you want
+
+the application to be notified only the first time a procedure executes.
+
+Use NOTIFY_ALWAYS if you want the application to be notified
+
+every time the procedure executes.
+
+</li>
+</ul>
+</p>
+<p>Whenever an event with the designated <i>proc_name</i> occurs
+
+on the Open Server, jConnect calls <b>eventHdlr.event( ) </b>from
+
+a separate thread. The event parameters are passed to <b>eventHdlr.event(
+
+)</b> when it is executed. Because it is a separate thread,
+
+event notification does not block execution of the application.</p>
+<p>If <i>proc_name</i> is not a registered
+
+procedure, or if Open Server cannot add the client to the notification
+
+list, the call to <b>regWatch( )</b> throws a SQL exception.</p>
+<p>To turn off event notification, use this call: 
+<pre>SybConnection.regNoWatch(<i>proc_name</i>)</pre>
+</p>
+<p><IMG SRC="images/note.gif" width=17 height=17 border=0 align="bottom" alt="Note">&nbsp;&nbsp; When you use Sybase event notification extensions, the
+
+application needs to call the <b>close( )</b> method
+
+on the connection to remove a child thread created by the first
+
+call to <b>regWatch( )</b>. Failing to do so may cause
+
+the Virtual Machine to hang when exiting the application.</P>
+<A NAME="TI38"></A><h3>Event
+
+notification example</h3>
+<p>The following example shows how to implement an event handler
+
+and then register an event with an instance of your event handler,
+
+once you have a connection: 
+<pre> public  class MyEventHandler implements SybEventHandler
+ {
+   // Declare  fields and constructors, as needed.
+   ...
+   public  MyEventHandler(String eventname)
+   {
+     ...
+   }
+ 
+   // Implement  SybEventHandler.event.
+   public void  event(String eventName, ResultSet params)
+   {
+     try
+     {
+       // Check  for error messages received prior to event
+       // notification.
+       SQLWarning  sqlw = params.getWarnings();
+       if  sqlw != null
+       {
+         // process  errors, if any
+         ...
+       }
+       // process  params as you would any result set with
+       // one  row.
+       ResultSetMetaData  rsmd = params.getMetaData();
+       int  numColumns = rsmd.getColumnCount();
+       while  (params.next())          // optional
+       {
+         for  (int i = 1; i &lt;= numColumns; i++)
+         {
+           System.out.println(rsmd.getColumnName(i) + " =
+             " + params.getString(i));
+         }
+         // Take  appropriate action on the event. For example,
+         // perhaps  notify application thread.
+         ...
+       }
+     }
+     catch  (SQLException sqe)
+     {
+       // process  errors, if any
+       ...
+     }
+   }
+ }
+ 
+ public  class MyProgram
+ {
+   ...
+   // Get  a connection and register an event with an instance
+   // of  MyEventHandler.
+   Connection conn = DriverManager.getConnection(...); 
+   MyEventHandler  myHdlr = new  MyEventHandler("MY_EVENT");
+ 
+   // Register  your event handler.
+   ((SybConnection)conn).regWatch("MY_EVENT",  myHdlr,
+     SybEventHandler.NOTIFY_ALWAYS);
+   ...
+  conn.regNoWatch("MY_EVENT");
+   conn.close();</pre>
+
+<pre> }</pre>
+</p>
+<A NAME="X21339"></A><h2>Handling  error messages</h2>
+<p>jConnect provides two classes for returning Sybase-specific
+
+error information, <b>SybSQLException</b> and <b>SybSQLWarning</b>,
+
+as well as a <b>SybMessageHandler</b> interface that
+
+allows you to customize the way jConnect handles error messages
+
+received from the server.</p>
+<A NAME="TI39"></A><h3>Retrieving Sybase-specific error information</h3>
+<p>jConnect provides an <b>EedInfo</b> interface
+
+that specifies methods for obtaining Sybase-specific error information.
+
+The <b>EedInfo</b> interface is implemented in <b>SybSQLException</b> and <b>SybSQLWarning</b>,
+
+which extend the <b>SQLException</b> and <b>SQLWarning</b> classes.</p>
+<p><b>SybSQLException</b> and <b>SybSQLWarning</b> contain
+
+the following methods: 
+<ul>
+<li class=fi><b>public
+
+ResultSet getEedParams( );</b>
+<br><br>
+Returns a one-row result set containing any parameter values
+
+that accompany the error message.
+</li>
+<li class=ds><b>public int getStatus( );</b>
+<br><br>
+Returns a "1" if there are parameter values,
+
+returns a "0" if there are no parameter values
+
+in the message.
+</li>
+<li class=ds><b>public int getLineNumber( );</b>
+<br><br>
+Returns the line number of the stored procedure or query that
+
+caused the error message.
+</li>
+<li class=ds><b>public String getProcedureName( );</b>
+<br><br>
+Returns the name of the procedure that caused the error message.
+</li>
+<li class=ds><b>public String getServerName( );</b>
+<br><br>
+Returns the name of the server that generated the message.
+</li>
+<li class=ds><b>public int getSeverity( );</b>
+<br><br>
+Returns the severity of the error message.
+</li>
+<li class=ds><b>public int getState( );</b>
+<br><br>
+Returns information about the internal source of the error
+
+message in the server. For use by Sybase Technical Support only.
+</li>
+<li class=ds><b>public int getTranState( );</b>
+<br><br>
+Returns one of the following transaction states:  
+<ul>
+<li class=fi>0 The connection
+
+is currently in an extended transaction.
+</li>
+<li class=ds>1 The previous transaction committed successfully.
+</li>
+<li class=ds>3 The previous transaction aborted.
+
+</li>
+</ul>
+
+
+</li>
+</ul>
+</p>
+<p>Some error messages may be <b>SQLException</b> or <b>SQLWarning</b> messages,
+
+without being <b>SybSQLException</b> or <b>SybSQLWarning</b> messages.
+
+Your application should check the type of exception it is handling
+
+before it downcasts to <b>SybSQLException</b> or <b>SybSQLWarning.</b></p>
+<A NAME="X11750"></A><h3>Customizing error-message handling</h3>
+<p>You can use the <b>SybMessageHandler</b> interface
+
+to customize the way jConnect handles error messages generated by
+
+the server. Implementing <b>SybMessageHandler</b> in
+
+your own class for handling error messages can provide the following
+
+benefits: 
+<ul>
+<li class=fi>"Universal" error
+
+handling
+<br><br>
+Error-handling logic can be placed in your error-message handler,
+
+instead of being repeated throughout your application.
+</li>
+<li class=ds>"Universal" error logging
+<br><br>
+Your error-message handler can contain the logic for handling
+
+all error logging.
+</li>
+<li class=ds>Remapping of error-message severity, based on application
+
+requirements.
+<br><br>
+Your error-message handler can contain logic for recognizing
+
+specific error messages and downgrading or upgrading their severity
+
+based on application considerations rather than the server's
+
+severity rating. For example, during a cleanup operation that deletes
+
+old rows, you might want to downgrade the severity of a message
+
+that a row does not exist; you may want to upgrade the severity
+
+in other circumstances.
+
+</li>
+</ul>
+</p>
+<p><IMG SRC="images/note.gif" width=17 height=17 border=0 align="bottom" alt="Note">&nbsp;&nbsp; Error-message handlers implementing the <b>SybMessageHandler</b> interface only
+
+receive server-generated messages. They do not handle messages generated
+
+by jConnect.</P>
+<p>When jConnect receives an error message, it checks to see
+
+if a <b>SybMessageHandler</b> class has been registered
+
+for handling the message. If so, jConnect invokes the <b>messageHandler(
+
+)</b> method. The <b>messageHandler( )</b> method
+
+accepts a SQL exception as its argument, and jConnect processes
+
+the message based on what value is returned from <b>messageHandler(
+
+)</b>. The error-message handler can: 
+<ul>
+<li class=fi>Return the SQL exception as is.
+</li>
+<li class=ds>Return a null. As a result, jConnect ignores the
+
+message.
+</li>
+<li class=ds>Create a SQL warning from a SQL exception, and return
+
+it. This results in the warning being added to the warning-message
+
+chain.
+</li>
+<li class=ds>If the originating message is a SQL warning, <b>messageHandler(
+
+)</b> can evaluate the SQL warning as urgent and create and
+
+return a SQL exception to be thrown once control is returned to
+
+jConnect.
+
+</li>
+</ul>
+</p>
+<A NAME="TI40"></A><h3>Installing an error-message handler</h3>
+<p>You can install an error-message handler implementing <b>SybMessageHandler</b> by calling
+
+the <b>setMessageHandler( )</b> method from <b>SybDriver</b>, <b>SybConnection</b>,
+
+or <b>SybStatement</b>. If you install an error-message
+
+handler from <b>SybDriver</b>, all subsequent <b>SybConnection</b> objects
+
+inherit it. If you install an error-message handler from a <b>SybConnection</b> object,
+
+it is inherited by all <b>SybStatement </b>objects<b> </b>created
+
+by that <b>SybConnection</b>.</p>
+<p>This hierarchy only applies from the time the error-message
+
+handler object is installed. For example, if you create a <b>SybConnection</b> object, <i>myConnection</i>, and
+
+then call <b>SybDriver.setMessageHandler( )</b> to install
+
+an error-message handler object, <i>myConnection</i> cannot
+
+use that object.</p>
+<p>To return the current error-message handler object, use <b><br>getMessageHandler(
+
+)</b>.</p>
+<A NAME="TI41"></A><h3>Error-message-handler example</h3>
+<p>The following example uses jConnect version 5.2.
+<pre>import java.io.*;
+ import java.sql.*;
+ import  com.sybase.jdbcx.SybMessageHandler;
+ import com.sybase.jdbcx.SybConnection;
+ import  com.sybase.jdbcx.SybStatement;
+ import java.util.*;
+ 
+ public  class MyApp
+ {
+   static SybConnection  conn = null;
+   static SybStatement stmt = null
+    static ResultSet rs = null;
+   static String  user = "guest";
+   static String password = "sybase";
+    static String server = "jdbc:sybase:Tds:192.138.151.39:4444";
+    static final int AVOID_SQLE = 20001;
+ 
+    public MyApp()
+   {
+      try
+       {
+               Class.forName("com.sybase.jdbc2.jdbc.SybDriver").newInstance;
+                Properties  props = new Properties();
+               props.put("user",  user);
+               props.put("password",  password);
+       conn = (SybConnection) 
+       DriverManager.getConnection(server,  props);
+       conn.setMessageHandler(new  NoResultSetHandler());
+       stmt =(SybStatement)  conn.createStatement();
+       stmt.executeUpdate("raiserror  20001 'your error'");
+   
+     for  (SQLWarning sqw = _stmt.getWarnings();
+       sqw  != null;
+       sqw = sqw.getNextWarning());
+     {
+       if  (sqw.getErrorCode() == AVOID_SQLE);
+       {
+         System.out.println("Error" +  sqw.getErrorCode()+ 
+           "  was found in the Statement's warning list.");
+         break;
+       }
+     }
+     stmt.close();
+     conn.close();
+   }
+   catch(Exception  e)
+   {
+     System.out.println(e.getMessage());
+     e.printStackTrace();
+   }
+ }
+ 
+ class  NoResultSetHandler implements SybMessageHandler
+ {
+   public  SQLException messageHandler(SQLException sqe)
+   {
+     int  code = sqe.getErrorCode();
+     if  (code == AVOID_SQLE)
+     {
+       System.out.println("User  " + _user + " downgrading " +
+         AVOID_SQLE + "  to a warning");
+       sqe = new  SQLWarning(sqe.getMessage(),
+         sqe.getSQLState(),sqe.getErrorCode());
+     }
+     return  sqe;
+   }
+ }
+ 
+ public  static void main(String args[])
+ {
+   new  MyApp();
+ }</pre>
+</p>
+<A NAME="X38769"></A><h2>Storing Java objects as column data in a table</h2>
+<p>Some database products enable you to directly store Java objects
+
+as column data in a database. In such databases, Java classes are
+
+treated as datatypes, and you can declare a column with a Java class
+
+as its datatype.</p>
+<p>jConnect supports storing Java objects in a database by implementing
+
+the <b>setObject( )</b> methods defined in the <b>PreparedStatement</b> interface
+
+and the <b>getObject( )</b> methods defined in the <b>CallableStatement</b> and <b>ResultSet</b> interfaces. This
+
+allows you to use jConnect with an application that uses native
+
+JDBC classes and methods to directly store and retrieve Java objects
+
+as column data.</p>
+<p><IMG SRC="images/note.gif" width=17 height=17 border=0 align="bottom" alt="Note">&nbsp;&nbsp; To use <b>getObject( )</b> and <b>setObject(
+
+)</b>, set the jConnect version to VERSION_4 or later.
+
+See <A HREF="prjdbcp6.htm#X15095">"Setting the jConnect version"</A>.</P>
+<p>The following sections describe the requirements and procedures
+
+for storing objects in a table and retrieving them using JDBC with
+
+jConnect: 
+<ul>
+<li class=fi><A HREF="prjdbcp11.htm#X23218">Prerequisites for storing java objects as column data</A>
+</li>
+<li class=ds><A HREF="prjdbcp11.htm#X29907">Sending Java objects to a database</A>
+</li>
+<li class=ds><A HREF="prjdbcp11.htm#X34181">Receiving Java objects from the database</A>
+
+</li>
+</ul>
+</p>
+<p><IMG SRC="images/note.gif" width=17 height=17 border=0 align="bottom" alt="Note">&nbsp;&nbsp;  Adaptive Server version 12.0 and later and Adaptive
+
+Server Anywhere version 6.0.x and later can store Java objects in
+
+a table, with some limitations. See the <i>jConnect for JDBC
+
+Release Bulletin</i> for more information.</P>
+<A NAME="X23218"></A><h3>Prerequisites for storing java objects as column data</h3>
+<p>To store Java objects belonging to a user-defined Java class
+
+in a column, three requirements must be met: 
+<ul>
+<li class=fi>The class must implement the <b>java.io.Serializable</b> interface.
+
+This is because jConnect uses native Java serialization and deserialization
+
+to send objects to a database and receive them back from the database.
+</li>
+<li class=ds>The class definition must be installed in the destination
+
+database, <i>or</i>
+ you must be using the <b>DynamicClassLoader</b> (DCL)
+
+to load a class directly from an Adaptive Server Anywhere or an
+
+Adaptive Server server and use it as if it was present in the local
+
+CLASSPATH. See <A HREF="prjdbcp11.htm#CHDJFEEH">"Dynamic class loading"</A> for more information.
+</li>
+<li class=ds>The client system must have the class definition
+
+in a <i>.class</i> file that is accessible through
+
+the local CLASSPATH environment variable.
+
+</li>
+</ul>
+</p>
+<A NAME="X29907"></A><h3>Sending Java objects to a database</h3>
+<p>To send an instance of a user-defined class as column data,
+
+use one of the following <b>setObject( )</b> methods,
+
+as specified in the <b>PreparedStatement</b> interface: 
+<pre>void setObject(int parameterIndex, Object x, int  targetSqlType, 
+   int scale) throws  SQLException;</pre>
+
+<pre>void setObject(int  parameterIndex, Object x, int targetSqlType) 
+   throws  SQLException;</pre>
+
+<pre>void setObject(int  parameterIndex, Object x) throws SQLException;</pre>
+</p>
+<p>In jConnect 5.5, to send a Java object, you can use the <i>java.sql.Types.JAVA_OBJECT</i> target
+
+sqlType, or you can use <i>java.sql.Types.OTHER</i>.</p>
+<p>The following example defines an <b>Address</b> class,
+
+shows the definition of a Friends table that
+
+has an Address column whose datatype is the <b>Address</b> class, and
+
+inserts a row into the table. 
+<pre>public class  Address implements Serializable</pre>
+
+<pre>{</pre>
+
+<pre>  public String   streetNumber;
+   public  String   street;
+   public  String   apartmentNumber;
+   public  String   city;
+   public  int   zipCode;</pre>
+
+<pre>  //Methods</pre>
+
+<pre>  ...</pre>
+
+<pre>}
+</pre>
+
+<pre>/* This code assumes a table  with the following structure
+**  Create  table Friends:</pre>
+
+<pre>**  (firstname  varchar(30)  , 
+**   lastname  varchar(30), 
+**  address  Address, 
+**  phone  varchar(15))</pre>
+
+<pre>*/
+</pre>
+
+<pre>// Connect to the database containing  the Friends table.
+Connection conn = 
+   DriverManager.getConnection("jdbc:sybase:Tds:localhost:5000", 
+     "username",  "password");
+ 
+// Create a Prepared  Statement object with an insert statement 
+//for  updating the Friends table.
+PreparedStatement ps = conn.prepareStatement("INSERT  INTO 
+   Friends values (?,?,?,?)");
+ 
+// Now,  set the values in the prepared statement object, ps.
+// set  firstname to "Joan."
+ps.setString(1, "Joan");
+ 
+// Set  last name to "Smith."
+ps.setString(2, "Smith");
+ 
+// Assuming  that we already have "Joan_address" as an instance
+// of  Address, use setObject(int parameterIndex, Object x) to 
+// set  the address column to "Joan_address."
+ps.setObject(3,  Joan_address);
+ 
+// Set  the phone column to Joan's phone number.
+ps.setString(4,  "123-456-7890");
+ 
+// Perform  the insert.
+ps.executeUpdate();</pre>
+</p>
+<A NAME="X34181"></A><h3>Receiving Java objects from the database</h3>
+<p>A client JDBC application can receive a Java object from the
+
+database in a result set or as the value of an output parameter
+
+returned from a stored procedure. If a result set contains a Java
+
+object as column data, use one of the following <b>getObject(
+
+)</b> methods in the <b>ResultSet</b> interface
+
+to retrieve the object: 
+<pre>Object getObject(int  columnIndex) throws SQLException;</pre>
+
+<pre>Object  getObject(String columnName) throws SQLException;</pre>
+If
+
+an output parameter from a stored procedure contains a Java object,
+
+use the following <b>getObject( )</b> method in the <b>CallableStatement </b>interface
+
+to retrieve the object: 
+<pre>Object getObject(int  parameterIndex) throws SQLException;</pre>
+</p>
+<p>The following example illustrates the use of <br> <b>ResultSet</b>.<b>getObject(int
+
+parameterIndex)</b> to assign an object received in a result set
+
+to a class variable. The example uses the <b>Address</b> class
+
+and Friends table used in the previous section
+
+and presents a simple application that prints a name and address
+
+on an envelope. 
+<pre>/*
+ ** This  application takes a first and last name, gets the 
+ ** specified  person's address from the Friends table in the 
+ ** database,  and addresses an envelope using the name and
+ ** retrieved  address.
+ */
+ public class Envelope
+ {
+   Connection  conn = null;
+   String firstName = null;
+   String  lastName = null;
+   String street = null;
+   String  city = null;
+   String zip = null;
+ 
+   public  static void main(String[] args)
+   {
+     if  (args.length &lt; 2)
+     {
+     System.out.println("Usage:  Envelope &lt;firstName&gt; 
+       &lt;lastName&gt;");
+     System.exit(1);
+     }
+     // create  a 4" x 10" envelope
+     Envelope  e = new Envelope(4, 10);
+     try
+     {
+       // connect  to the database with the Friends table.
+       conn = DriverManager.getConnection(
+         "jdbc:sybase:Tds:localhost:5000",  "username", 
+           "password");
+       // look  up the address of the specified person
+       firstName = args[0];
+       lastName = args[1];
+       PreparedStatement  ps = conn.prepareStatement(
+         "SELECT  address FROM friends WHERE " +
+           "firstname = ?  AND lastname = ?");
+       ps.setString(1,  firstName);
+       ps.setString(2,  lastName);
+       ResultSet  rs = ps.executeQuery();
+       if  (rs.next())
+       {
+         Address  a = (Address) rs.getObject(1);
+         // set  the destination address on the envelope
+         e.setAddress(firstName,  lastName, a);
+       }
+       conn.close();
+     }
+     catch  (SQLException sqe)
+     {
+       sqe.printStackTrace();
+       System.exit(2);
+     }
+     // if  everything was successful, print the envelope
+     e.print();
+   }
+   private  void setAddress(String fname, String lname, Address a)
+   {
+     street = a.streetNumber + "  " + a.street + " " +
+       a.apartmentNumber;
+     city = a.city;
+     zip = "" + a.zipCode;
+   }
+   private  void print()
+   {
+     // Print  the name and address on the envelope.
+     ...
+   }
+ }</pre>
+</p>
+<p>You can find a more detailed example of <b>HandleObject.java</b> in
+
+the <i>sample2</i> subdirectory under your jConnect
+
+installation directory.</p>
+<A NAME="CHDJFEEH"></A><h2>Dynamic class loading</h2>
+<p>Adaptive Server Anywhere version 6.0 and Adaptive Server version
+
+12.0 and later allow you to specify Java classes as:
+<ul>
+<li class=fi>Datatypes of SQL columns
+</li>
+<li class=ds>Datatypes of Transact-SQL variables
+</li>
+<li class=ds>Default values for SQL columns
+
+</li>
+</ul>
+</p>
+<p>In earlier versions, only classes that appeared in jConnect's
+
+CLASSPATH were accessible; that is, if a jConnect application attempted
+
+to access an instance of a class that was not in the local CLASSPATH,
+
+a <b>java.lang.ClassNotFound</b> exception would result.</p>
+<p>jConnect version 5.x and later implements <b>DynamicClassLoader</b> (DCL)
+
+to load a class directly from an Adaptive Server Anywhere or Adaptive
+
+Server server and use it as if it was present in the local CLASSPATH.</p>
+<p>All security features present in the superclass are inherited.
+
+The loader delegation model implemented in Java 2 is followed--first
+
+jConnect attempts to load a requested class from the CLASSPATH;
+
+if that fails, jConnect tries the <b>DynamicClassLoader</b>.</p>
+<p>See <i>Java in Adaptive Server</i> for more
+
+detailed information about use Java and Adaptive Server.</p>
+<A NAME="TI42"></A><h3>Using <b>DynamicClassLoader</b></h3>
+<p>To use DCL functionality:
+<ol>
+<li class=fi>Create
+
+and configure a class loader. Your jConnect application's
+
+code should look similar to this:
+<br><br>
+
+<pre>Properties props = new Properties();// URL  of the server where the classes live.
+String classesUrl = "jdbc:sybase:Tds:myase:1200"; // Connection  properties for connecting to above server.
+props.put("user",  "grinch");
+props.put("password", "meanone");
+... // Ask  the SybDriver for a new class loader.
+DynamicClassLoader  loader = driver.getClassLoader(classesUrl, props);</pre>
+
+</li>
+<li class=ds>Use the CLASS_LOADER connection property
+
+to make the new class loader available to the statement that executes
+
+the query. Once you create the class loader, pass it to subsequent
+
+connections as shown below (continuing from the code example in
+
+step 1).
+<br><br>
+
+<pre>// Stash the class  loader so that other connection(s)
+// can  know about it.
+props.put("CLASS_LOADER", loader);// Additional  connection properties
+props.put("user", "joeuser");
+props.put("password",  "joespassword");// URL of the server we now want  to connect to.
+String url = "jdbc:sybase:Tds:jdbc.sybase.com:4446";// Make  a connection and go.
+Connection conn = DriverManager.getConnection(url,  props);</pre>
+Assuming the following Java class definition:
+<pre>class  Addr {
+      String  street;
+      String  city;
+      String  state;
+}</pre>
+
+<br><br>
+and the following SQL table definition:
+<br><br>
+
+<pre>create table employee (char(100)  name, int empid, Addr address)</pre>
+
+</li>
+<li class=ds>Use the following client-side code in the absence
+
+of an <b>Addr</b> class in the client application's
+
+CLASSPATH:
+<br><br>
+
+<pre>Statement stmnt = conn.createStatement();</pre>
+
+<pre>// Retrieve some rows from the  table that has a Java class</pre>
+
+<pre>// as  one of its fields.</pre>
+
+<pre>ResultSet  rs = stmnt.executeQuery(</pre>
+
+<pre>      "select * from  employee where empid = '19'");</pre>
+
+<pre>if (rs.next() {</pre>
+
+<pre>      // Even  though the class is not in our class path,</pre>
+
+<pre>      // we  should be able to access its instance.</pre>
+
+<pre>      Object  obj = rs.getObject("address");</pre>
+
+<pre>      // The  class has been loaded from the server,</pre>
+
+<pre>      // so  let's take a look.</pre>
+
+<pre>      Class  c = obj.getClass();</pre>
+
+<br><br>
+
+<pre>    // Some  Java Reflection can be done here</pre>
+
+<pre>      // to  access the fields of obj.</pre>
+
+<pre>      ...</pre>
+
+<br><br>
+
+<pre>}</pre>
+
+
+</li>
+</ol>
+</p>
+<p>The CLASS_LOADER connection property provides a convenient
+
+mechanism for sharing one class loader among several connections. </p>
+<p>You should ensure that sharing a class loader across connections
+
+does not result in class conflicts. For example, if two different,
+
+incompatible instances of class <b>org.foo.Bar </b>exist
+
+in two different databases, problems can arise if you use the same
+
+loader to access both classes. The first class is loaded when examining
+
+a result set from the first connection. When it is time to examine
+
+a result set from the second connection, the class is already loaded.
+
+The second class is never loaded, and there is no direct way for
+
+jConnect to detect this situation.</p>
+<p>However, Java has a built-in mechanism for ensuring that the
+
+version of a class matches the version information in a deserialized
+
+object. The above situation is at least detected and reported by
+
+Java.</p>
+<p>Classes and their instances do not need to reside in the same
+
+database or server, but there is no reason why both the loader and
+
+subsequent connections cannot refer to the same database/server.</p>
+<A NAME="TI43"></A><h3>Deserialization</h3>
+<p>The following example illustrates how to deserialize an object
+
+from a local file. The serialized object is an instance of a class
+
+that resides on a server and does not exist in the CLASSPATH.</p>
+<p><b>SybResultSet.getObject( )</b> makes
+
+use of <b>DynamicObjectInputStream</b>, which is a subclass
+
+of <b>ObjectInputStream</b> that loads a class definition
+
+from <b>DynamicClassLoader</b>, rather than the default
+
+system ("boot") class loader.</p>
+<p>
+<pre>// Make a stream  on the file containing the </pre>
+
+<pre>//serialized  object.</pre>
+
+<pre>FileInputStream fileStream = new  FileInputStream("serFile");</pre>
+
+<pre>// Make  a "deserializer" on it. Notice that, apart </pre>
+
+<pre>//from the additional parameter,  this is the same </pre>
+
+<pre>//as  ObjectInputStreamDynamicObjectInputStream </pre>
+
+<pre>stream = new DynamicObjectInputStream(fileStream,  loader);</pre>
+
+<pre>// As  the object is deserialized, its class is </pre>
+
+<pre>//retrieved through the loader  from our server.</pre>
+
+<pre>Object obj = stream.readObject();stream.close();</pre>
+</p>
+<A NAME="BHCFBIAE"></A><h3>Preloading JARS</h3>
+<p>jConnect version 5.x and later have a connection property
+
+called PRELOAD_JARS. When defined as a comma-delimited
+
+list of JAR file names, the JAR files are loaded in their entirety.
+
+In this context, "JAR" refers to the "retained
+
+JARname" used by the server. This is the JAR name specified in
+
+the install Java program, for example:</p>
+<p>
+<pre>install java new jar 'myJarName' from  file '/tmp/mystuff.jar'</pre>
+</p>
+<p>If you set PRELOAD_JARS, the JAR files are associated
+
+with the class loader, so it is unnecessary to preload them with
+
+every connection. You should only specify PRELOAD_JARS
+
+for one connection. Subsequent attempts to preload the same JAR
+
+files may result in performance problems as the JAR data is retrieved
+
+from the server unnecessarily.</p>
+<p><IMG SRC="images/note.gif" width=17 height=17 border=0 align="bottom" alt="Note">&nbsp;&nbsp; Adaptive Server Anywhere 6.x and later cannot return
+
+a JAR file as one entity, so jConnect iteratively retrieves each
+
+class in turn. However, Adaptive Server 12.x and later retrieves
+
+the entire JAR and loads each class that it contains.</P>
+<A NAME="TI44"></A><h3>Advanced features</h3>
+<p>There are various public methods in <b>DynamicClassLoader</b>.
+
+For more information, see the javadocs information in <i>JDBC_HOME/docs/en/javadocs.</i></p>
+<p>Additional features include the ability to keep a loader's
+
+database connection "alive" when a series of class
+
+loads is expected, and to explicitly load a single class by name.Public
+
+methods inherited from <b>java.lang.ClassLoader</b> can
+
+also be used. Methods in <b>java.lang.Class</b> that
+
+deal with loading classes are also available; however, use these
+
+methods with caution since some of them make assumptions about which
+
+class loader gets used. In particular, you should use the 3-argument
+
+version of <b>Class.forName()</b>, otherwise the system
+
+("boot") class loader will be used. See <A HREF="prjdbcp11.htm#X21339">"Handling
+
+error messages"</A>.</p>
+<A NAME="CHDIGCBC"></A><h2>JDBC  2.0 optional package extensions support</h2>
+<p>The <i>JDBC
+
+2.0 Optional Package</i> (formerly the<i> JDBC 2.0
+
+Standard Extension API</i>)<i></i> defined
+
+several features that JDBC 2.0 drivers could implement. jConnect version
+
+5.x and later have implemented the following optional package extension
+
+features:</p>
+<p>
+<ul>
+<li class=fi><A HREF="prjdbcp11.htm#CHDFHBIH">JNDI for
+
+naming databases</A><br>(works with any Sybase DBMS supported
+
+by jConnect)
+</li>
+<li class=ds><A HREF="prjdbcp11.htm#CHDCAECF">Connection
+
+pooling</A><br>(works
+
+with any Sybase DBMS supported by jConnect)
+</li>
+<li class=ds><A HREF="prjdbcp11.htm#CHDIFEIE">Distributed transaction management
+
+support</A><br>(works
+
+only with Adaptive Server version 12.0 and later, or version 11.x using
+
+XA-Server&#153;)
+
+</li>
+</ul>
+</p>
+<p>The above features require classes and/or interfaces
+
+that are not found in standard JDK 1.2.x distributions. You must
+
+download <b>javax.sql.*</b> and<b> javax.naming.*</b> to
+
+implement them if you're using a JDK 1.2.x or JRE installation.
+
+However, if you are using JDK 1.3.x or later, no additional download
+
+is necessary since the classes are part of the standard Java installation Databases
+
+and Connection Pooling, and you must download <b>javax.transaction.xa.*</b> to
+
+implement Distributed Transaction Management Support. </p>
+<p><IMG SRC="images/note.gif" width=17 height=17 border=0 align="bottom" alt="Note">&nbsp;&nbsp; Sybase recommends that you use JNDI 1.2, which is compatible
+
+with Java 1.1.6 and later.</P>
+<A NAME="CHDFHBIH"></A><h3>JNDI for  naming databases</h3>
+<A NAME="TI45"></A><h4>Reference</h4>
+<p>The <i>JDBC 2.0 Optional Package</i> (formerly
+
+the<i> JDBC 2.0 Standard Extension API</i>)<i></i>,
+
+Chapter 5, "JNDI and the JDBC API."</p>
+<A NAME="TI46"></A><h4>Related interfaces</h4>
+<p>
+<ul>
+<li class=fi><b>javax.sql.DataSource</b>
+</li>
+<li class=ds><b>javax.naming.Referenceable</b>
+</li>
+<li class=ds><b>javax.naming.spi.ObjectFactory </b>
+
+</li>
+</ul>
+</p>
+<p>This feature provides JDBC clients with an alternative to
+
+the standard approach for obtaining database connections. Instead
+
+of invoking <b>Class.forName</b> ("<b>com.sybase.jdbc2.jdbc.SybDriver</b>"),
+
+then passing a JDBC URL to the DriverManager's <b>getConnection( )</b> method,
+
+clients can access a JNDI name server using a logical name to retrieve
+
+a <b>javax.sql.DataSource</b> object. This object is
+
+responsible for loading the driver and establishing the connection
+
+to the physical database it represents. The client code is simpler
+
+and reusable because the vendor-specific information has been placed
+
+within the <b>DataSource</b> object. </p>
+<p>The Sybase implementation of the <b>DataSource</b> object
+
+is <b>com.sybase.jdbcx.SybDataSource</b> (see the javadocs
+
+for details). This implementation supports the following standard
+
+properties using the design pattern for JavaBean components:</p>
+<p>
+<ul>
+<li class=fi><b>databaseName</b>
+</li>
+<li class=ds><b>dataSourceName</b>
+</li>
+<li class=ds><b>description</b>
+</li>
+<li class=ds><b>networkProtocol</b>
+</li>
+<li class=ds><b>password</b>
+</li>
+<li class=ds><b>portNumber</b>
+</li>
+<li class=ds><b>serverName</b>
+</li>
+<li class=ds><b>user</b>
+
+</li>
+</ul>
+</p>
+<p><b>roleName</b> is not supported.</p>
+<p>jConnect provides an implementation of the <b>javax.naming.spi.ObjectFactory</b> interface
+
+so the <b>DataSource</b> object can be constructed from
+
+the attributes of a name server entry. When given a <b>javax.naming.Reference</b>,
+
+or a <b>javax.naming.Name</b> and a <b>javax.naming.DirContext</b>,
+
+this factory can construct <b>com.sybase.jdbcx.SybDataSource</b> objects.
+
+To use this factory, set the <b>java.naming.object.factory</b> system
+
+property to include <b>com.sybase.jdbc2.SybObjectFactory</b>.</p>
+<A NAME="TI47"></A><h4>Usage</h4>
+<p>You can use <b>DataSource</b> in different ways,
+
+in different applications. All options are discussed below with
+
+some code examples to guide you through the process. For more information,
+
+see the <i>JDBC 2.0 Optional Package</i> (formerly the<i> JDBC
+
+2.0 Standard Extension API</i>)<i></i>, and
+
+the JNDI documentation on Sun's Web site.</p>
+<A NAME="CHDDHADJ"></A><h4>1a. Configuration by administrator:  LDAP</h4>
+<p>jConnect has supported LDAP connectivity since version 4.0.
+
+As a result, the recommended approach, which requires no custom
+
+software, is to configure <b>DataSources</b> as LDAP
+
+entries using the LDAP Data Interchange Format (LDIF). For example:</p>
+<p>
+<pre>dn:servername:myASE, o=MyCompany,  c=US</pre>
+
+<pre>1.3.6.1.4.1.897.4.2.5:TCP#1# mymachine  4000</pre>
+
+<pre>1.3.6.1.4.1.897.4.2.10:PACKETSIZE=1024&amp;user=me&amp;password=secret</pre>
+
+<pre>1.3.6.1.4.1.897.4.2.11:userdb</pre>
+</p>
+<A NAME="TI48"></A><h4>1b. Access by client</h4>
+<p>This is the typical JDBC client application. The only difference
+
+is that you access the name server to obtain a reference to a <b>DataSource</b> object,
+
+instead of accessing the <b>DriverManager</b> and providing
+
+a JDBC URL. Once you obtain the connection, the client code is identical
+
+to any other JDBC client code. The code is very generic and references
+
+Sybase only when setting the object factory property, which can
+
+be set as part of the environment.</p>
+<p>The jConnect installation contains the sample program <i>sample2/SimpleDataSource.java</i> to
+
+illustrate the use of <b>DataSource</b>. This sample
+
+is provided for reference only; that is, you cannot run the sample
+
+unless you configure your environment and edit the sample appropriately. SimpleDataSource.java contains
+
+the following critical code:</p>
+<p>
+<pre>import javax.naming.*;</pre>
+
+<pre>import javax.sql.*;</pre>
+
+<pre>import java.sql.*;</pre>
+
+<pre></pre>
+
+<pre>// set  necessary JNDI properties for your environment (same as above)</pre>
+
+<pre>Properties jndiProps = new Properties();</pre>
+
+<pre></pre>
+
+<pre>// used  by JNDI to build the SybDataSource</pre>
+
+<pre>jndiProps.put(Context.OBJECT_FACTORIES,</pre>
+
+<pre>    "com.sybase.jdbc2.jdbc.SybObjectFactory");</pre>
+
+<pre></pre>
+
+<pre>// nameserver  that JNDI should talk to</pre>
+
+<pre>jndiProps.put(Context.PROVIDER_URL,   "ldap:</pre>
+
+<pre>//some_ldap_server:238/o=MyCompany,c=Us");</pre>
+
+<pre></pre>
+
+<pre>// used  by JNDI to establish the naming context</pre>
+
+<pre>jndiProps.put(Context.INITIAL_CONTEXT_FACTORY,</pre>
+
+<pre>    "com.sun.jndi.ldap.LdapCtxFactory");</pre>
+
+<pre></pre>
+
+<pre>// obtain  a connection to your name server</pre>
+
+<pre>Context  ctx = new InitialContext(jndiProps);</pre>
+
+<pre>DataSource ds = (DataSource) ctx.lookup("servername=myASE");</pre>
+
+<pre></pre>
+
+<pre>// obtains  a connection to the server as configured earlier.</pre>
+
+<pre>// in this case, the default  username and password will be used</pre>
+
+<pre>Connection  conn = ds.getConnection();</pre>
+
+<pre></pre>
+
+<pre>// do standard JDBC methods</pre>
+
+<pre>...</pre>
+</p>
+<p>Explicitly passing the <b>Properties</b> to the <b>InitialContext</b> constructor
+
+is not required if the properties have already been defined within
+
+the virtual machine; that is, passed when Java was either set as
+
+part of the browser properties, or by using:</p>
+<p>
+<pre>java -Djava.naming.object.factory=com.sybase.jdbc2.jdbc.SybObjectFactory</pre>
+</p>
+<p>See your Java VM documentation for more information about
+
+setting environment properties.</p>
+<A NAME="CHDBCHHG"></A><h4>2a. Configuration by administrator:  custom</h4>
+<p>This phase is typically done by the person who does database
+
+system administration or application integration for their company.
+
+The purpose is to define a data source, then deploy it under a logical
+
+name to a name server. If the server needs to be reconfigured (for
+
+example, moved to another machine, port, and so on), then the administrator
+
+runs this configuration utility (outlined below) and reassigns the
+
+logical name to the new data source configuration. As a result,
+
+the client code does not change, since it knows only the logical
+
+name.</p>
+<p>
+<pre>import javax.sql.*;</pre>
+
+<pre>import com.sybase.jdbcx.*;</pre>
+
+<pre>.....</pre>
+
+<pre></pre>
+
+<pre>// create a SybDataSource, and  configure it</pre>
+
+<pre>SybDataSource ds = new  com.sybase.jdbc2.jdbc.SybDataSource();</pre>
+
+<pre>ds.setUser("my_username");</pre>
+
+<pre>ds.setPassword("my_password");</pre>
+
+<pre>ds.setDatabaseName("my_favorite_db");</pre>
+
+<pre>ds.setServerName("db_machine");</pre>
+
+<pre>ds.setPortNumber(4000);</pre>
+
+<pre>ds.setDescription("This DataSource represents  the Adaptive Server
+    Enterprise  server running on db_machine at port 2638.  The default
+    username  and password have been set to 'me' and 'mine' respectively.   
+    Upon connection,  the user will access the my_favorite_db database  on 
+    this server.");
+Properties  props = newProperties()
+props.put("REPEAT_READ","false");
+props.put("REQUEST_HA_SESSION","true");
+ds.setConnectionProperties(props);</pre>
+
+<pre>// store the DataSource object.  Typically this is
+// done by setting  JNDI properties specific to the
+// type  of JNDI service provider you are using.
+// Then,  initialize the context and bind the object.</pre>
+
+<pre>Context ctx = new InitialContext();</pre>
+
+<pre>ctx.bind("jcbc/myASE", ds);</pre>
+</p>
+<p><br>Once you set up your <b>DataSource</b>,
+
+you decide where and how you want to store the information. To assist
+
+you, <b>SybDataSource</b> is both <b>java.io.Serializable</b> and <b>javax.naming.Referenceable</b>,
+
+but it is still up to the administrator to determine how the data
+
+is stored depending on what service provider you are using for JNDI.</p>
+<A NAME="TI49"></A><h4>2b. Access by client</h4>
+<p>The client retrieves the <b>DataSource</b> object
+
+by setting its JNDI properties the same way the <b>DataSource</b> was
+
+deployed. The client needs to have an object factory available that
+
+can transform the object as it is stored (for example, serialized)
+
+into a Java object.</p>
+<p>
+<pre>Context ctx = new InitialContext();
+DataSource  ds = (DataSource ctx.lookup("jcbc/myASE");</pre>
+</p>
+<A NAME="CHDCAECF"></A><h3>Connection  pooling</h3>
+<A NAME="TI50"></A><h4>Reference</h4>
+<p>The <i>JDBC 2.0 Optional Package</i> (formerly
+
+the<i> JDBC 2.0 Standard Extension API</i>)<i></i>,
+
+Chapter 6, "Connection Pooling."</p>
+<A NAME="TI51"></A><h4>Related interfaces</h4>
+<p>
+<ul>
+<li class=fi><b>javax.sql.ConnectionPoolDataSource</b>
+</li>
+<li class=ds><b>javax.sql.PooledConnection</b>
+
+</li>
+</ul>
+</p>
+<A NAME="TI52"></A><h4>Overview</h4>
+<p>Traditional database applications create one connection to
+
+a database that you use for each session of an application. However,
+
+a Web-based database application may need to open and close a new
+
+connection several times during the application's use.
+
+An efficient way to handle Web-based database connections is to
+
+use connection pooling, which maintains open database connections
+
+and manages connection sharing across different user requests to maintain
+
+performance and to reduce the number of idle connections. On each connection
+
+request, the connection pool first determines if there is an idle connection
+
+in the pool. If there is, the connection pool returns that connection instead
+
+of making a new connection to the database.</p>
+<p>Connection pooling capabilities are provided by <b>ConnectionPoolDataSource</b>.
+
+If you use this interface, you can pool connections. If you use
+
+the <b>DataSource</b> interface, you cannot pool connections.</p>
+<p>When you use <b>ConnectionPoolDataSource</b>,
+
+pool implementations listen to the <b>PooledConnection</b>.
+
+The implementation is notified when a user closes the connection,
+
+or if the user has an error that destroys the connection. At this point,
+
+the pool implementation decides what to do with the <b>PooledConnection</b>.</p>
+<p>Without connection pooling, a transaction:</p>
+<p>
+<ol>
+<li class=fi>Creates a connection
+
+to the database.
+</li>
+<li class=ds>Sends the query to the database.
+</li>
+<li class=ds>Gets back the result set.
+</li>
+<li class=ds>Displays the result set. 
+</li>
+<li class=ds>Destroys the connection.
+
+</li>
+</ol>
+</p>
+<p>With connection pooling, the sequence looks more like this:</p>
+<p>
+<ol>
+<li class=fi>Sees if an unused connection
+
+exists in the "pool" of connections.
+</li>
+<li class=ds> If so, uses it; otherwise creates a new connection. 
+</li>
+<li class=ds>Sends the query to the database. 
+</li>
+<li class=ds>Gets back the result set. 
+</li>
+<li class=ds>Displays the result set. 
+</li>
+<li class=ds>Returns the connection to the "pool." The
+
+user still calls "<b>close( )</b>",
+
+but the connection remains open and the pool is notified of the <b>close</b> request.
+
+</li>
+</ol>
+</p>
+<p>It is less costly to reuse a connection than to create a new
+
+one every time a client needs to establish a connection to a database. </p>
+<p>To enable a third party to implement the connection pool,
+
+the jConnect implementation has the <b>ConnectionPoolDataSource</b> interface
+
+produce <b>PooledConnections</b>, similar to how the <b>DataSource</b> interface
+
+produces <b>Connections</b>.The pool implementation
+
+creates "real" database connections, using the <b>getPooledConnection( )</b> methods
+
+of <b>ConnectionPoolDataSource</b>. Then, the pool implementation
+
+registers itself as a listener to the <b>PooledConnection</b>. Currently,
+
+when a client requests a connection, the pool implementation invokes <b>getConnection( )</b> on
+
+an available <b>PooledConnection</b>. When the client finishes
+
+with the connection and calls <b>close()</b>, the pool
+
+implementation is notified through the <b>ConnectionEventListener</b> interface
+
+that the connection is free and available for reuse. </p>
+<p>The pool implementation is also notified through the <b>ConnectionEventListener</b> interface
+
+if the client somehow corrupts the database connection, so that
+
+the pool implementation can remove that connection from the pool.For
+
+more information, refer to Appendix B of the <i>JDBC 2.0
+
+Optional Package</i> (formerly the<i> JDBC 2.0 Standard
+
+Extension API</i>).</p>
+<A NAME="TI53"></A><h4>Configuration by administrator: LDAP</h4>
+<p>This approach is the same as <A HREF="prjdbcp11.htm#CHDDHADJ">1a. Configuration by administrator:
+
+LDAP</A> described in "<A HREF="prjdbcp11.htm#CHDFHBIH">JNDI for
+
+naming databases</A>," except that
+
+you enter an additional line to your LDIF entry. In the following
+
+example, the added line of code is bolded for your reference.</p>
+<p>
+<pre>dn:servername=myASE, o=MyCompany,  c=US
+1.3.6.1.4.1.897.4.2.5:TCP#1# mymachine  4000
+1.3.6.1.4.1.897.4.2.10:PACKETSIZE=1024&amp;user=me&amp;password=secret
+1.3.6.1.4.1.897.4.2.11:userdb 
+<i>1.3.6.1.4.1.897.4.2.18:ConnectionPoolDataSource</i> </pre>
+</p>
+<A NAME="TI54"></A><h4>Access by middle-tier clients</h4>
+<p>This procedure initializes three properties (INITIAL_CONTEXT_FACTORY, PROVIDER_URL,
+
+and OBJECT_FACTORIES as shown on page 78), and retrieves
+
+a <b>ConnectionPoolDataSource</b> object. For a more
+
+complete code example, see <i>sample2/SimpleConnectionPool.java</i>.
+
+The fundamental difference is:</p>
+<p>
+<pre>...
+ConnectionPoolDatabase  cpds = (ConnectionPoolDataSource)
+    ctx.lookup("servername=myASE");
+PooledConnection  pconn = cpds.getPooledConnection();</pre>
+</p>
+<A NAME="CHDIFEIE"></A><h3>Distributed transaction management  support</h3>
+<p>This feature provides a standard Java API for performing distributed transactions
+
+with either Adaptive Server version 12.x or version 11.x with XA-Server.</p>
+<p><IMG SRC="images/note.gif" width=17 height=17 border=0 align="bottom" alt="Note">&nbsp;&nbsp; This feature is designed for use in a large multitier
+
+environment.</P>
+<A NAME="TI55"></A><h4>Reference</h4>
+<p>See Chapter 7, "Distributed Transactions," in
+
+the <i>JDBC 2.0 Optional Package</i> (formerly the<i> JDBC
+
+2.0 Standard Extension API</i>)<i></i>.</p>
+<A NAME="TI56"></A><h4>Related interfaces</h4>
+<p>
+<ul>
+<li class=fi><b>javax.sql.XADataSource</b>
+</li>
+<li class=ds><b>javax.sql.XAConnection</b>
+</li>
+<li class=ds><b>javax.transaction.xa.XAResource</b>
+
+</li>
+</ul>
+</p>
+<A NAME="TI57"></A><h4>Background and system requirements</h4>
+<A NAME="TI58"></A><h4>For Adaptive Server 12.0 and later</h4>
+<p>
+<ul>
+<li class=fi>Because jConnect is communicating directly
+
+with the resource manager within Sybase Adaptive Server version
+
+12.0 and later, the installation must have Distributed Transaction
+
+Management support. 
+</li>
+<li class=ds>Any user that wants to participate in a distributed
+
+transaction must have the "dtm_tm_role" granted
+
+to them or the transactions will fail. 
+</li>
+<li class=ds>To use distributed transactions, you must install
+
+the stored procedures in the <i>/sp</i> directory.
+
+Refer to "Installing Stored Procedures" in Chapter
+
+1 of your <i>jConnect for JDBC Installation Guide</i>.
+
+</li>
+</ul>
+</p>
+<A NAME="TI59"></A><p><b>Figure 2-2: Distributed transaction management <br>support
+
+with version 12.x</b></caption>
+<br><IMG SRC="images/dtmxii13.gif">
+
+<A NAME="TI60"></A><h4>For Adaptive Server 11.x</h4>
+<p>jConnect also provides a standard Java API for performing
+
+distributed transactions with Adaptive Server version 11.x as your
+
+database server.</p>
+<p>
+<ul>
+<li class=fi>This implementation works only with
+
+Sybase Adaptive Server version 11.x and XA-Server 11.1.
+<A NAME="TI61"></A><p><b>Figure 2-3: Distributed transaction management support with version 11.x</b></caption>
+<br><IMG SRC="images/dtmxi14.gif">
+
+</li>
+<li class=ds>The login chosen cannot have a default login database
+
+of master, model, or sybsystemdb.
+
+This is because XA-Server connects only when the user's work
+
+is associated with a distributed transaction, and distributed transactions
+
+are not permitted on those databases.
+</li>
+<li class=ds>There is no access to metadata. While this restricts
+
+the client, it is most likely not the part of the API being used
+
+within the boundaries of distributed transactions.
+
+</li>
+</ul>
+</p>
+<A NAME="TI62"></A><h4>Adaptive Server 12.x use</h4>
+<A NAME="TI63"></A><h4>Configuration by administrator: LDAP</h4>
+<p>This approach is the same as <A HREF="prjdbcp11.htm#CHDDHADJ">1a. Configuration by administrator:
+
+LDAP</A>described in <A HREF="prjdbcp11.htm#CHDFHBIH">"JNDI for
+
+naming databases"</A>, except that
+
+you enter an additional line to the LDIF entry. In the following
+
+example, the added line of code is displayed in bold.</p>
+<p>
+<pre>dn:servername:myASE, o=MyCompany,  c=US
+1.3.6.1.4.1.897.4.2.5:TCP#1# mymachine  4000
+1.3.6.1.4.1.897.4.2.10:PACKETSIZE=1024&amp;user=me&amp;password=secret
+1.3.6.1.4.1.897.4.2.11:userdb 
+<i>1.3.6.1.4.1.897.4.2.18:XADataSource</i> </pre>
+</p>
+<A NAME="TI64"></A><h4>Access by middle-tier clients</h4>
+<p>This procedure initializes three properties (INITIAL_CONTEXT_FACTORY, PROVIDER_URL,
+
+and OBJECT_FACTORIES), and retrieves a <b>XADataSource</b> object.
+
+For example:</p>
+<p>
+<pre>...
+XADataSource xads = (XADatasource)  ctx.lookup("servername=myASE");
+XAConnection xaconn = xads.getXAConnection();</pre>
+</p>
+<p>or override the default settings for the user name and password:</p>
+<p>
+<pre>...
+XADataSource xads = (XADatasource)  ctx.lookup("servername=myASE");
+XAConnection xaconn = xads.getXAConnection("my_username","my_password");</pre>
+</p>
+<A NAME="TI65"></A><h4>Adaptive Server 11.x use</h4>
+<A NAME="TI66"></A><h4>Configuration by administrator: LDAP</h4>
+<p>This approach is the same as <A HREF="prjdbcp11.htm#CHDDHADJ">1a. Configuration by administrator:
+
+LDAP</A>described in <A HREF="prjdbcp11.htm#CHDFHBIH">"JNDI for
+
+naming databases"</A>, except that
+
+you enter an additional three lines to the LDIF entry. </p>
+<p>In the following example, the additional code lines are displayed
+
+in bold.</p>
+<p>
+<pre>dn:servername:myASE, o=MyCompany,  c=US
+1.3.6.1.4.1.897.4.2.5:TCP#1# mymachine  4000
+1.3.6.1.4.1.897.4.2.10:PACKETSIZE=1024&amp;user=me&amp;password=secret
+1.3.6.1.4.1.897.4.2.11:userdb
+<i>1.3.6.1.4.1.897.4.2.16:userconnection
+1.3.6.1.4.1.897:4.2.17:1
+1.3.6.1.4.1.897.4.2.18:XADataSource</i> </pre>
+</p>
+<p>where<code> . . .4.2.17:1</code>
+ indicates
+
+that jConnect is going to connect to an XA-Server and <code>userconnection</code>
+ corresponds
+
+to the Logical Resource Manager (LRM) to use. XA-Server has an <i>xa_config</i> file
+
+that contains these entries:</p>
+<p>
+<pre>[xa]</pre>
+
+<pre>lrm=userconnection
+server=my_ase_11_server
+XAServer=my_xa_server</pre>
+</p>
+<A NAME="TI67"></A><p><b>Figure 2-4: Distributed transaction management support sample configuration</b></caption>
+<br><IMG SRC="images/dtmsamp15.gif">
+
+<p>See the XA-Server documentation for details on how to write
+
+an <i>xa_config</i> file.</p>
+<A NAME="TI68"></A><h4>Access by middle-tier clients</h4>
+<p>This procedure initializes three properties (INITIAL_CONTEXT_FACTORY, PROVIDER_URL,
+
+and OBJECT_FACTORIES), and retrieves a <b>XADataSource</b> object.
+
+For example:</p>
+<p>
+<pre>...
+XADataSource xads = (XADatasource)  ctx.lookup("servername=myASE");
+XAConnection xaconn = xads.getXAConnection();</pre>
+</p>
+<p>With Adaptive Server 11.x, you <i>cannot</i>
+ override
+
+the default user name and password
+; that is, you cannot
+
+call:</p>
+<p>
+<pre>xads.getXAConnection("my_username","my_password");</pre>
+</p>
+<p>because the <i>lrm</i>
+ is associated with a
+
+specific user name and password.</p>
+<P>&nbsp;</P><hr noshade size=1>
+<table cols=3><tr><td colspan=2 align=left>
+Copyright &copy; 2003 Sybase, Inc. All rights reserved.&nbsp;&nbsp;&nbsp;
+</td><td colspan=1>
+<A HREF="prjdbcp12.htm"><IMG SRC="images/arrow-right.gif" ALIGN=right></A>
+</td></tr></table>
+</BODY>
+</HTML>
+

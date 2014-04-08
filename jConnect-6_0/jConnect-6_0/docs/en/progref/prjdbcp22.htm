@@ -1,0 +1,486 @@
+
+<html>
+<!-- 
+Copyright (C) 2003. Sybase Inc. All rights reserved.
+Programmer's Reference
+jConnect&#153; for JDBC&#153;
+-->
+
+<HEAD>
+<script language="JavaScript">
+<!--
+
+if (navigator.appName == "Netscape"){
+     document.write('<LINK REL=STYLESHEET HREF="netscape.css" TYPE="text/javascript">');
+     }
+else{
+     document.write('<LINK REL=STYLESHEET HREF="default.css" TYPE="text/css">');
+     }
+
+//-->
+</script>
+<NOSCRIPT><LINK REL=STYLESHEET HREF="default.css" TYPE="text/css"></NOSCRIPT>
+<TITLE>Performance tuning for prepared statements in dynamic SQL</TITLE></HEAD>
+<BODY bgproperties="FIXED" bgcolor="#ffffe2">
+<P ALIGN=RIGHT><A HREF="prjdbcp21.htm"><IMG SRC="images/arrow-left.gif" align=top></A>&nbsp;&nbsp;<A HREF="prjdbcp23.htm"><IMG SRC="images/arrow-right.gif" align=top></A></P>
+
+<P ALIGN=LEFT><I>Chapter 4  Performance  and Tuning</I><HR NOSHADE SIZE=1></P>
+<A NAME="X20007"></A><h1>Performance tuning for prepared statements in dynamic SQL</h1>
+<p>In Embedded SQL, dynamic statements are SQL statements that
+
+need to be compiled at runtime, rather than statically. Typically,
+
+dynamic statements contain input parameters, although this is not
+
+a requirement. In SQL, the <b>prepare</b> command is
+
+used to precompile a dynamic statement and save it so that it can
+
+be executed repeatedly without being recompiled during a session.</p>
+<p>If a statement is used multiple times in a session, precompiling
+
+it provides better performance than sending it to the database and
+
+compiling it for each use. The more complex the statement, the greater
+
+the performance benefit.</p>
+<p>If a statement is likely to be used only a few times, precompiling
+
+it may be inefficient because of the overhead involved in precompiling,
+
+saving, and later deallocating it in the database.</p>
+<p>Precompiling a dynamic SQL statement for execution and saving
+
+it in memory uses time and resources. If a statement is not likely
+
+to be used multiple times during a session, the costs of doing a
+
+database <b>prepare</b> may outweigh its benefits. Another
+
+consideration is that once a dynamic SQL statement is prepared in
+
+the database, it is very similar to a stored procedure. In some
+
+cases, it may be preferable to create stored procedures and have
+
+them reside on the server, rather than defining prepared statements
+
+in the application. This is discussed under <A HREF="prjdbcp22.htm#X26863">"Choosing prepared statements
+
+and stored procedures"</A>.</p>
+<p>You can use jConnect to optimize the performance of dynamic
+
+SQL statements on a Sybase database as follows: 
+<ul>
+<li class=fi>Create <b>PreparedStatement</b> objects
+
+that contain precompiled statements in cases where a statement is
+
+likely to be executed several times in a session.
+</li>
+<li class=ds>Create <b>PreparedStatement</b> objects
+
+that contain uncompiled SQL statements in cases where a statement
+
+will be used very few times in a session.
+
+</li>
+</ul>
+</p>
+<p>As described in the following sections, the optimal way to
+
+set the DYNAMIC_PREPARE connection property and create <b>PreparedStatement</b> objects
+
+is likely to depend on whether your application needs to be portable across
+
+JDBC drivers or whether you are writing an application that allows jConnect-specific
+
+extensions to JDBC.</p>
+<p>jConnect 4.1 and later provide performance tuning features
+
+for dynamic SQL statements.</p>
+<A NAME="X26863"></A><h2>Choosing prepared statements  and stored procedures</h2>
+<p>If you create a <b>PreparedStatement</b> object
+
+containing a precompiled dynamic SQL statement, once the statement
+
+is compiled in the database, it effectively becomes a stored procedure
+
+that is retained in memory and attached to the data structure associated
+
+with your session. In deciding whether to maintain stored procedures
+
+in the database or to create <b>PreparedStatement</b> objects
+
+containing compiled SQL statements in your application, resource
+
+demands and database and application maintenance are important considerations: 
+<ul>
+<li class=fi>Once a stored procedure is
+
+compiled, it is globally available across all connections. In contrast,
+
+a dynamic SQL statement in a <b>PreparedStatement</b> object
+
+needs to be compiled and deallocated in every session that uses
+
+it.
+</li>
+<li class=ds>If your application accesses multiple databases,
+
+using stored procedures means that the same stored procedures need
+
+to be available on all target databases. This can create a database
+
+maintenance problem. If you use <b>PreparedStatement</b> objects
+
+for dynamic SQL statements, you avoid this problem.
+</li>
+<li class=ds>If your application creates <b>CallableStatement</b> objects
+
+for invoking stored procedures, you can encapsulate SQL code and
+
+table references in the stored procedures. You can then modify the
+
+underlying database or SQL code without have to change the application.
+
+</li>
+</ul>
+</p>
+<A NAME="X35870"></A><h2>Prepared statements in portable  applications </h2>
+<p>If your application is to run on databases from different
+
+vendors and you want some <b>PreparedStatement</b> objects
+
+to contain precompiled statements and others to contain uncompiled
+
+statements, proceed as follows: 
+<ul>
+<li class=fi>When you access a Sybase database, make sure that the DYNAMIC_PREPARE
+
+connection property is set to true.
+</li>
+<li class=ds>To return <b>PreparedStatement</b> objects
+
+containing precompiled statements, use <b>Connection.prepareStatement(
+
+)</b> in the standard way: 
+<pre>PreparedStatement  ps_precomp = 
+   Connection.prepareStatement(<i>sql_string</i>);</pre>
+
+</li>
+<li class=ds>To return <b>PreparedStatement</b> objects
+
+containing uncompiled statements, use <b>Connection.prepareCall(
+
+).</b>
+<br><br>
+<b>Connection.prepareCall( )</b> returns a <b>CallableStatement</b> object,
+
+but since <b>CallableStatement </b>is a subclass of <b>PreparedStatement</b>,
+
+you can upcast a <b>CallableStatement </b>object to
+
+a <b>PreparedStatement</b> object, as in the following example: 
+<pre>PreparedStatement ps_uncomp = 
+   Connection.prepareCall(<i>sql_string</i>);</pre>
+
+<br><br>
+The <b>PreparedStatement</b> object <i>ps_uncomp
+
+is</i> guaranteed to contain an uncompiled statement, since
+
+only <b>Connection.prepareStatement( )</b> is implemented
+
+to return <b>PreparedStatement</b> objects containing
+
+precompiled statements.
+
+</li>
+</ul>
+</p>
+<A NAME="TI81"></A><h2>Prepared statements with jConnect extensions</h2>
+<p>If you are not concerned about portability across drivers,
+
+you can write code that uses <b>SybConnection.prepareStatement(
+
+)</b> to specify whether a <b>PreparedStatement </b>object<b> </b>contains
+
+precompiled or uncompiled statements. In this case, how you code
+
+prepared statements is likely to depend on whether most of the dynamic
+
+statements in an application are likely to be executed many times
+
+or only a few times during a session.</p>
+<A NAME="TI82"></A><h3>If most dynamic statements are executed very few
+
+times</h3>
+<p>For an application in which most dynamic SQL statements are
+
+likely to be executed only once or twice in a session: 
+<ul>
+<li class=fi>Set the connection property
+
+DYNAMIC_PREPARE to false.
+</li>
+<li class=ds>To return <b>PreparedStatement</b> objects
+
+containing uncompiled statements, use <b>Connection.prepareStatement(
+
+)</b> in the standard way: 
+<pre>PreparedStatement  ps_uncomp = 
+   Connection.prepareStatement(<i>sql_string</i>);</pre>
+
+</li>
+<li class=ds>To return <b>PreparedStatement</b> objects
+
+containing precompiled statements, use <b>SybConnection.prepareStatement(
+
+)</b> with <i>dynamic</i> set to "true:" 
+<pre>PreparedStatement ps_precomp = 
+   (SybConnection)conn.prepareStatement(<i>sql_string</i>,  true);</pre>
+
+
+</li>
+</ul>
+</p>
+<A NAME="TI83"></A><h3>If most dynamic statements are executed many times
+
+in a session</h3>
+<p>If most of the dynamic statements in an application are likely
+
+to be executed many times in the course of a session, proceed as
+
+follows: 
+<ul>
+<li class=fi>Set the connection
+
+property DYNAMIC_PREPARE to true.
+</li>
+<li class=ds>To return <b>PreparedStatement</b> objects
+
+containing precompiled statements, use <b>Connection.prepareStatement(
+
+)</b> in the standard way: 
+<pre>PreparedStatement  ps_precomp = 
+   Connection.prepareStatement(<i>sql_string</i>);</pre>
+
+</li>
+<li class=ds>To return <b>PreparedStatement</b> objects
+
+containing uncompiled statements, you can use either <b>Connection.prepareCall(
+
+) </b>(see the third bullet under <A HREF="prjdbcp22.htm#X35870">Prepared statements in portable
+
+applications </A>) or <b>SybConnection.prepareStatement(
+
+)</b>, with <i>dynamic</i> set to "false:" 
+<pre>PreparedStatement  ps_uncomp = 
+   (SybConnection)conn.prepareStatement(<i>sql_string</i>, false);
+</pre>
+
+<pre>PreparedStatement  ps_uncomp = 
+   Connection.prepareCall(<i>sql_string</i>);</pre>
+
+
+</li>
+</ul>
+</p>
+<A NAME="X21716"></A><h2><b>Connection.prepareStatement(  )</b></h2>
+<p>jConnect implements <b>Connection.prepareStatement(
+
+)</b> so you can set it to return either precompiled SQL statements
+
+or uncompiled SQL statements in <b>PreparedStatement</b> objects.
+
+If you set <b>Connection.prepareStatement( )</b> to
+
+return precompiled SQL statements in <b>PreparedStatement</b> objects,
+
+it sends dynamic SQL statements to the database to be precompiled
+
+and saved exactly as they would be under direct execution of the <b>prepare</b> command.
+
+If you set <b>Connection.prepareStatement( )</b> to
+
+return uncompiled SQL statements, it returns them in <b>PreparedStatement</b> objects
+
+without sending them to the database.</p>
+<p>The type of SQL statement that <b>Connection.prepareStatement(
+
+)</b> returns is determined by the connection property DYNAMIC_PREPARE,
+
+and applies throughout a session.</p>
+<p>For Sybase-specific applications, jConnect 5.5 provides a <b>prepareStatement(
+
+)</b> method under the jConnect <b>SybConnection</b> class. <b>SybConnection.prepareStatement(
+
+)</b> allows you to specify whether an individual dynamic
+
+SQL statement is to be precompiled, independent of the session-level setting
+
+of the DYNAMIC_PREPARE connection property.</p>
+<A NAME="X30815"></A><h2>DYNAMIC_PREPARE connection  property</h2>
+<p>DYNAMIC_PREPARE is a Boolean-valued connection property
+
+for enabling dynamic SQL prepared statements: 
+<ul>
+<li class=fi>If DYNAMIC_PREPARE is set to true, every
+
+invocation of <b>Connection.prepareStatement( )</b> during
+
+a session attempts to return a precompiled statement in a<b> PreparedStatement</b> object.
+<br><br>
+In this case, when a <b>PreparedStatement</b> is
+
+executed, the statement it contains is already precompiled in the
+
+database, with place holders for dynamically assigned values, and
+
+the statement needs only to be executed.
+</li>
+<li class=ds>If DYNAMIC_PREPARE is set to false<b> </b>for
+
+a connection, the <b>PreparedStatement</b> object returned
+
+by <b>Connection.prepareStatement( ) </b>does not contain
+
+a precompiled statement.
+<br><br>
+In this case, each time a <b>PreparedStatement</b> is
+
+executed, the dynamic SQL statement it contains must be sent to
+
+the database to be both compiled and executed.
+
+</li>
+</ul>
+</p>
+<p>The default value for DYNAMIC_PREPARE is false.</p>
+<p>In the following example, DYNAMIC_PREPARE is set
+
+to true<b> </b>to enable precompilation of dynamic SQL
+
+statements. In the example, <b>props</b> is a <b>Properties</b> object
+
+for specifying connection properties. 
+<pre>...
+ props.put("DYNAMIC_PREPARE",  "true")
+ Connection conn = DriverManager.getConnection(<i>url</i>, props);</pre>
+</p>
+<p>When DYNAMIC_PREPARE is set to true, note that: 
+<ul>
+<li class=fi>Not all dynamic statements
+
+can be precompiled under the <b>prepare</b> command.
+
+The SQL-92 standard places some restrictions on the statements that
+
+can be used with the <b>prepare</b> command, and individual database
+
+vendors may have their own constraints.
+</li>
+<li class=ds>If the database generates an error because it is
+
+unable to precompile and save a statement sent to it through <b>Connection.prepareStatement(
+
+)</b>, jConnect traps the error and returns a <b>PreparedStatement</b> object
+
+containing an uncompiled dynamic SQL statement. Each time the <b>PreparedStatement</b> object
+
+is executed, the statement is re-sent to the database to be compiled and
+
+executed.
+</li>
+<li class=ds>A precompiled statement resides in memory in the
+
+database and persists either to the end of a session or until its <b>PreparedStatement</b> object
+
+is explicitly closed. Garbage collection on a <b>PreparedStatement</b> object
+
+does not remove the prepared statement from the database.
+<br><br>
+As a general rule, you should explicitly close every <b>PreparedStatement</b> object
+
+after its last use to prevent prepared statements from accumulating in
+
+server memory during a session and slowing performance.
+
+</li>
+</ul>
+</p>
+<A NAME="X35289"></A><h2><b>SybConnection.prepareStatement(  ) </b></h2>
+<p>If your application allows jConnect-specific extensions to
+
+JDBC, you can use the <b>SybConnection.prepareStatement( )</b> extension
+
+method to return dynamic SQL statements in <b>PreparedStatement</b> objects: 
+<pre>PreparedStatement SybConnection.prepareStatement (String  sql_stmt, 
+   boolean dynamic)  throws SQLException</pre>
+</p>
+<p><b>SybConnection.prepareStatement( )</b> can return <b>PreparedStatement</b> objects containing
+
+either precompiled or uncompiled SQL statements, depending on the
+
+setting of the <i>dynamic</i> parameter. If <i>dynamic</i> is true, <b>SybConnection.prepareStatement(
+
+)</b> returns a <b>PreparedStatement</b> object
+
+with a precompiled SQL statement. If <i>dynamic</i> is false,
+
+it returns a <b>PreparedStatement</b> object with an
+
+uncompiled SQL statement.</p>
+<p>The following example shows the use of <br> <b>SybConnection.prepareStatement(
+
+)</b> to return a <b>PreparedStatement</b> object containing
+
+a precompiled statement:  
+<pre>PreparedStatement precomp_stmt = 
+   ((SybConnection)  conn).prepareStatement( "SELECT * FROM 
+   authors  WHERE au_fname LIKE ?", true);</pre>
+</p>
+<p>In the example, the connection object <i>conn</i> is
+
+downcast to a <b>SybConnection</b> object to allow the
+
+use of <b>SybConnection.prepareStatement( )</b>. The
+
+SQL string passed to <b>SybConnection.prepareStatement( ) </b>will
+
+be precompiled in the database, even if the connection property
+
+DYNAMIC_PREPARE is false.</p>
+<p>If the database generates an error because it is unable to
+
+precompile a statement sent to it through <b>SybConnection.prepareStatement(
+
+)</b>, jConnect throws a <b>SQLException</b> and
+
+the call fails to return a <b>PreparedStatement</b> object.
+
+This is unlike <b>Connection.prepareStatement( )</b>,
+
+which traps SQL errors and, in the event of an error, returns a <b>PreparedStatement</b> object
+
+containing an uncompiled statement.</p>
+<A NAME="TI84"></A><h2>ESCAPE_PROCESSING_DEFAULT connection property</h2>
+<p>By default jConnect parses all SQL statements submitted to
+
+the database for valid JDBC function escapes. If your application
+
+is not going to use JDBC function escapes in its SQL calls, you
+
+can set this connection property to <i>false</i> to
+
+circumvent this parsing. This may give a slight performance benefit.</p>
+<P>&nbsp;</P><hr noshade size=1>
+<table cols=3><tr><td colspan=2 align=left>
+Copyright &copy; 2003 Sybase, Inc. All rights reserved.&nbsp;&nbsp;&nbsp;
+</td><td colspan=1>
+<A HREF="prjdbcp23.htm"><IMG SRC="images/arrow-right.gif" ALIGN=right></A>
+</td></tr></table>
+</BODY>
+</HTML>
+

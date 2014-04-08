@@ -1,0 +1,1913 @@
+
+<html>
+<!-- 
+Copyright (C) 2003. Sybase Inc. All rights reserved.
+Programmer's Reference
+jConnect&#153; for JDBC&#153;
+-->
+
+<HEAD>
+<script language="JavaScript">
+<!--
+
+if (navigator.appName == "Netscape"){
+     document.write('<LINK REL=STYLESHEET HREF="netscape.css" TYPE="text/javascript">');
+     }
+else{
+     document.write('<LINK REL=STYLESHEET HREF="default.css" TYPE="text/css">');
+     }
+
+//-->
+</script>
+<NOSCRIPT><LINK REL=STYLESHEET HREF="default.css" TYPE="text/css"></NOSCRIPT>
+<TITLE>Working with databases</TITLE></HEAD>
+<BODY bgproperties="FIXED" bgcolor="#ffffe2">
+<P ALIGN=RIGHT><A HREF="prjdbcp9.htm"><IMG SRC="images/arrow-left.gif" align=top></A>&nbsp;&nbsp;<A HREF="prjdbcp11.htm"><IMG SRC="images/arrow-right.gif" align=top></A></P>
+
+<P ALIGN=LEFT><I>Chapter 2  Programming  Information</I><HR NOSHADE SIZE=1></P>
+<A NAME="X38478"></A><h1>Working with databases</h1>
+<p>This section discusses database issues relevant to jConnect
+
+and includes these topics: </p>
+<p>
+<ul>
+<li class=fi><A HREF="prjdbcp10.htm#CHDCJAHF">Implementing
+
+high availability failover support</A>
+</li>
+<li class=ds><A HREF="prjdbcp10.htm#X40032">Performing server-to-server remote procedure calls</A>
+</li>
+<li class=ds><A HREF="prjdbcp10.htm#BHCJEABE">Wide table support for Adaptive Server version 12.5 and later</A> 
+</li>
+<li class=ds><A HREF="prjdbcp10.htm#X30662">Accessing database metadata</A>
+</li>
+<li class=ds><A HREF="prjdbcp10.htm#X15542">Using cursors
+
+with result sets</A>
+</li>
+<li class=ds><A HREF="prjdbcp10.htm#X24000">Support for batch updates</A>
+</li>
+<li class=ds><A HREF="prjdbcp10.htm#X41162">Updating a database from a result set of a stored procedure</A>
+</li>
+<li class=ds><A HREF="prjdbcp10.htm#CHDCDGDJ">Working with datatypes</A>
+
+</li>
+</ul>
+</p>
+<A NAME="CHDCJAHF"></A><h2>Implementing  high availability failover support</h2>
+<p>jConnect version 5.2 and later support the failover feature
+
+available in Adaptive Server version 12.0 and later. </p>
+<p><IMG SRC="images/note.gif" width=17 height=17 border=0 align="bottom" alt="Note">&nbsp;&nbsp; Sybase failover in a high availability system is a different
+
+feature than "connection failover." Sybase strongly
+
+recommends that you read this section <i>very carefully </i>
+if
+
+you want to use both.</P>
+<A NAME="X39000"></A><h3>Overview</h3>
+<p>Sybase failover allows you to configure two version 12.0 or
+
+later Adaptive Servers as companions. If the primary companion fails,
+
+that server's devices, databases, and connections can be
+
+taken over by the secondary companion. </p>
+<p>You can configure a high availability system either asymmetrically
+
+or symmetrically.</p>
+<p>An <i>asymmetric</i>
+ configuration includes
+
+two Adaptive Servers, each physically located on a different machine,
+
+that are connected so that if one of the servers is brought down,
+
+the other assumes its workload. The secondary Adaptive Server acts
+
+as a "hot standby" and does not perform any work
+
+until failover occurs.A <i>symmetric</i>
+ configuration
+
+also includes two Adaptive Servers running on separate machines.
+
+However, if failover occurs, either Adaptive Server can act as a
+
+primary or secondary companion for the other Adaptive Server. In
+
+this configuration, each Adaptive Server is fully functional with
+
+its own system devices, system databases, user databases, and user
+
+logins.In either setup, the two machines are configured for dual
+
+access, which makes the disks visible and accessible to both machines.You
+
+can enable failover in jConnect and connect a client application
+
+to an Adaptive Server configured for failover. If the primary server
+
+fails over to the secondary server, the client application also
+
+automatically switches to the second server and reestablishes network
+
+connections.</p>
+<p><IMG SRC="images/note.gif" width=17 height=17 border=0 align="bottom" alt="Note">&nbsp;&nbsp; Refer to <i>Using Sybase Failover in High Availability
+
+Systems Manual for Adaptive Server </i>for more detailed
+
+information.</P>
+<A NAME="X39001"></A><h3>Requirements, dependencies,  and restrictions</h3>
+<p>
+<ul>
+<li class=fi>You must have two version 12.0 or later
+
+Adaptive Servers configured for failover.
+</li>
+<li class=ds>You must use jConnect version 5.2, or later. Earlier
+
+driver versions do not support this feature.
+</li>
+<li class=ds>Only changes that were committed to the database
+
+before failover are retained when the client fails over.
+</li>
+<li class=ds>You must set the REQUEST_HA_SESSION
+
+jConnect connection property to true (see <A HREF="prjdbcp7.htm#X40297">"Setting connection properties"</A>).
+</li>
+<li class=ds>jConnect event notification does not work when failover
+
+occurs. See <A HREF="prjdbcp11.htm#CHDJAGIE">"Using event
+
+notification"</A>.
+</li>
+<li class=ds>Close all statements when they are no longer used.
+
+jConnect stores information on statements to enable failover. If
+
+you do not close statements, you will experience memory leaks.
+
+</li>
+</ul>
+</p>
+<A NAME="X39002"></A><h3>Implementing failover in jConnect</h3>
+<p>To implement failover support in jConnect choose one of the
+
+following two methods:</p>
+<p>
+<ol>
+<li class=fi>Use the two connection
+
+properties, REQUEST_HA_SESSION and SECONDARY_SERVER_HOSTPORT
+
+and set the following:
+<ul>
+<li class=fi>set REQUEST_HA_SESSION
+
+to <i>true</i>
+<li class=fi>set the SECONDARY_SERVER_HOSTPORT
+
+to the host name and port number where your secondary server is
+
+listening (see <A HREF="prjdbcp7.htm#X40297">"Setting connection properties"</A>, and the 'SECONDARY_SERVER_HOSTPORT' connection
+
+property.
+
+</li>
+</ul>
+
+</li>
+<li class=ds>Use JNDI to connect to the server (See <A HREF="prjdbcp7.htm#X39594">Connecting
+
+to a server using JNDI</A>). Include an
+
+entry for the primary server and a separate entry for the secondary
+
+server in the directory service information file required by JNDI.
+
+The primary server entry will have an attribute (the HA OID) that refers
+
+to the entry for the secondary server.
+<br><br>
+Using LDAP as the service provider for JNDI, there are three
+
+possible forms that this HA attribute can have:
+<ul>
+<li class=fi><i>Relative Distinguished Name (RDN)</i>
+ - this
+
+form assumes that the search base (typically provided by the <b>java.naming.provider.url</b> attribute)
+
+combined with this attribute's value is enough to identify the
+
+secondary server. For example, assume the primary server is at hostname:4200
+
+and the secondary server is at hostname:4202:
+<br><br>
+
+<pre>dn: servername=haprimary,  o=Sybase, c=US
+1.3.6.1.4.1.897.4.2.5:  TCP#1#hostname 4200
+1.3.6.1.4.1.897.4.2.15:  servername=hasecondary
+objectclass: sybaseServer</pre>
+
+<pre></pre>
+
+<br><br>
+
+<pre>dn: servername=hasecondary,  o=Sybase, c=US
+1.3.6.1.4.1.897.4.2.5:  TCP#1#hostname 4202
+objectclass: sybaseServer</pre>
+
+</li>
+<li class=ds><i>Distinguished Name (DN)</i>
+ - this
+
+form assumes that the HA attribute's value uniquely identifies
+
+the secondary server, and may or may not duplicate values found
+
+in the search base. For example:
+<br><br>
+
+<pre>dn: servername=haprimary,  o=Sybase, c=US
+1.3.6.1.4.1.897.4.2.5:  TCP#1#hostname 4200
+1.3.6.1.4.1.897.4.2.15:  servername=hasecondary, 
+          o=Sybase,  c=US ou=Accounting
+objectclass: sybaseServer</pre>
+
+<pre></pre>
+
+<br><br>
+
+<pre>dn: servername=hasecondary,  o=Sybase, c=US, ou=Accounting
+1.3.6.1.4.1.897.4.2.5:  TCP#1#hostname 4202
+objectclass: sybaseServer</pre>
+
+<br><br>
+Notice that <code>hasecondary</code>
+ is
+
+located in a different branch of the tree (see the additional <code>ou=Accounting</code>
+ qualifier).
+</li>
+<li class=ds><i>Full LDAP URL</i>
+ - this
+
+form assumes nothing about the search base. The HA attribute is
+
+expected to be a fully-qualified LDAP URL that is used to identify
+
+the secondary (it may even point to a different LDAP server). For
+
+example:
+<br><br>
+
+<pre>dn: servername=hafailover,  o=Sybase, c=US
+1.3.6.1.4.1.897.4.2.5:  TCP#1#hostname 4200
+1.3.6.1.4.1.897.4.2.15: ldap://ldapserver:      386/servername=secondary, 
+          o=Sybase,  c=US ou=Accounting
+objectclass: sybaseServer</pre>
+
+<br><br>
+
+<pre>dn: servername=secondary,  o=Sybase, c=US, ou=Accounting
+1.3.6.1.4.1.897.4.2.5:  TCP#1#hostname 4202
+objectclass: sybaseServer</pre>
+
+</li>
+<li class=ds>In the directory service information file required
+
+by JNDI, set the REQUEST_HA_SESSION connection
+
+property to true to enable a failover session every time you make
+
+a connection. 
+<br><br>
+The REQUEST_HA_SESSION connection property
+
+is used to indicate that the connecting client wants to begin a
+
+failover session with Adaptive Server version 12.0 or later, that
+
+is configured for failover. Setting this property to true causes
+
+jConnect to attempt a failover login. If you do not set this connection
+
+property, a failover session will not start, even if the server
+
+is configured correctly. The default value for REQUEST_HA_SESSION
+
+is false.
+<br><br>
+Set the connection property like any other connection property.
+
+You cannot reset the property once a connection has been made.
+
+</li>
+</ul>
+
+</li>
+<li class=ds>If you want more flexibility for requesting failover sessions,
+
+code the client application to set REQUEST_HA_SESSION
+
+at runtime.The following example shows connection information entered
+
+for the database server SYBASE11 under an LDAP directory service:
+<pre>dn: servername=SYBASE11,o=MyCompany,c=US
+1.3.6.1.4.1.897.4.2.5:TCP#1#tahiti  3456
+1.3.6.1.4.1.897.4.2.10:REPEAT_READ=false&amp;PACKETSIZE=1024
+1.3.6.1.4.1.897.4.2.10:CONNECTION_FAILOVER=false
+1.3.6.1.4.1.897.4.2.11:pubs2
+1.3.6.1.4.1.897.4.2.9:Tds
+1.3.6.1.4.1.897.4.2.15:servername=SECONDARY
+1.3.6.1.4.1.897.4.2.10:REQUEST_HA_SESSION=true</pre>
+
+<pre></pre>
+
+<pre>dn:servername=SECONDARY,  o=MyCompany, c=US</pre>
+
+<pre>1.3.6.1.4.1.897.4.2.5:TCP#1#moorea  6000</pre>
+
+<br><br>
+where "tahiti" is the primary server and "moorea" is
+
+the secondary companion server.
+</li>
+<li class=ds>Request a connection using JNDI and LDAP. 
+<ul>
+<li class=fi>jConnect uses the LDAP server's
+
+directory server to determine the name and location of the primary
+
+and secondary servers:
+<pre>/* get  the connection */
+Connection con = DriverManager.getConnection
+          ("jdbc:sybase:jndi:ldap://ldap_server1:983" +
+          "/servername=Sybase11,o=MyCompany,c=US",props);</pre>
+or
+</li>
+<li class=ds>Specify a searchbase:
+<br><br>
+
+<pre>props.put(Context.PROVIDER_URL, 
+          "ldap://ldap_server1:983/ o=MyCompany,  c=US");</pre>
+
+<br><br>
+
+<pre>Connection con=DriverManager.getConnection
+          ("jdbc:sybase:jndi:servername=Sybase11",  props);</pre>
+
+
+</li>
+</ul>
+
+
+</li>
+</ol>
+</p>
+<A NAME="X39003"></A><h4>Logging in to the primary  server</h4>
+<p>If an Adaptive Server is not configured for failover, or for
+
+some reason cannot grant a failover session, the client cannot log
+
+in, and the following warning displays:
+<pre>'The  server denied your request to use the high-availability feature. Please  reconfigure your database, or do not request a high-availability  session.'</pre>
+</p>
+<A NAME="X39004"></A><h4>Failing over to the secondary  server</h4>
+<p>When failover occurs, the SQL exception JZ0F2 is thrown:</p>
+<p>
+<pre>'Sybase high-availability failover has  occurred. The current transaction is aborted, but the connection  is still usable. Retry your transaction.'</pre>
+</p>
+<p>The client then automatically reconnects to the secondary
+
+database using JNDI. </p>
+<p>Note that:</p>
+<p>
+<ul>
+<li class=fi>The identity of the database to which
+
+the client was connected and any committed transactions are retained.
+</li>
+<li class=ds>Partially read result sets, cursors, and stored
+
+procedure invocations are lost.
+</li>
+<li class=ds>When failover occurs, your application may need
+
+to restart a procedure or go back to the last completed transaction
+
+or activity.
+
+</li>
+</ul>
+</p>
+<A NAME="X39005"></A><h4>Failing back to the primary  server</h4>
+<p>At some point, the client will fail back from the secondary
+
+server to the primary server. When failback occurs is determined
+
+by the System Administrator who issues <b>sp_failback</b> on
+
+the secondary server. Afterward, the client can expect the same
+
+behavior and results on the primary server as documented in <A HREF="prjdbcp10.htm#X39004">"Failing over to the secondary
+
+server"</A>.</p>
+<A NAME="X40032"></A><h2>Performing server-to-server remote procedure calls</h2>
+<p>A Transact-SQL language command or stored procedure running
+
+on one server can execute a stored procedure located on another
+
+server. The server to which an application has connected logs in
+
+to the remote server, and executes a server-to-server remote procedure
+
+call.</p>
+<p>An application can specify a "universal" password
+
+for server-to-server communication; that is, a password used in
+
+all server-to-server connections. Once the connection is open, the
+
+server uses this password to log in to any remote server. By default,
+
+jConnect uses the current connection's password as the
+
+default password for server-to-server communications.</p>
+<p>However, if the passwords are different on two servers for
+
+the same user and that user is performing server-to-server remote
+
+procedure calls, the application must explicitly define passwords
+
+for each server it plans to use.</p>
+<p>jConnect versions 4.1 and later include a property that lets
+
+you set a universal "remote" password or different
+
+passwords on several servers. jConnect lets you set and configure
+
+the property using the <b>setRemotePassword(
+
+)</b> method in the <b>SybDriver</b> class:
+<pre>Properties  connectionProps = new Properties();
+
+public  final void setRemotePassword(String serverName, 
+    String  password, Properties connectionProps</pre>
+</p>
+<p>To use this method, the application needs to import the <b>SybDriver</b> class,
+
+then call the method:</p>
+<p>
+<pre>import com.sybase.jdbcx.SybDriver;
+SybDriver  sybDriver = (SybDriver)
+    Class.forName("com.sybase.jdbc2.jdbc.SybDriver").newInstance();
+sybDriver.setRemotePassword
+    (<i>serverName</i>,  password, connectionProps);</pre>
+</p>
+<p><IMG SRC="images/note.gif" width=17 height=17 border=0 align="bottom" alt="Note">&nbsp;&nbsp; To set different remote passwords for various servers,
+
+repeat the preceding call (appropriate for your version of jConnect)
+
+for each server.</P>
+<p>This call adds the given server name-password pair to the
+
+given <b>Properties</b> object, which can be passed
+
+by the application to <b>DriverManager</b> in <b>DriverManager.getConnection</b> (<i>server_url,
+
+props</i>).</p>
+<p>If <b>serverName</b><i> </i>is NULL,
+
+the universal password will be set to <b>password</b> for subsequent
+
+connections to all servers except the ones specifically defined
+
+by previous calls to <b>setRemotePassword( )</b>.</p>
+<p>When an application sets the REMOTEPWD property, jConnect
+
+no longer sets the default universal password.</p>
+<A NAME="BHCJEABE"></A><h2>Wide table support for Adaptive Server version 12.5 and later</h2>
+<p>Adaptive Server version 12.5 and later offers limits and parameters
+
+that are larger than in previous versions of the database server.
+
+For example:</p>
+<p><IMG SRC="images/note.gif" width=17 height=17 border=0 align="bottom" alt="Note">&nbsp;&nbsp; You must use jConnect 5.5 or later to access the wide
+
+table functionality in Adaptive Server version 12.5 and later.</P>
+<p>
+<ul>
+<li class=fi>Tables can contain 1,024 columns. 
+</li>
+<li class=ds><i>Varchar</i> and <i>varbinary</i> columns
+
+can contain more than 255 bytes of data.
+</li>
+<li class=ds>You can send and retrieve up to 2,048 parameters
+
+when invoking stored procedures or inserting data into tables.
+
+</li>
+</ul>
+</p>
+<p>To take advantage of this capability, jConnect version 5.5
+
+and later users need to set their JCONNECT_VERSION property
+
+to VERSION_6 or VERSION_LATEST. This will request
+
+that the server enable wide table support.</p>
+<p><IMG SRC="images/note.gif" width=17 height=17 border=0 align="bottom" alt="Note">&nbsp;&nbsp; jConnect continues to work with an Adaptive Server version
+
+12.5 and later if you set the version to below VERSION_6.
+
+However, if you try selecting from a table that requires wide table
+
+support to fully retrieve the data, you may encounter unexpected
+
+errors or data truncation. You can also set the version to VERSION_6 or VERSION_LATEST
+
+when you access data from a Sybase server that does not support
+
+wide tables. In this case, the server simply ignores your request
+
+for wide table support.</P>
+<p>Wide table support offers an extra benefit for jConnect users,
+
+besides the larger number of columns and parameters--a greater
+
+amount of <b>ResultSetMetaData</b>. For example, in
+
+versions of jConnect earlier than 5.5, the <b>ResultSetMetaData</b> methods <b>getCatalogName</b>, <b>getSchemaName</b>,
+
+and <b>getTableName</b> all returned "Not Implemented" SQLExceptions
+
+because that metadata was not supplied by the server. When you enable
+
+wide table support, the server now sends back this information,
+
+and the three methods return useful information.</p>
+<A NAME="X30662"></A><h2>Accessing database metadata</h2>
+<p>To support JDBC <b>DatabaseMetaData</b> methods,
+
+Sybase provides a set of stored procedures that jConnect can call
+
+for metadata about a database. These stored procedures must be installed
+
+on the server for the JDBC metadata methods to work.</p>
+<p>If the stored procedures for providing metadata are not already
+
+installed in a Sybase server, you can install them using stored
+
+procedure scripts provided with jConnect: 
+<ul>
+<li class=fi><i>sql_server.sql</i> installs
+
+stored procedures on pre-12.0 Adaptive Server databases.
+</li>
+<li class=ds><i>sql_server12.sql</i> installs
+
+stored procedures on a version 12.0 Adaptive Server database.
+</li>
+<li class=ds><i>sql_server12.5.sql</i> installs
+
+stored procedures on Adaptive Server databases of version 12.5 and
+
+later.
+</li>
+<li class=ds><i>sql_asa.sql</i> installs
+
+stored procedures on an Adaptive Server Anywhere database.
+
+</li>
+</ul>
+</p>
+<p><IMG SRC="images/note.gif" width=17 height=17 border=0 align="bottom" alt="Note">&nbsp;&nbsp; The most recent version of these scripts is compatible
+
+with all versions of jConnect.</P>
+<p>See the <i>Sybase jConnect for JDBC Installation Guide</i> and <i>Release
+
+Bulletin</i> for complete instructions on installing stored
+
+procedures.</p>
+<p>In addition, to use the metadata methods, you must set the
+
+USE_METADATA connection property to true (its default value)
+
+when you establish a connection.</p>
+<p>You cannot get metadata about temporary tables in a database.</p>
+<p><IMG SRC="images/note.gif" width=17 height=17 border=0 align="bottom" alt="Note">&nbsp;&nbsp; The <b>DatabaseMetaData.getPrimaryKeys( )</b> method
+
+finds primary keys declared in a table definition (CREATE TABLE)
+
+or with alter table (ALTER TABLE ADD CONSTRAINT). It does not find
+
+keys defined using <b>sp_primarykey. </b></P>
+<A NAME="TI21"></A><h3>Server-side metadata installation</h3>
+<p>Metadata support can be implemented in either the client (ODBC,
+
+JDBC) or in the data source (server stored procedures). jConnect
+
+provides metadata support on the server, which results in the following
+
+benefits: 
+<ul>
+<li class=fi>Maintains jConnect's
+
+small size, which ensures the driver can be quickly downloaded from
+
+the Internet.
+</li>
+<li class=ds>Gains runtime efficiency from preloaded stored procedures
+
+on the data source.
+</li>
+<li class=ds>Provides flexibility--jConnect can connect
+
+to a variety of databases.
+
+</li>
+</ul>
+</p>
+<A NAME="X15542"></A><h2>Using cursors  with result sets</h2>
+<p>jConnect 5.x implements many JDBC 2.0 cursor and update methods.
+
+These methods make it easier to use cursors and to update rows in
+
+a table based on values in a result set.</p>
+<p>In JDBC 2.0, <b>ResultSets</b> are characterized
+
+by their type and their concurrency. The type and concurrency values
+
+are part of the <b>java.sql.ResultSet</b> interface
+
+and are described in its javadocs.</p>
+<p><A HREF="prjdbcp10.htm#X11512">Table 2-5</A> identifies
+
+the characteristics of <b>java.sql.ResultSet</b> that
+
+are available in jConnect 5.x.</p>
+<A NAME="X11512"></A><table cellspacing=0 cellpadding=6 border=1 frame="void" rules="all"><caption>Table 2-5: java.sql.ResultSet options available in jConnect 5.x</caption>
+<tr><th align="left" valign=bottom>Concurrency
+</th>
+<th align="left" valign=bottom>Type
+</th>
+</tr>
+<tr><th align="left" valign=bottom>TYPE_FORWARD_<br>ONLY
+</th>
+<th align="left" valign=bottom>TYPE_SCROLL_<br>INSENSITIVE
+</th>
+<th align="left" valign=bottom>TYPE_SCROLL_<br>SENSITIVE
+</th>
+</tr>
+<tr><td valign=top><i>CONCUR_READ_ONLY</i>
+
+</td>
+<td valign=top>Supported
+
+in 5.x
+</td>
+<td valign=top>Supported
+
+in 5.x
+</td>
+<td valign=top>Not available in 5.x
+</td>
+</tr>
+<tr><td valign=top><i>CONCUR_UPDATABLE</i>
+
+</td>
+<td valign=top>Supported
+
+in 5.x
+</td>
+<td valign=top>Not available
+
+in 5.x
+</td>
+<td valign=top>Not available in 5.x
+</td>
+</tr>
+</table>
+<p>This section includes the following topics: 
+<ul>
+<li class=fi><A HREF="prjdbcp10.htm#X11994">Creating
+
+a cursor</A>
+</li>
+<li class=ds><A HREF="prjdbcp10.htm#X40765">Positioned
+
+updates and deletes using JDBC 1.x methods</A>
+</li>
+<li class=ds><A HREF="prjdbcp10.htm#X34271">Using a cursor with a PreparedStatement object</A>
+</li>
+<li class=ds><A HREF="prjdbcp10.htm#X18457">Support for SCROLL_INSENSITIVE
+
+result sets in jConnect</A>
+
+</li>
+</ul>
+</p>
+<A NAME="X11994"></A><h3>Creating  a cursor</h3>
+<p>To create a cursor using jConnect there are two methods:
+<ul>
+<li class=fi><b>SybStatement.setCursorName( )</b> 
+<br><br>
+Use <b>SybStatement.setCursorName( )</b>, to explicitly
+
+assign the cursor a name. The signature for <b>SybStatement.setCursorName(
+
+)</b> is: 
+<pre>void setCursorName(String name) throws SQLException;</pre>
+
+</li>
+<li class=ds><b>SybStatement.setFetchSize( )</b>
+<br><br>
+Use <b>SybStatement.setFetchSize( )</b> to create
+
+a cursor and specify the number of rows returned from the database
+
+in each fetch. The signature for <b>SybStatement.setFetchSize(
+
+)</b> is: 
+<pre>void setFetchSize(int rows) throws SQLException;</pre>
+
+<br><br>
+When you use <b>setFetchSize( )</b> to create
+
+a cursor, the jConnect driver names the cursor. To get the cursor's
+
+name, use <b>ResultSet.getCursorName( )</b>.
+
+</li>
+</ul>
+</p>
+<p>Another way you can create cursors is to specify the kind
+
+of <b>ResultSet</b> you want returned by the statement,
+
+using the following JDBC 2.0 method on the connection: 
+<pre>Statement createStatement(int resultSetType,  int resultSetConcurrency)throws SQL Exception</pre>
+</p>
+<p>The type and concurrencies correspond to the types and concurrencies
+
+found on the <b>ResultSet</b> interface listed in <A HREF="prjdbcp10.htm#X11512">Table 2-5</A>. If you request an
+
+unsupported <b>ResultSet</b>, a SQL warning is chained
+
+to the connection. When the returned <b>Statement</b> is
+
+executed, you will receive the kind of <b>ResultSet</b> that
+
+is most like the one you requested. See the JDBC 2.0 specification
+
+for more details on this method's behavior.</p>
+<p>If you do not use <b>createStatement( ),</b> the
+
+default types of <b>ResultSet</b> are: 
+<ul>
+<li class=fi>If you call only <b>Statement.executeQuery(
+
+)</b>, then the <b>ResultSet</b> returned is a <b>SybResultSet</b> that
+
+is TYPE_FORWARD_ONLY and CONCUR_READ_ONLY.
+</li>
+<li class=ds>If you call <b>setFetchSize( )</b> or <b>setCursorName(
+
+)</b>, then the <b>ResultSet</b> returned from <b>executeQuery( </b>)
+
+is a <b>SybCursorResultSet</b> that is TYPE_FORWARD_ONLY
+
+and CONCUR_UPDATABLE.
+
+</li>
+</ul>
+</p>
+<p>To verify that the kind of <b>ResultSet</b> object
+
+is what you intended, use the following two <b>ResultSet</b> methods: 
+<pre>int getConcurrency() throws SQLException;</pre>
+
+<pre>int getType() throws SQLException;</pre>
+</p>
+<p>The basic steps for creating and using a cursor are: 
+<ol>
+<li class=fi>Create
+
+the cursor using <b>Statement.setCursorName( )</b> or <b>SybStatement.setFetchSize(
+
+)</b>.
+</li>
+<li class=ds>Invoke <b>Statement.executeQuery( )</b> to
+
+open the cursor for a statement and return a cursor result set.
+</li>
+<li class=ds>Invoke <b>ResultSet.next( )</b> to fetch
+
+rows and position the cursor in the result set.
+<br><br>
+The following example uses each of the two methods for creating
+
+cursors and returning a result set. It also uses <b>ResultSet.getCursorName(
+
+)</b> to get the name of the cursor created by <b>SybStatement.setFetchSize(
+
+)</b>.  
+<pre>// With  conn as a Connection object, create a 
+// Statement  object and assign it a cursor using 
+// Statement.setCursorName().
+Statement  stmt = conn.createStatement();
+stmt.setCursorName("author_cursor");
+
+// Use  the statement to execute a query and return
+// a  cursor result set.
+ResultSet rs = stmt.executeQuery("SELECT  au_id,</pre>
+
+<pre>      au_lname,  au_fname FROM authors
+      WHERE  city = 'Oakland'");
+while(rs.next())
+{
+...
+}
+ 
+// Create  a second statement object and use
+// SybStatement.setFetchSize()to  create a cursor
+// that returns 10 rows  at a time. 
+SybStatement syb_stmt = conn.createStatement();
+syb_stmt.setFetchSize(10);
+ 
+// Use  the syb_stmt to execute a query and return
+// a  cursor result set.
+SybCursorResultSet rs2 =
+      (SybCursorResultSet)syb_stmt.executeQuery
+      ("SELECT  au_id, au_lname, au_fname FROM authors
+       WHERE  city = 'Pinole'");
+while(rs2.next())
+{
+...
+}
+ 
+// Get  the name of the cursor created through the 
+// setFetchSize()  method.
+String cursor_name = rs2.getCursorName();
+ ...</pre>
+
+<pre>// For jConnect 5.x, create  a third statement
+// object using the  new method on Connection, 
+// and obtain  a SCROLL_INSENSITIVE ResultSet.
+// Note:  you no longer have to downcast the
+// Statement  or the ResultSet.</pre>
+
+<pre>Statement  stmt = conn.createStatement(
+                 ResultSet.TYPE_SCROLL_INSENSITIVE,
+                 ResultSet.CONCUR_READ_ONLY);</pre>
+
+<pre>ResultSet rs3 = stmt.executeQuery
+   ("SELECT  ... [whatever]");</pre>
+
+<pre>// Execute any of the JDBC  2.0 methods that 
+// are valid for read  only ResultSets.</pre>
+
+<pre>rs3.next();
+rs3.previous();
+rs3.relative(3);
+rs3.afterLast();</pre>
+
+<pre>...</pre>
+
+
+</li>
+</ol>
+</p>
+<A NAME="X40765"></A><h3>Positioned  updates and deletes using JDBC 1.x methods</h3>
+<p>The following example shows how to use methods in JDBC 1.x
+
+to do a positioned update. The example creates two <b>Statement</b> objects,
+
+one for selecting rows into a cursor result set, and the other for
+
+updating the database from rows in the result set.</p>
+<p><IMG SRC="images/note.gif" width=17 height=17 border=0 align="bottom" alt="Note">&nbsp;&nbsp; Although this manual provides sample code relating to
+
+JDBC 1.0 and 2.0 methods, Sybase strongly suggests that you use
+
+JDBC 2.0 for ease of use and portability.</P>
+<p> 
+<pre>// Create two statement objects  and create a cursor
+// for the result  set returned by the first 
+// statement,  stmt1. Use stmt1 to execute a query 
+// and  return a cursor result set.
+Statement stmt1 = conn.createStatement();
+Statement  stmt2 = conn.createStatement();
+stmt1.setCursorName("author_cursor");
+ResultSet  rs = stmt1.executeQuery("SELECT
+    au_id,au_lname,  au_fname
+    FROM  authors WHERE city = 'Oakland'
+    FOR  UPDATE OF au_lname");
+ 
+// Get  the name of the cursor created for stmt1 so 
+// that  it can be used with stmt2.
+String cursor = rs.getCursorName();
+ 
+// Use  stmt2 to update the database from the 
+// result  set returned by stmt1.
+String last_name = new  String("Smith");
+while(rs.next())</pre>
+
+<pre>{
+    if  (rs.getString(1).equals("274-80-9391"))
+     {
+        stmt2.executeUpdate("UPDATE authors "+
+       "SET  au_lname = "+last_name +
+       "WHERE  CURRENT OF " + cursor);
+    }
+}</pre>
+</p>
+<A NAME="TI22"></A><h4>Deletions in a result set</h4>
+<p>The following example uses <b>Statement</b> object <i>stmt2</i>,
+
+from the preceding code, to perform a positioned deletion: </p>
+<p>
+<pre>stmt2.executeUpdate("DELETE FROM  authors
+          WHERE CURRENT OF " + cursor);</pre>
+</p>
+<A NAME="TI23"></A><h3>Positioned updates and deletes using JDBC 2.0 methods</h3>
+<p>This section discusses JDBC 2.0 methods for updating columns
+
+in the current cursor row and updating the database from the current
+
+cursor row in a result set. They are followed by an example.</p>
+<A NAME="TI24"></A><h4>Updating columns in a result set</h4>
+<p>JDBC 2.0 specifies a number of methods for updating column
+
+values from a result set in memory, on the client. The updated values
+
+can then be used to perform an update, insert, or delete operation
+
+on the underlying database. All of these methods are implemented
+
+in the <b>SybCursorResultSet</b> class.</p>
+<p>Examples of some of the JDBC 2.0 update methods available
+
+in jConnect are:</p>
+<p>
+<pre>void updateAsciiStream(String columnName,  java.io.InputStream x, 
+   int length)  throws SQLException;</pre>
+
+<pre>void updateBoolean(int  columnIndex, boolean x) throws 
+   SQLException;</pre>
+
+<pre>void updateFloat(int columnIndex, float x) throws  SQLException;</pre>
+
+<pre>void updateInt(String  columnName, int x) throws SQLException;</pre>
+
+<pre>void updateInt(int columnIndex, int x) throws  SQLException;</pre>
+
+<pre>void updateObject(String columnName, Object x)  throws 
+   SQLException;</pre>
+</p>
+<A NAME="TI25"></A><h4>Methods for updating the database from a result
+
+set</h4>
+<p>JDBC 2.0 specifies two new methods for updating or deleting
+
+rows in the database, based on the current values in a result set.
+
+These methods are simpler in form than <b>Statement.executeUpdate(
+
+)</b> in JDBC 1.x and do not require a cursor name. They are
+
+implemented in <b>SybCursorResultSet</b>: 
+<pre>void  updateRow() throws SQLException;
+void deleteRow() throws  SQLException;</pre>
+</p>
+<p><IMG SRC="images/note.gif" width=17 height=17 border=0 align="bottom" alt="Note">&nbsp;&nbsp; The concurrency of the result set must be CONCUR_UPDATABLE, otherwise
+
+the above methods will raise an exception. For <b>insertRow(
+
+)</b>, all table columns that require non-null entries must
+
+be specified.<br> <br>Methods provided on <b>DatabaseMetaData</b> dictate
+
+when these changes are visible.</P>
+<A NAME="TI26"></A><h4>Example</h4>
+<p>The following example creates a single <b>Statement</b> object
+
+that is used to return a cursor result set. For each row in the
+
+result set, column values are updated in memory and then the database
+
+is updated with the row's new column values. 
+<pre>// Create a Statement object  and set fetch size to 
+// 25. This creates  a cursor for the Statement 
+// object  Use the statement to return a cursor
+// result  set.
+SybStatement syb_stmt = 
+(SybStatement)conn.createStatement();
+syb_stmt.setFetchSize(25);
+SybCursorResultSet  syb_rs = 
+(SybCursorResultSet)syb_stmt.executeQuery(
+    "SELECT * from  T1 WHERE ...")
+ 
+// Update each  row in the result set according to
+// code  in the following while loop. jConnect 
+// fetches  25 rows at a time, until fewer than 25 
+// rows  are left. Its last fetch takes any 
+// remaining  rows.
+while(syb_rs.next())
+{
+  // Update  columns 2 and 3 of each row, where 
+// column  2 is a varchar in the database and 
+// column  3 is an integer.
+  syb_rs.updateString(2,  "xyz");
+syb_rs.updateInt(3,100);
+//Now,  update the row in the database.
+  syb_rs.updateRow();
+}</pre>
+
+<pre>// Create a Statement object  using the
+// JDBC 2.0 method implemented  in jConnect 5.x
+Statement stmt = conn.createStatement
+(ResultSet.TYPE_FORWARD_ONLY,  ResultSet.CONCUR_UPDATABLE);</pre>
+
+<pre>// In jConnect 5.x, downcasting  to SybCursorResultSet is not
+// necessary.  Update each row in the ResultSet in the same
+// manner  as above
+while (rs.next())
+{
+rs.updateString(2, "xyz");
+rs.updateInt(3,100);
+  rs.updateRow();</pre>
+
+<pre>// Use the Statement to return  an updatable ResultSet
+ResultSet rs = stmt.executeQuery("SELECT * FROM  T1 WHERE...");</pre>
+
+<pre>}</pre>
+</p>
+<A NAME="TI27"></A><h4>Deleting a row from a ResultSet</h4>
+<p>To delete a row from a cursor result set, you can use <b>SybCursorResultSet.deleteRow(
+
+)</b> as follows: 
+<pre>
+ while(syb_rs.next())
+ {
+     int  col3 = getInt(3);
+     if  (col3 &gt;100)
+     {
+     syb_rs.deleteRow();
+     }
+ }</pre>
+</p>
+<A NAME="TI28"></A><h4>Inserting a row into a ResultSet</h4>
+<p>The following example illustrates how to do inserts using
+
+the JDBC 2.0 API. There is no need to downcast to a <b>SybCursorResultSet</b>. 
+<pre>// prepare to insert
+rs.moveToInsertRow();</pre>
+
+<pre>// populate new row with column  values
+rs.updateString(1, "New entry for col 1");
+rs.updateInt(2,  42);</pre>
+
+<pre>// insert  new row into db
+rs.insertRow();</pre>
+
+<pre>// return to current row in  result set
+rs.moveToCurrentRow();</pre>
+</p>
+<A NAME="X34271"></A><h3>Using a cursor with a PreparedStatement object</h3>
+<p>Once you create a <b>PreparedStatement</b> object,
+
+you can use it multiple times with the same or different values
+
+for its input parameters. If you use a cursor with a <b>PreparedStatement</b> object,
+
+you need to close the cursor after each use and then reopen the
+
+cursor to use it again. A cursor is closed when you close its result set
+
+(<b>ResultSet.close( )</b>). It is opened when you execute
+
+its prepared statement (<b>PreparedStatement.executeQuery(
+
+)</b>).</p>
+<p>The following example shows how to create a <b>PreparedStatement</b> object, assign
+
+it a cursor, and execute the <b>PreparedStatement</b> object
+
+twice, closing and then reopening the cursor. 
+<pre>// Create  a prepared statement object with a 
+// parameterized  query.
+PreparedStatement prep_stmt =
+conn.prepareStatement(
+"SELECT  au_id, au_lname, au_fname "+
+"FROM  authors WHERE city = ? "+
+"FOR UPDATE  OF au_lname");
+ 
+//Create  a cursor for the statement.
+prep_stmt.setCursorName("author_cursor");
+ 
+// Assign  the parameter in the query a value. 
+// Execute  the prepared statement to return a 
+// result  set.
+prep_stmt.setString(1, "Oakland");
+ResultSet  rs = prep_stmt.executeQuery();
+ 
+//Do  some processing on the result set.
+while(rs.next())</pre>
+
+<pre>{
+    ...
+}
+ 
+// Close  the result, which also closes the cursor.
+rs.close();
+ 
+// Execute  the prepared statement again with a new </pre>
+
+<pre>// parameter value. 
+prep_stmt.setString(1,"San  Francisco");
+rs = prep_stmt.executeQuery();</pre>
+
+<pre>// reopens cursor</pre>
+</p>
+<A NAME="X18457"></A><h3>Support for SCROLL_INSENSITIVE  result sets in jConnect</h3>
+<p>jConnect version 5.x supports only TYPE_SCROLL_INSENSITIVE
+
+result sets.</p>
+<p>jConnect uses the Tabular Data Stream (TDS)--Sybase's
+
+proprietary protocol--to communicate with Sybase database
+
+servers. As of jConnect 5.x, TDS does not support scrollable cursors.
+
+To support scrollable cursors, jConnect caches the row data on demand,
+
+on the client, on each call to <b>ResultSet.next( )</b>.
+
+However, when the end of the result set is reached, the entire result
+
+set is stored in the client's memory. Because this may
+
+cause a performance strain, we recommend that you use TYPE_SCROLL_INSENSITIVE
+
+result sets only when the result set is reasonably small.</p>
+<p><IMG SRC="images/note.gif" width=17 height=17 border=0 align="bottom" alt="Note">&nbsp;&nbsp; When you use TYPE_SCROLL_INSENSITIVE <b>ResultSets</b> in
+
+jConnect 5.x, you can only call the <b>isLast( )</b> method
+
+after the last row of the <b>ResultSet</b> has been
+
+read. Calling <b>isLast( ) </b>before the last row is
+
+reached will cause an <b>UnimplementedOperationException</b> to
+
+be thrown.</P>
+<p>jConnect provides the ExtendResultSet in the <i>sample2</i> directory;
+
+this sample provides a limited TYPE_SCROLL_INSENSITIVE <b>ResultSet</b> using
+
+JDBC 1.0 interfaces.</p>
+<p>This implementation uses standard JDBC 1.0 methods to produce
+
+a scroll-insensitive, read-only result set; that is, a static view
+
+of the underlying data that is not sensitive to changes made while
+
+the result set is open. <b>ExtendedResultSet</b> caches
+
+all of the <b>ResultSet</b> rows on the client. Be cautious
+
+when you use this class with large result sets.</p>
+<p>The <b>sample.ScrollableResultSet</b> interface: 
+<ul>
+<li class=fi>Is an extension of JDBC 1.0 <b>java.sql.ResultSet</b>.
+</li>
+<li class=ds>Defines additional methods that have the same signatures
+
+as the JDBC 2.0<b> java.sql.ResultSet</b>.
+</li>
+<li class=ds>Does <i>not</i>
+ contain all of the
+
+JDBC 2.0 methods. The missing methods deal with modifying the <b>ResultSet</b>.
+
+</li>
+</ul>
+</p>
+<p>The methods from the JDBC 2.0 API are:</p>
+<p>
+<pre>boolean previous() throws SQLException;</pre>
+
+<pre>boolean  absolute(int row) throws SQLException;
+boolean relative(int  rows) throws SQLException;</pre>
+
+<pre>boolean first()  throws SQLException;
+boolean last() throws SQLException;
+void  beforeFirst() throws SQLException;
+void afterLast() throws  SQLException;</pre>
+
+<pre>boolean isFirst() throws SQLException;
+boolean  isLast() throws SQLException;
+boolean isBeforeFirst() throws  SQLException;
+boolean isAfterLast() throws SQLException;</pre>
+
+<pre>int  getFetchSize() throws SQLException;
+void setFetchSize(int  rows) throws SQLException;
+int getFetchDirection() throws  SQLException;
+void setFetchDirection(int direction) throws SQLException;</pre>
+
+<pre>int  getType() throws SQLException;
+int getConcurrency() throws  SQLException;
+int getRow() throws SQLException;</pre>
+</p>
+<p>To use the new sample classes, create an <b>ExtendedResultSet</b> using
+
+any JDBC 1.0 <b>java.sql.ResultSet</b>. Below are the
+
+relevant pieces of code (assume a Java 1.1 environment): 
+<pre>// import  the sample files
+import sample.*;</pre>
+
+<pre>//import  the JDBC 1.0 classes
+import java.sql.*;</pre>
+
+<pre>// connect  to some db using some driver;
+// create  a statement and a query;</pre>
+
+<pre>// Get  a reference to a JDBC 1.0 ResultSet
+ResultSet rs = stmt.executeQuery(_query);</pre>
+
+<pre>// Create  a ScrollableResultSet with it
+ScrollableResultSet srs = new  ExtendedResultSet(rs);</pre>
+
+<pre>// invoke  methods from the JDBC 2.0 API
+srs.beforeFirst();</pre>
+
+<pre>// or  invoke methods from the JDBC 1.0 API
+if (srs.next())
+  String  column1 = srs.getString(1);</pre>
+</p>
+<p><A HREF="prjdbcp10.htm#CHDEBGDA">Figure 2-1</A> is
+
+a class diagram that shows the relationships between the new sample
+
+classes and the JDBC API.</p>
+<A NAME="CHDEBGDA"></A><p><b>Figure 2-1: Class diagram</b></caption>
+<br><IMG SRC="images/class12.gif">
+
+<p>See the JDBC 2.0 API at <i>http://java.sun.com/products/jdbc/jdbcse2.html </i>for more
+
+details.</p>
+<A NAME="X24000"></A><h2>Support for batch updates</h2>
+<p>Batch updates allow a <b>Statement</b> object
+
+to submit multiple update commands as one unit (batch) to an underlying
+
+database for processing together.</p>
+<p><IMG SRC="images/note.gif" width=17 height=17 border=0 align="bottom" alt="Note">&nbsp;&nbsp; To use batch updates, you must install the latest metadata
+
+scripts provided in the <i>sp</i> directory under
+
+your jConnect installation directory.</P>
+<p>See <i>BatchUpdates.java</i> in the <i>sample2</i> subdirectories
+
+for an example of using batch updates with <b>Statement</b>, <b>PreparedStatement</b>,
+
+and <b>CallableStatement</b>.</p>
+<p>jConnect also supports dynamic <b>PreparedStatements</b> in
+
+batch.</p>
+<A NAME="TI29"></A><h3>Implementation notes</h3>
+<p>jConnect implements batch updates as specified in the JDBC
+
+2.0 API, except as described below. 
+<ul>
+<li class=fi>If the JDBC 2.0 standard for implementing -<b>BatchUpdateException.getUpdateCounts(
+
+)</b> is modified or relaxed in the future, jConnect will
+
+continue to implement the original standard by having <b>BatchUpdateException.getUpdateCounts(
+
+)</b> return an <b>int[ ]</b> length
+
+of M &lt; N, indicating that the first M statements in the
+
+batch succeeded, that the M+1 statement failed, and M+2..N
+
+statements were not executed; where "N" equals
+
+the total statements in the batch.
+</li>
+<li class=ds>Batch updates of stored procedures - to call
+
+stored procedures in batch (unchained) mode, you must create the
+
+stored procedure in unchained mode. For more information, see <A HREF="prjdbcp18.htm#CHDEGBEA">"Stored procedure executed
+
+in unchained transaction mode"</A>.
+</li>
+<li class=ds>Adaptive Server version 11.5.x and later - if
+
+the server encounters an error during batch execution, <b>BatchUpdateException.getUpdateCounts(
+
+)</b> will return only an <b>int[ ]</b> length
+
+of zero. The entire transaction is rolled back if an error is encountered,
+
+resulting in zero successful rows.
+<p><IMG SRC="images/note.gif" width=17 height=17 border=0 align="bottom" alt="Note">&nbsp;&nbsp; The transaction is not rolled back if the error is a
+
+duplicate key row insert (see next note for more information).</P>
+</li>
+<li class=ds>Adaptive Server - a duplicate key row insertion
+
+does not result in the termination and rollback of batch statements.
+
+The server will continue processing the statements in the batch
+
+until you issue a cancel, or the batch completes or encounters an
+
+error, other than a duplicate key row insertion. Because jConnect
+
+sends a cancel to the server when it detects any exception (including
+
+duplicate key row insertion) during batch processing, it is impossible
+
+to determine exactly how much of the batch the server executed before
+
+receiving the cancel. Therefore, Sybase strongly recommends that
+
+in accordance with the JDBC specification, you should execute batches
+
+inside of transactions with <b>autoCommit</b> set to
+
+false. In doing it this way, you can roll back your transactions
+
+and return the database to a known state before retrying the batch.
+</li>
+<li class=ds>Adaptive Server version 11.0.1 - returns
+
+0 (zero) rows affected for stored procedures.
+</li>
+<li class=ds>SQL Anywhere version 5.5.x: 
+<ul>
+<li class=fi>SQL Anywhere version 5.5.x does not allow you to
+
+obtain inserted row counts from stored procedures that contain inserts.
+
+For example: 
+<pre>create proc sp_A  as insert tableA values (1, 'hello A')</pre>
+
+<pre>create proc sp_B
+as
+  insert  tableA values (1, 'hello A')
+update tableA  set col1=2</pre>
+
+<pre>create  proc sp_C
+as
+update tableA set col1=2
+delete  tableA</pre>
+
+<br><br>
+Running <b>executeBatch</b> on the preceding stored
+
+procedures would result in, respectively: 
+<pre>0  Rows Affected
+1 Rows Affected
+2 Rows Affected</pre>
+
+</li>
+<li class=ds>There is no support for dynamic <b>PreparedStatements</b> in
+
+batch.
+</li>
+<li class=ds>Because SQL Anywhere 5.5.x does not natively support
+
+batch updates according to the JDBC 2.0 specification, batch updates
+
+are carried out in an <b>executeUpdate</b> loop.
+
+</li>
+</ul>
+
+</li>
+<li class=ds>Batch updates in databases that do not support batch
+
+updates - jConnect carries out batch updates in an <b>executeUpdate</b> loop
+
+even if your database does not support batch updates. This allows
+
+you to use the same batch code, regardless of the database to which
+
+you are pointing.
+
+</li>
+</ul>
+</p>
+<p>See <i>Sun Microsystems, Inc. JDBC&#153; 2.0 API</i> for
+
+more details on batch updates.</p>
+<A NAME="X41162"></A><h2>Updating a database from a result set of a stored procedure</h2>
+<p>jConnect includes update and delete methods that allow you
+
+to get a cursor on the result set returned by a stored procedure.
+
+You can then use the cursor's position to update or delete
+
+rows in the underlying table that provided the result set. The methods
+
+are in <b>SybCursorResultSet</b>: 
+<pre>void updateRow(String <i>tableName</i>)  throws SQLException;</pre>
+
+<pre>void deleteRow(String <i>tableName</i>)  throws SQLException;</pre>
+</p>
+<p>The <i>tableName</i> parameter identifies the
+
+database table that provided the result set.</p>
+<p>To get a cursor on the result set returned by a stored procedure,
+
+you need to use either <b>SybCallableStatement.setCursorName(
+
+)</b> or <b>SybCallableStatement.setFetchSize( )</b> before
+
+you execute the callable statement that contains the procedure.
+
+The following example shows how to create a cursor on the result
+
+set of a stored procedure, update values in the result set, and then
+
+update the underlying table using the <b>SybCursorResultSet</b>.<b>update(
+
+)</b> method: 
+<pre>// Create  a CallableStatement object for executing the stored 
+// procedure. 
+CallableStatement  sproc_stmt = 
+   conn.prepareCall("{call  update_titles}");
+ 
+// Set  the number of rows to be returned from the database with
+// each  fetch. This creates a cursor on the result set.
+(SybCallableStatement)sproc_stmt.setFetchSize(10);
+ 
+//Execute  the stored procedure and get a result set from it.
+SybCursorResultSet  sproc_result = (SybCursorResultSet) 
+   sproc_stmt.executeQuery();
+ 
+// Move  through the result set row by row, updating values in the
+// cursor's  current row and updating the underlying titles table
+// with  the modified row values. 
+while(sproc_result.next())
+{
+   sproc_result.updateString(...);
+   sproc_result.updateInt(...);
+   ...
+   sproc_result.updateRow(titles);
+}</pre>
+</p>
+<A NAME="CHDCDGDJ"></A><h2>Working with datatypes</h2>
+<A NAME="TI30"></A><h3>Sending numeric data</h3>
+<p>jConnect has added the <b>SybPreparedStatement</b> extension
+
+to support the way Adaptive Server handles the <i>NUMERIC</i> datatype
+
+where precision (total digits) and scale (digits after the decimal)
+
+can be specified.The corresponding datatype in Java--<i>java.math.BigDecimal</i>--is
+
+slightly different, and these differences can cause problems when
+
+jConnect applications use the <b>setBigDecimal</b> method
+
+to control values of an input/output parameter. Specifically,
+
+there are cases where the precision and scale of the parameter must
+
+precisely match that precision and scale of the corresponding SQL
+
+object, whether it is a stored procedure parameter or a column.To
+
+give jConnect applications fuller control over the <b>setBigDecimal</b> method, The <b>SybPreparedStatement</b> extension
+
+has been added with this method:
+<pre>public  void setBigDecimal (int parameterIndex, BigDecimal X, int scale, 
+  int  precision) throws SQLException</pre>
+</p>
+<p>See the <i>SybPrepExtension.java</i> sample
+
+in the <i>/sample2</i> subdirectories under your
+
+jConnect installation directory for more information.</p>
+<A NAME="X34184"></A><h3>Updating  image data in the database</h3>
+<p>jConnect has a <b>TextPointer</b> class with <b>sendData(
+
+)</b> methods for updating an <i>image</i> column
+
+in an Adaptive Server or Adaptive
+
+Server Anywhere database. In earlier versions of jConnect, you had
+
+to send image data using the <b>setBinaryStream( )</b> method
+
+in <b>java.sql.PreparedStatement</b>. The <b>TextPointer.sendData(
+
+)</b> methods use <b>java.io.InputStream</b> and
+
+greatly improve performance when you send image data to an Adaptive
+
+Server database.</p>
+<table cols=4><tr valign="top" align="left"><td colspan=1><font color="#FF0000" size="+1"><b>WARNING!</b></font></td><td colspan=3><p>The <b>TextPointer</b> class has been
+
+deprecated; that is, it is no longer recommended and may cease to
+
+exist in a future version of jConnect.</p>
+<p>If your data server is Adaptive Server version 12.5 or later
+
+or Adaptive Server Anywhere version 6.0 or later, use the standard
+
+JDBC form to send <i>image</i> data:</p>
+<p>
+<pre>PreparedStatement.setBinaryStream(int  paramIndex,</pre>
+
+<pre>  InputStream  image)</pre>
+</p>
+</td></tr></table>
+<p>To obtain instances of the <b>TextPointer</b> class,
+
+you can use either of two <b>getTextPtr( )</b> methods
+
+in <b>SybResultSet</b>: 
+<pre>public TextPointer getTextPtr(String  columnName)</pre>
+
+<pre>public TextPointer getTextPtr(int columnIndex)</pre>
+</p>
+<A NAME="TI31"></A><h4>Public methods in the TextPointer class</h4>
+<p>The <b>com.sybase.jdbc</b> package contains the <b>TextPointer</b> class.
+
+Its public method interface is: 
+<pre>public void sendData(InputStream  is, boolean log) 
+   throws SQLException</pre>
+
+<pre>public  void sendData(InputStream is, int length,
+   boolean  log) throws SQLException</pre>
+
+<pre>public void sendData(InputStream  is, int offset, 
+   int length, boolean  log) throws SQLException</pre>
+
+<pre>public void sendData(byte[] byteInput,  int offset, 
+   int length, boolean log)  throws SQLEXception</pre>
+</p>
+<p><b>sendData(InputStream </b><i>is</i><b>,
+
+boolean </b><i>log</i><i>)</i><b> </b>- Updates
+
+an <i>image</i> column with data in the specified
+
+input stream.</p>
+<p><b>sendData(InputStream </b><i>is</i><b>,
+
+int </b><i>length</i><b>, boolean </b><i>log)</i><b> </b>- updates
+
+an <i>image</i> column with data in the specified
+
+input stream. <i>length</i> is the number of bytes
+
+being sent.</p>
+<p><b>sendData(InputStream </b><i>is</i><b>,
+
+int </b><i>offset</i><b>, int </b><i>length</i><b>,
+
+boolean </b><i>log</i><i>)</i><b> </b>- updates
+
+an <i>image</i> column with data in the specified
+
+input stream, starting at the byte offset given in the <i>offset</i> parameter
+
+and continuing for the number of bytes specified in the <i>length</i> parameter.</p>
+<p><b>sendData(byte[ ] </b><i>byteInput</i><b>,
+
+int </b><i>offset</i><b>, int </b><i>length</i><b>,
+
+boolean </b><i>log</i><i>)</i><b> </b>- updates
+
+a column with image data contained in the byte array specified in
+
+the <i>byteInput</i> parameter. The update starts
+
+at the byte offset given in the <i>offset</i> parameter
+
+and continues for the number of bytes specified in the <i>length</i> parameter.</p>
+<p>Each method has a <i>log</i> parameter. The <i>log</i> parameter
+
+specifies whether <i>image</i> data is to be fully
+
+logged in the database transaction log. If the <i>log</i> parameter
+
+is set to true, the entire binary image is written into the transaction
+
+log. If the <i>log</i> parameter is set to false,
+
+the update is logged, but the image itself is not included in the
+
+log. </p>
+<A NAME="TI32"></A><p><img src="images/proc.gif" width=17 height=17 border=0 align="bottom" alt="Steps"> Updating an <i>image</i> column with <b>TextPointer.sendData(
+
+)</b></p>
+<BLOCKQUOTE><p>To update a column with image data: </p>
+</BLOCKQUOTE>
+<ol type=1><li class=fi>Get a <b>TextPointer</b> object for
+
+the row and column that you want to update.
+</li>
+
+<li class=ds>Use <b>TextPointer.sendData( )</b> to execute
+
+the update.
+</li>
+</ol>
+<p>The next two sections illustrate these steps with an example.
+
+In the example, <i>image</i> data from the file <i>Anne_Ringer.gif</i> is
+
+sent to update the pic column of the au_pix table
+
+in the pubs2 database. The update is for the
+
+row with author ID 899-46-2035.</p>
+<br>
+<A NAME="TI33"></A><h4>Getting a <b>TextPointer</b> object</h4>
+<p><i>text</i> and <i>image</i> columns
+
+contain <i>timestamp</i> and page-location information
+
+that is separate from their text and image data. When data is selected
+
+from a <i>text</i> or <i>image</i> column,
+
+this extra information is "hidden" as part of
+
+the result set.</p>
+<p>A <b>TextPointer</b> object for updating an <i>image</i> column
+
+requires this hidden information, but does not need the image portion
+
+of the column data. To get this information, you need to select
+
+the column into a <b>ResultSet</b> object and then use <b>SybResultSet.getTextPtr(
+
+) </b>(see the example that follows the next paragraph). <b>SybResultSet.getTextPtr(
+
+) </b>extracts text-pointer information, ignores image data,
+
+and creates a <b>TextPointer</b> object.</p>
+<p>When a column contains a significant amount of image data,
+
+selecting the column for one or more rows and waiting to get all
+
+the data is likely to be inefficient, since the data is not used.
+
+You can shortcut this process by using the <b>set textsize </b>command
+
+to minimize the amount of data returned in a packet. The following
+
+code example for getting a <b>TextPointer</b> object
+
+includes the use of <b>set textsize</b> for this purpose.</p>
+<p> 
+<pre>/*
+ * Define  a string for selecting pic column data for author ID 
+ * 899-46-2035.
+ */
+ String  getColumnData = "select pic from au_pix where  au_id = '899-46-2035'";
+ 
+ /*
+ * Use  set textsize to return only a single byte of column data
+ * to  a Statement object. The packet with the column data will
+ * contain  the "hidden" information necessary for creating a
+ * TextPointer  object.
+ */
+ Statement stmt= connection.createStatement();
+ stmt.executeUpdate("set  textsize 1");
+ 
+ /*
+ * Select  the column data into a ResultSet object--cast the 
+ * ResultSet  to SybResultSet because the getTextPtr method is 
+ * in  SybResultSet, which extends ResultSet.
+ */
+ SybResultSet  rs = (SybResultSet)stmt.executeQuery(getColumnData);
+ 
+ /*
+ * Position  the result set cursor on the returned column data 
+ * and  create the desired TextPointer object.
+ */
+ rs.next();
+ TextPointer  tp = rs.getTextPtr("pic");
+ 
+ /* 
+ * Now,  assuming we are only updating one row, and won't need
+ * the  minimum textsize set for the next return from the server,
+ * we  reset textsize to its default value.
+ */
+ stmt.executeUpdate("set  textsize 0");
+
+</pre>
+<br></p>
+<A NAME="TI34"></A><h4>Executing the <br>
+update with <b>TextPointer.sendData</b></h4>
+<p>The following code uses the <b>TextPointer</b> object
+
+from the preceding section to update the pic column
+
+with image data in the file <i>Anne_Ringer.gif</i>. 
+<pre>/*
+ *First,  define an input stream for the file.
+ */
+ FileInputStream  in = new FileInputStream("Anne_Ringer.gif");
+ 
+ /*
+ * Prepare  to send the input stream without logging the image data 
+ * in  the transaction log.
+ */
+ boolean  log = false;
+ 
+ /*
+ * Send  the image data in Anne_Ringer.gif to update the pic 
+ * column  for author ID 899-46-2035.
+ */
+ tp.sendData(in,  log);</pre>
+</p>
+<p>See the <i>TextPointers.java</i> sample in the <i>sample2</i> subdirectories
+
+under your jConnect installation directory for more information.</p>
+<A NAME="TI35"></A><h3>Using <i>text</i> data</h3>
+<p>In earlier versions, jConnect used a <b>TextPointer</b> class
+
+with <b>sendData( )</b> methods for updating a <i>text</i> column
+
+in an Adaptive Server or Adaptive
+
+Server Anywhere database.</p>
+<p>The <b>TextPointer</b> class has been deprecated;
+
+that is, it is no longer recommended and may cease to exist in a
+
+future version of Java.</p>
+<p>If your data server is Adaptive Server 12.5 or later or Adaptive
+
+Server Anywhere version 6.0 or later, use the standard JDBC form
+
+to send text data:</p>
+<p>
+<pre>PreparedStatement.setAsciiStream(int  paramIndex,</pre>
+
+<pre>  InputStream  text, int length)</pre>
+</p>
+<p>or</p>
+<p>
+<pre>PreparedStatement.setUnicodeStream(int  paramIndex,</pre>
+
+<pre>  InputStream  text, int length)</pre>
+</p>
+<p>or</p>
+<p>
+<pre>PreparedStatement.setCharacterStream(int  paramIndex,</pre>
+
+<pre>  Reader  reader, int length)</pre>
+</p>
+<A NAME="X18512"></A><h3>Using <i>Date</i> and <i>Time</i> datatypes</h3>
+<p>Adaptive Server versions 12.5.1 and later offer support for
+
+the SQL <i>date</i> and <i>time</i> datatypes.
+
+Previously, Adaptive Server offered only support for the <i>datetime</i> and <i>smalldatetime</i> datatypes.
+
+These datatypes were limited for the following reasons:
+<ul>
+<li class=fi>There was not a way to have separate <i>time</i> and <i>date</i> datatypes.
+</li>
+<li class=ds>Dates prior to 1/1/1753 were illegal.
+
+Datetime values could hold only dates between 1/1/1753
+
+and 12/31/9999. 
+</li>
+<li class=ds>When JDBC clients used the <b>setTime</b> and <b>setDate</b> methods
+
+to insert java.sql.Time or java.sql.Date methods, the values were
+
+converted to <i>datetime</i> datatypes in the server.
+
+This conversion resulted in the addition of a default date or time
+
+to the insert value supplied by the client.
+
+</li>
+</ul>
+</p>
+<p>The addition of the <i>date</i> and <i>time</i> datatypes
+
+provides the following advantages:
+<ul>
+<li class=fi>Date values
+
+can now be between Jan. 1, 0001 and Dec. 31, 9999, exactly matching
+
+the allowable values in java.sql.Date.
+</li>
+<li class=ds>A direct mapping now exists between java.sql.Date
+
+and the <i>date</i> dataype, as well as between java.sql.Time
+
+and the <i>time</i> datatype.
+
+</li>
+</ul>
+</p>
+<p>The date and time datatypes can be used only with jConnect
+
+5.5 and later. To use them, a jConnect client must set the driver
+
+version to 6. To do so, the client can use the SybDriver.setVersion()
+
+method, or use the JCONNECT_VERSION connection property.</p>
+<A NAME="TI36"></A><h4>Implementation notes</h4>
+<p>
+<ul>
+<li class=fi>You will not have to change any of the
+
+application code if you decide to use the <i>date</i> and <i>time</i> datatypes
+
+by setting the version to 6.
+</li>
+<li class=ds>If you select from a table that contains a date
+
+or time column, and you have not enabled date/time support
+
+in jConnect (by setting the version), the server will try to convert
+
+the date or time to a datetime value before returning it. This can
+
+cause problems if the date to be returned is prior to 1/1/1753.
+
+In that case, a conversion error will occur, and the database will inform
+
+you of the error.
+</li>
+<li class=ds>Adaptive Server Anywhere supports a <i>date</i> and <i>time</i> datatype,
+
+but the <i>date</i> and <i>time</i> datatypes
+
+are not yet directly compatible with those in Adaptive Server version
+
+12.5.1 and later. Using jConnect, you should continue to use the <i>datetime</i> and <i>smalldatetime</i> datatypes
+
+when communicating with Adaptive Server Anywhere.
+</li>
+<li class=ds>The maximum value in a datetime column in Adaptive
+
+Server Anywhere is 1-1-7911 00:00:00.
+</li>
+<li class=ds>Using jConnect you will receive conversion errors
+
+if you attempt to insert dates prior to 1/1/1753
+
+into <i>datetime</i> columns or parameters
+</li>
+<li class=ds>Refer to the Adaptive Server manuals for more information
+
+on the <i>date</i> and <i>time</i> datatypes;
+
+of special note is the section on allowable implicit conversions.
+</li>
+<li class=ds>If you use getObject( ) with an Adaptive Server
+
+date, time, or datetime column, the value returned will be, respectively,
+
+a java.sql.Date, java.sql.Time, or java.sql.Timestamp datatype.
+
+</li>
+</ul>
+</p>
+<A NAME="TI37"></A><h3><i>Char</i>/<i>Varchar</i>/<i>Text</i> datatypes
+
+and <b>getByte( )</b></h3>
+<p>Do not use<b> rs.getByte(
+
+)</b> on a <i>char</i>, <i>univarchar,
+
+unichar, varchar</i>, or <i>text</i> field unless
+
+the data is hex, octal, or decimal.</p>
+<P>&nbsp;</P><hr noshade size=1>
+<table cols=3><tr><td colspan=2 align=left>
+Copyright &copy; 2003 Sybase, Inc. All rights reserved.&nbsp;&nbsp;&nbsp;
+</td><td colspan=1>
+<A HREF="prjdbcp11.htm"><IMG SRC="images/arrow-right.gif" ALIGN=right></A>
+</td></tr></table>
+</BODY>
+</HTML>
+

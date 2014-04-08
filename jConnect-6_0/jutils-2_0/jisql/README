@@ -1,0 +1,97 @@
+README
+------
+
+Thanks for trying jisql.
+
+To install and start the application pease follow these instructions:
+- Add jisql.jar to your CLASSPATH
+- Add swingall.jar to your CLASSPATH
+- Start jisql by using the scriptfile jisql for Unix or jisql.bat for Windows 
+  platforms. (Note: Windows user: You'll need at least a 1024x768 Resolution)
+
+Usage:
+	jisql [-d] [-v] [-L metal|system] [-U username] [-P password]
+	      [-Z <language>] [-C <LoginInformationFile>]
+              [-S host:port[?propname=value[&propname=value]...]] 
+	      or 
+	      [-S JDBC URL[?propname=value[&propname=value]...]]
+ 	      or
+	      [-S JNDI URL[?propname=value[&propname=value]...]]
+	
+The default Look & Feel is set to 'metal' and a Connection window will pop up 
+where you can enter the needed parameters.
+
+After a successful login the parameters (excluding the password) will be stored
+in a property file. The next time you log in you only have to add the 
+password. The property file is named <username>.prp in the current directory.
+It always contains the data from the last successful connection.
+
+You can also start jisql using these command line parameters:
+-L Either 'metal' or 'system' to invoke the Look&Feel of your choice with 
+'metal' being JavaSoft's new Look and Feel and 'system' either Motif, Windows
+or MacIntosh Look and Feel depending on the system you are running on.
+-U Username you would like to use to connect to the database
+-P Password appropriate to the username
+-d to switch on debug mode
+-v to see the version
+-Z to set the Language of the Labels in jisql. Currently supported values are
+   'English' and 'Deutsch' (or the Sybase aquivalent values 'us_english' and 
+   'german')
+-C This is the path/filename of file where login information are stored.
+   If this value is specified the connection window will be filled with those
+   information. If the filename is not provided, -C lets jisql create a file
+   name '<username>.prp' in teh current directory.
+-S Hostname:Portnumber?Poperties where 
+a) Hostname is the name of the machine the database server is running on
+b) Portnumber where the database server is listening on
+c) Connection properties as described in the jConnect Manuals. 
+   If you want to specify more than one property, please connect 
+   them using the '&' character; no blanks, please.
+   Don't forget to put the string in quotes when you use ? and & characters.
+   In a DOS Box you need to mask & with a \
+
+or
+-S JDBC URL, the complete JDBC URL
+or
+-S JNDI URL
+   You can specify the JNDI connection string here. In this case don't 
+   forget to specify the appropriate properties. For information on JNDI,
+   please see jConnect's Programmer's Reference.
+
+If -S is specified -U has to be specified, too. 
+
+Examples:
+jisql                                  sets the Look & Feel to metal and opens
+                                       the connection window
+
+jisql -L system                        sets the Look & Feel to motif on Solaris
+                                       or windows on Windows, and opens
+                                       the connection window
+
+jisql -L system -S serv:3312 -U sa -P pass  
+				       sets the Look & Feel to motif on Solaris
+                                       or windows on Windows, and opens
+                                       a connection to host 'serv'
+
+jisql -S serv:3312 -U sa               sets the Look & Feel to metal and opens
+                                       a connection to host 'serv'. 
+				       User sa, empty password
+
+jisql -U sa -P pass -S "serv:3312?HOSTNAME=brillig&PACKETSIZE=4096"
+				       sets the Look & Feel to metal and opens
+                                       a connection to host 'serv' setting the 
+				       properties HOSTNAME and PACKETSIZE
+
+jisql -U sa -P pass -S jdbc:sybase:Tds:serv:3312
+				       uses the complete URL to connect
+
+jisql -U sa -P pass -S "jdbc:sybase:jndi:ldap://LDAP_hostname:LDAP_port/servername,o=MyCompany,c=US?INITIAL_CONTEXT_FACTORY=com.sun.jndi.ldap.LdatCtxFactory&PROVIDER_URL=ldap://LDAP_hostname:LDAP_port"
+				       uses Sun's LDAP factory to provide a
+				       JNDI Connection.
+					
+
+
+
+
+
+

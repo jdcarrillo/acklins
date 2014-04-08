@@ -1,0 +1,53 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; CHARSET=shift_jis"><HTML>
+</HEAD>
+<BODY bgcolor="#FFFFFF">
+<BLOCKQUOTE>
+  <table width="75%" border="0">
+    <tr>
+      <td> <font size="2"><a href="toc.html"><b>目次</b></a></font>
+      </td>
+      <td> <font size="2"><a href="overview.html"><b>概要</b></a></font>
+      </td>
+      <td bgcolor="#FFFFFF"> <font size="2"><b><a href="menu.html">メニュー</a></b></font>
+      </td>
+      <td> <font size="2"><b><a href="windows.html">ウィンドウ</a></b></font>
+      </td>
+      <td> <font size="2"><b><a href="button.html">ボタン</a></b></font>
+      </td>
+    </tr>
+  </table>
+<hr>
+  <h2><font color="#000099">イメージ・カラム</font></h2>
+  <p><font size="2">選択したデータにイメージ・カラムが含まれており、ResultSet がテキスト形式ではなくテーブル形式で表現されている場合（<A HREF="table.html">テーブル形式とテキスト形式の出力</A>を参照）、イメージ・カラムにデータは表示されません。 代わりに、"イメージ・データです。クリックしてください。" と表示されます。 </font></p>  <p><font size="2">セルをクリックすると、次の 4 つの選択項目を含むウィンドウが表示されます。 </font> </p>
+  <ul>
+    <li> <font size="2"><b>［イメージ・データをピクチャとして表示］</b> - イメージ・データが gif または jpg フォーマットのピクチャの場合、そのイメージがイメージ・ウィンドウに表示されます。 </font>
+    <li> <font size="2"><b>［イメージ・データを 16 進データとして表示］</b> - このオプションを選択すると、データが 16 進数でウィンドウに表示されます。これは、<b>isql</b> でデータが表示される形式と同じです。 </font>
+    <li> <font size="2"><b>［イメージ・データをファイルに保存］</b> - 後で使用できるように、データをファイルに保存します。 サウンド・ファイルやビデオ・ストリームなど、他のプログラムで開く必要があるデータの場合に便利です。 </font>
+    <li> <font size="2"><b>［キャンセル］</b> - 選択ウィンドウを閉じます。 </font>
+  </ul>
+  <h2><font color="#000099">オブジェクト・カラム</font></h2>
+  <p><font size="2"> ResultSet に Java オブジェクトが含まれている場合、ResultSet のテーブルに "オブジェクト・データです。クリックしてください。" と表示されます。 このテーブルをクリックすると、<b>jisql</b> によってオブジェクト内に定義されている <b>toString()</b> メソッドが実行され、その返り値がテーブルのデータとして表示されます。 データの出力に <b>toString()</b> 以外のメソッドがオブジェクトで使用されている場合は、［オプション］ウィンドウの<a href="outputoptions.html">［出力ウィンドウ・オプション］</a>タブの</font><font size="2"> ［DB オブジェクト内でのデータ表示方法］にそのメソッド名を入力します。 </font></p>
+  <p><font size="2"> ［DB Java オブジェクトからデータを自動的に抽出］オプションが選択されている場合、ResultSet 内に Java オブジェクトが含まれていると、<b>jisql</b> によってデータが直ちに抽出されます。 "クリックしてください" というメッセージは表示されません。また、データを受信するためにクリックする必要もありません。 ただし、このオプションを選択すると、オブジェクトの <b>toString()</b>（または該当メソッド）を実行するために <b>jisql</b> がローごとにデータベースにアクセスする必要があり、テーブルの生成処理が遅くなります。 </p>
+  <hr>
+  <table width="75%" border="0">
+    <tr>
+      <td> <font size="2"><a href="toc.html"><b>目次</b></a></font>
+      </td>
+      <td> <font size="2"><a href="overview.html"><b>概要</b></a></font>
+      </td>
+      <td bgcolor="#FFFFFF"> <font size="2"><b><a href="menu.html">メニュー</a></b></font>
+      </td>
+      <td> <font size="2"><b><a href="windows.html">ウィンドウ</a></b></font>
+      </td>
+      <td> <font size="2"><b><a href="button.html">ボタン</a></b></font>
+      </td>
+    </tr>
+  </table>
+</BLOCKQUOTE>
+</BODY>
+</HTML>
+

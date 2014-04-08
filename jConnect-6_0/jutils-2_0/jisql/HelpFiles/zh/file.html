@@ -1,0 +1,95 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">        
+<html>
+<head>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; CHARSET=gb2312">
+<title>无标题文档</title>
+</head>
+
+<body bgcolor="#FFFFFF">
+<BLOCKQUOTE>
+  <table width="75%" border="0">
+    <tr>
+<td> <div align="left"><font  size="2"><a href="toc.html"><b>目录</b></a></font></div>
+      </td>
+<td> <div align="left"><font  size="2"><a href="overview.html"><b>概述</b></a></font></div>
+      </td>
+      <td bgcolor="#FFFFFF"> <div align="left"><font  size="2"><b><a href="menu.html">菜单</a></b></font></div>
+      </td>
+<td> <div align="left"><font  size="2"><b><a href="windows.html">窗口</a></b></font></div>
+      </td>
+      <td> <div align="left"><font  size="2"><b><a href="button.html">按钮</a></b></font></div>
+      </td>
+    </tr>
+  </table>
+<h2><b><font color="#0000A0">“文件”菜单</font></b>
+</h2>
+  <table width="90%" border="1" cellpadding="5" cellspacing="0" name="mrenus" bordercolorlight="#999999" bordercolor="#999999">
+    <tr>
+      <td width="24%" height="26">
+        <h5 align="left">选项</h5>
+      </td>
+      <td width="76%" height="26">
+        <h5 align="left">说明</h5>
+      </td>
+    </tr>
+    <tr>
+      <td width="24%" valign="top"> <div align="left"><font color="#000099"><b><font color="#000000"  size="2">读取批处理文件</font></b></font></div>
+      </td>
+      <td width="76%">
+        <p align="left"><font  size="2">允许执行预先准备好的批处理文件。根据在<a href="inputoptions.html">输入窗口选项</a>选项卡中定义的状态，可将文件读取到输入窗口中（在此窗口中可编辑该文件），然后用<a href="button.html">“执行”按钮</a>或者用<a href="query.html">“查询”菜单的</a><i>执行</i>选项执行该文件。可在<a href="inputoptions.html">输入窗口选项</a>选项卡中设置<i>命令行分隔符</i>。</font></p>
+        <p align="left"><font  size="2">要在后台执行批处理，只需在<a href="inputoptions.html">输入窗口选项</a>选项卡中选中相应的选项即可。</font></p>
+      </td>
+    </tr>
+    <tr>
+      <td width="24%"><b><font  size="2">保存输入窗口的内容到文件中</font></b></td>
+      <td width="76%"><font  size="2">将输入窗口中的当前内容保存到文件中。稍后，可以再次读取和执行该文件。</font></td>
+    </tr>
+    <tr>
+      <td width="24%" valign="top"><b><font size="2" >保存输出缓冲内容到文件中</font></b></td>
+      <td width="76%">
+        <p><font  size="2">每个 ResultSet 都存储在一个输出缓冲区中。此选项可将输出缓冲区中的内容保存到文件中。这是保存存储在数据库中的数据的一种简单方法。如果数据显示为一个<i>表组件</i>，则用<a href="outputoptions.html">输出窗口选项</a>选项卡可以定义字段分隔符。这使您可以准备一个输出文件，该文件将在以后与 <b>bcp</b> 一起使用，以便将数据读回数据库的表中。行分隔符总是<i>换行符</i>。</font></p>
+        <p><font  size="2">如果数据显示为<i>文本</i>，则存储的内容就是输出窗口中的显示内容。</font></p>
+      </td>
+    </tr>
+    <tr>
+      <td width="24%" valign="top"><b><font  size="2">保存历史缓冲区内容到文件中</font></b></td>
+      <td width="76%"><font  size="2">您执行的每一条命令都存储在历史缓冲区中。单击<a href="button.html">历史</a>图标后将显示该缓冲区的内容。为了日志记录或为了帮助找到失败的原因，可以编辑这些内容（如增加注释），并将历史缓冲区内容保存到文件中。</font></td>
+    </tr>
+    <tr>
+      <td width="24%" valign="top"><b><font  size="2">打印 ResultSets ASCII 风格</font></b></td>
+      <td width="76%">
+        <p><font  size="2">将当前的 ResultSet 发送给打印机打印。数据显示为 ASCII 文本。</font></p>
+        <p><font  size="2" color="#800000"><b>注释：</b></font><font  size="2"> &nbsp;如果在“输出窗口”中改变数据（例如，调整列的大小或重新排序列），则这些改变不会表现在打印输出中。</font></p>
+      </td>
+    </tr>
+    <tr>
+      <td width="24%" valign="top"><b><font  size="2">以 JTable 风格打印 ResultSet</font></b> <font  size="2"><br> (仅适用于 jdk 1.2 )</font></td>
+      <td width="76%">
+        <p><font size="2" >将当前的 ResultSet 发送给打印机打印。数据显示为 <a href="table.html">JTable</a></font> 格式。</p>
+        <p><font  size="2" color="#800000"><b>注释：</b></font><font  size="2"> &nbsp;如果在“输出窗口”中改变数据（例如，调整列的大小或重新排序列），则这些改变不会表现在打印输出中。</font></p>
+      </td>
+    </tr>
+    <tr>
+<td width="24%" valign="top"><b><font  size="2">退出</font></b></td>
+      <td width="76%"><font  size="2">关闭所有会话窗口（这也将关闭相关的数据库连接），并结束应用程序进程。</font></td>
+    </tr>
+  </table>
+  <hr>
+<table width="75%" border="0">
+  <tr>
+<td> <div align="center"><font  size="2"><a href="toc.html"><b>目录</b></a></font></div>
+    </td>
+<td> <div align="center"><font  size="2"><a href="overview.html"><b>概述</b></a></font></div>
+    </td>
+    <td bgcolor="#FFFFFF"> <div align="center"><font  size="2"><b><a href="menu.html">菜单</a></b></font></div>
+    </td>
+<td> <div align="center"><font  size="2"><b><a href="windows.html">窗口</a></b></font></div>
+    </td>
+    <td> <div align="center"><font  size="2"><b><a href="button.html">按钮</a></b></font></div>
+    </td>
+  </tr>
+</table>
+</BLOCKQUOTE>
+<p>&nbsp;</p>
+</body>
+</html>

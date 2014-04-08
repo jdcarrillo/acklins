@@ -1,0 +1,141 @@
+<HTML>
+<BODY bgcolor="#FFFFFF">
+<blockquote>
+<div align="left"></div>
+<table width="75%" border="0">
+  <tr> 
+    <td> 
+      <div align="left"><font face="Default" size="2"><a href="toc.html"><b>Inhaltsverzeichnis</b></a></font></div>
+    </td>
+    <td> 
+      <div align="left"><font face="Default" size="2"><a href="overview.html"><b>&Uuml;berblick</b></a></font></div>
+    </td>
+    <td bgcolor="#FFFFFF"> 
+      <div align="left"><font face="Default" size="2"><b><a href="menu.html">Men&uuml;s</a></b></font></div>
+    </td>
+    <td> 
+      <div align="left"><font face="Default" size="2"><b><a href="windows.html">Fenster</a></b></font></div>
+    </td>
+    <td bgcolor="#FFFFFF"> 
+      <div align="left"><font face="Default" size="2"><b><a href="button.html">Schaltfl&auml;chen</a></b></font></div>
+    </td>
+  </tr>
+</table>
+<hr>
+<h2><font face="Default" color="#000099">Datenbankoptionen</font></h2>
+  <p><font face="Default" size="2">Hier k&ouml;nnen Sie h&auml;ufig benutzte Parameter einstellen. Im Benutzerhandbuch
+f&uuml;r Transact-SQL finden Sie weitere Hinweise zum Einsatz und zu den
+Funktionen dieser Einstellungen. Diese Werte werden nicht aktualisiert,
+wenn sie sich in der Datenbank &auml;ndern. </font></p>
+  <table width="85%" border="1" cellspacing="0" cellpadding="5" height="80">
+    <tr> 
+      <td valign="top" width="12%" height="60"><b><i><font color="#660000" face="Default" size="2">HINWEIS</font><font color="#660000">:</font></i></b></td>
+      <td valign="top" width="88%" height="60"><font face="Default" size="2">Die Schaltfl&auml;chen <font color="#000099"> <b>Ein</b></font>|<font color="#000099"><b>Aus</b></font> 
+ f&uuml;r die Parameter werden ent-markiert, wenn Sie auf <font color="#000099"><b>&Uuml;bernehmen</b></font> 
+ klicken, und der Befehl wird an die Datenbank geschickt, weil
+<b>jisql</b> nicht sicher sein kann, welchen Status diese Parameter
+gerade haben. Beispiel: Sie klicken auf <font color="#000099"><b>Ein</b></font> f&uuml;r &quot;Verkettete
+Transaktion&quot;, dann auf <b><font color="#000099">&Uuml;bernehmen</font></b>, f&uuml;hren dann dieselbe Anweisung
+im Eingabefenster aus. In diesem Fall wird <b>jisql</b> nicht
+verst&auml;ndigt, dass der Wert der Option ge&auml;ndert wurde. </font></td>
+    </tr>
+  </table>
+  <p><font face="Default" size="2">Klicken Sie auf <b>&Uuml;bernehmen</b>, um die &Auml;nderungen zu speichern. <br>
+    </font></p>
+  <table width="95%" border="1" cellpadding="5" cellspacing="0" bordercolor="#999999" bordercolorlight="#999999">
+    <tr> 
+    <td width="50%" valign="top" bordercolor="#999999"><b><font face="Default" size="2">OPTION</font></b></td>
+    <td width="50%"><b><font face="Default" size="2">BESCHREIBUNG</font></b></td>
+  </tr>
+  <tr> 
+    <td width="50%" valign="top"><b><font face="Default" size="2">Maximale Anzahl an Zeilen (Zeilenanzahl)</font></b></td>
+    <td width="50%"><font face="Default" size="2">Bewirkt, dass die Abfrage (<b>select</b>, <b>insert</b>, <b>update</b> oder
+<b>delete</b>) die Verarbeitung stoppt, nachdem die angegebene Anzahl von
+Zeilen betroffen ist. Um diese Option auszuschalten, geben Sie 0 (Null)
+ein. </font></td>
+  </tr>
+  <tr> 
+    <td width="50%" valign="top"><b><font face="Default" size="2">Begrenzung der text|image-Gr&ouml;&szlig;e (Textgr&ouml;&szlig;e)<i></i><i></i></font></b></td>
+    <td width="50%"> 
+      <p><font face="Default" size="2">Gibt in Byte den Grenzwert der <i>text</i>- oder <i>image</i>-Daten an,
+die mit einer <b>select</b>-Anweisung zur&uuml;ckgegeben werden sollen.</font></p>
+    </td>
+  </tr>
+  <tr> 
+    <td width="50%" valign="top"><b><font face="Default" size="2">Transaktions-Isolationsstufe setzen (0 - 3)</font></b></td>
+    <td width="50%">
+      <p><font size="2" face="Default">Gibt den Grad an, mit dem w&auml;hrend einer Transaktion auf Daten
+zugegriffen werden kann.</font></p>
+      <p><font face="Default" size="2"><b>0</b> - Andere Transaktionen k&ouml;nnen die Daten erst
+&auml;ndern, wenn die laufende Transaktion festgeschrieben wird. Nicht
+festgeschriebene Daten k&ouml;nnen von anderen
+Transaktionen aber gelesen werden.</font></p>
+      <p><font face="Default" size="2"><b>1</b> - Eine Transaktion kann eine Zeile nicht &auml;ndern,
+w&auml;hrend eine zweite Transaktion die Zeile liest, solange
+die erste Transaktion die &Auml;nderung nicht festgeschrieben
+hat.</font></p>
+      <p><font face="Default" size="2"><b>2</b> - Eine Transaktion kann eine Zeile nicht lesen,
+w&auml;hrend eine zweite Transaktion dieselbe Zeile &auml;ndert.</font></p>
+      <p><font face="Default" size="2"><b>3</b> - Eine Transaktion kann eine Zeilengruppe nicht
+lesen, die von einer Abfrage verlangt wird, w&auml;hrend eine
+zweite Transaktion die Daten &auml;ndert. Damit wird
+gew&auml;hrleistet, dass Daten, die von einer Transaktion
+gelesen werden, bis zum Ende dieser Transaktion g&uuml;ltig
+sind.</font></p>
+    </td>
+  </tr>
+  <tr> 
+    <td width="50%" valign="top"><b><font face="Default" size="2">Anzeige 'number of rows affected'</font></b></td>
+      <td width="50%"><font face="Default" size="2">Damit wird die Anzeige der Anzahl von Zeilen ein- und
+ausgeschaltet, die durch eine <b>insert</b>-,
+<b>update</b>- oder <b>delete</b>-Anweisung betroffen sind. Der
+Standard ist &quot;Aus&quot;.</font></td>
+  </tr>
+  <tr> 
+    <td width="50%" valign="top"><b><font face="Default" size="2">Benutze verkettete Transaktionen (chained)</font></b></td>
+    <td width="50%"><font size="2" face="Default">Im Modus "chained" beginnen alle Datenabruf- und
+Daten&auml;nderungsbefehle (<b>delete</b>, <b>insert</b>,
+<b>open</b>, <b>fetch</b>, <b>select</b> und <b>update</b>)
+eine Transaktion. Dieses Verhalten ist mit vielen
+T-SQL-Anwendungen nicht kompatibel. Der Standard ist
+&quot;Aus&quot;.</font></td>
+  </tr>
+  <tr> 
+    <td width="50%" valign="top"><b><font face="Default" size="2">Begrenzte Bezeichner erkennen (quoted_identifier)</font></b></td>
+    <td width="50%"><font face="Default" size="2">Mit dieser Option kann die Datenbank begrenzte Bezeichner
+erkennen. Jedesmal wenn Sie angef&uuml;hrte Bezeichner in einer
+Anweisung verwenden, m&uuml;ssen Sie sie in Anf&uuml;hrungszeichen
+setzen. Wenn diese Option auf &quot;On&quot; gesetzt ist,
+d&uuml;rfen Sie Zeichenfolgen oder Datumsfolgen nicht in
+Anf&uuml;hrungszeichen setzen, sondern m&uuml;ssen Apostrophe
+verwenden. Um einen Apostroph in eine Spalte zu setzen,
+benutzen Sie zwei aufeinanderfolgende Apostrophe. Der
+Standard ist &quot;Aus&quot;. </font></td>
+  </tr>
+</table>
+<p><font face="Default" size="2">Weitere Hinweise finden Sie in der Dokumentation
+<i>SQLTransact-SQL Benutzerhandbuch</i>.</font></p>
+  <div align="left">
+    <table width="75%" border="0">
+      <tr> 
+        <td> 
+          <div align="left"><font face="Default" size="2"><a href="toc.html"><b>Inhaltsverzeichnis</b></a></font></div>
+        </td>
+        <td> 
+          <div align="left"><font face="Default" size="2"><a href="overview.html"><b>&Uuml;berblick</b></a></font></div>
+        </td>
+        <td bgcolor="#FFFFFF"> 
+          <div align="left"><font face="Default" size="2"><b><a href="menu.html">Men&uuml;s</a></b></font></div>
+        </td>
+        <td> 
+          <div align="left"><font face="Default" size="2"><b><a href="windows.html">Fenster</a></b></font></div>
+        </td>
+        <td bgcolor="#FFFFFF"> 
+          <div align="left"><font face="Default" size="2"><b><a href="button.html">Schaltfl&auml;chen</a></b></font></div>
+        </td>
+      </tr>
+    </table>
+  </div>
+</blockquote>
+</BODY>
+</HTML>

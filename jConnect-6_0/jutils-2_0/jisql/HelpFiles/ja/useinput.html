@@ -1,0 +1,64 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+<title>Untitled Document</title>
+<meta http-equiv="Content-Type" content="text/html; charset=shift_jis">
+</head>
+
+<body bgcolor="#FFFFFF">
+<blockquote>
+  <table width="75%" border="0">
+    <tr>
+<td width="30%"> <div align="left"><font size="2"><a href="toc.html"><b>目次</b></a></font></div>
+      </td>
+<td width="22%"> <div align="left"><font size="2"><a href="overview.html"><b>概要</b></a></font></div>
+      </td>
+<td bgcolor="#FFFFFF" width="14%"> <div align="left"><font size="2"><b><a href="menu.html">メニュー</a></b></font></div>
+      </td>
+<td width="18%"> <div align="left"><font size="2"><b><a href="windows.html">ウィンドウ</a></b></font></div>
+      </td>
+<td width="16%"> <div align="left"><font size="2"><b><a href="button.html">ボタン</a></b></font></div>
+      </td>
+    </tr>
+  </table>
+  <hr>
+  <h2><font color="#000099">クエリの入力と実行</font></h2>
+  <p><font size="2">バッチ・ファイル（またはスクリプト）は、クエリを実行するために使用される Transact-SQL 文のコレクションです。 スクリプトはファイルとして保存され、多くのサーバ・アプリケーション・プロジェクトの基盤となります。 スクリプト・ファイルには通常、テーブルの定義、インデックス、およびストアド・プロシージャに加え、レポートやバッチ・ジョブが保存されます。</font></p>
+  <p><font size="2">サーバに接続した後は、データベースのドロップダウン・リストをクリックし、そのリストから作業するデータベースの名前をクリックします。 クエリを入力する方法にはいくつかあります。 クエリを実行するには、ツールバーの<font color="#000099"><b>［実行］</b></font>ボタンをクリックするか、［クエリ］メニューの［クエリの実行］を選択します。</font></p>
+</blockquote>
+<ul>
+  <li>
+<font size="2">クエリを直接<a href="input.html">［入力］ウィンドウ</a>にタイプし、<font color="#000099"><b>［実行］</b></font>ボタンをクリックします。
+ <br> </font></li>
+  <li><font size="2"><a href="list.html">［一覧］メニュー</a>からオプションを選択します。</font>
+    <dl>
+      <dt><font size="2"><b><font color="#990099">ユーザ・テーブルまたはシステム・テーブルが表示されたら、</font></b>テーブルまたはカラムの名前（複数可）をクリックして<font color="#000099"><b>［選択］</b></font>をクリックします。 <font color="#000000">連続していない複数のテーブルまたはカラムを選択する場合は、Ctrl キーを押しながら選択します。 連続した複数のテーブルまたはカラムを選択する場合は、シフトキーを押しながら最初の項目と最後の項目を選択します。選択したテーブルやカラムに対する select 文が、<b>jisql</b></font> によって［入力］ウィンドウに挿入されます。</font> <br>
+      </dt>
+      <dt><font size="2"><font color="#990099"><b>ストアド・プロシージャまたはトリガのリストが表示されたら、</b></font>表示するアイテムの名前をクリックして<font color="#000099"><b>［テキストの表示］</b></font>をクリックします。 選択したストアド・プロシージャまたはトリガのテキストが別のウィンドウに表示されます。 テキストの一部をクエリで使用するには、テキストを強調表示して <b><font color="#000099">Ctrl+c</font></b> を押し、カーソルを［入力］ウィンドウに移動してから <b><font color="#000099">Ctrl+v</font></b> を押します。これで、選択したテキストが <b>jisql</b> によって、ウィンドウ・マネージャで表示されているウィンドウに挿入されます（この操作ができないウィンドウ・マネージャもあります）。</font></dt>
+    </dl>
+  </li>
+  <li><font size="2">［入力］ウィンドウですでに実行したクエリを強調表示し、<b><font color="#000099">［実行］</font></b>ボタンをクリックするか、［クエリ］メニューの［クエリの実行］を選択します。<br> </font></li>
+  <li><font size="2"><a href="history.html">［履歴］ウィンドウ</a> から［入力］ウィンドウへ文（複数可）をコピーします。ただし、この操作を行うには、少なくとも 1 度は文またはバッチを実行していなければなりません。</font>
+    <p><font size="2">［履歴］アイコン <img src="window.jpg" width="25" height="25" border="1"> をクリックします。 ［履歴］ウィンドウで、実行する文（複数可）を強調表示し、接続ウィンドウのツールバーの<font color="#000099"><b>［実行］</b></font>ボタンをクリックします。 <font color="#000099"><b>Ctrl+c</b></font> を押して［履歴］ウィンドウ内の文をコピーし、<font color="#000099"><b>Ctrl+v</b></font> を押して［入力］ウィンドウへ貼り付けることもできます。 </font></p>
+  </li>
+</ul>
+<blockquote>
+  <p><font size="2">クエリの実行結果（ResultSet）は、<a href="output.html">［出力］ウィンドウ</a>に表示されます。</font></p>
+  <hr>
+  <table width="106%" border="0">
+    <tr>
+<td width="32%"> <div align="left"><font size="2"><a href="toc.html"><b>目次</b></a></font></div>
+      </td>
+<td width="21%"> <div align="left"><font size="2"><a href="overview.html"><b>概要</b></a></font></div>
+      </td>
+<td width="14%"> <div align="left"><font size="2"><b><a href="menu.html">メニュー</a></b></font></div>
+      </td>
+<td width="18%"> <div align="left"><font size="2"><b><a href="windows.html">ウィンドウ</a></b></font></div>
+      </td>
+<td width="15%"> <div align="left"><font size="2"><b><a href="button.html">ボタン</a></b></font></div>
+      </td>
+    </tr>
+  </table>
+</blockquote>
+</body>
+</html>

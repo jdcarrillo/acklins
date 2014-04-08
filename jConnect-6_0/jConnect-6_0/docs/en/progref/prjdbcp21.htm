@@ -1,0 +1,205 @@
+
+<html>
+<!-- 
+Copyright (C) 2003. Sybase Inc. All rights reserved.
+Programmer's Reference
+jConnect&#153; for JDBC&#153;
+-->
+
+<HEAD>
+<script language="JavaScript">
+<!--
+
+if (navigator.appName == "Netscape"){
+     document.write('<LINK REL=STYLESHEET HREF="netscape.css" TYPE="text/javascript">');
+     }
+else{
+     document.write('<LINK REL=STYLESHEET HREF="default.css" TYPE="text/css">');
+     }
+
+//-->
+</script>
+<NOSCRIPT><LINK REL=STYLESHEET HREF="default.css" TYPE="text/css"></NOSCRIPT>
+<TITLE>Improving jConnect performance</TITLE></HEAD>
+<BODY bgproperties="FIXED" bgcolor="#ffffe2">
+<P ALIGN=RIGHT><A HREF="prjdbcp20.htm"><IMG SRC="images/arrow-left.gif" align=top></A>&nbsp;&nbsp;<A HREF="prjdbcp22.htm"><IMG SRC="images/arrow-right.gif" align=top></A></P>
+
+<P ALIGN=LEFT><I>Chapter 4  Performance  and Tuning</I><HR NOSHADE SIZE=1></P>
+<A NAME="X28847"></A><h1>Improving jConnect performance</h1>
+<p>There are a number of ways to optimize the performance of
+
+an application using jConnect: 
+<ul>
+<li class=fi>Use <b>TextPointer.sendData(
+
+)</b> methods to send text and image data to an Adaptive Server
+
+database. See <A HREF="prjdbcp10.htm#X34184">"Updating
+
+image data in the database"</A>.
+</li>
+<li class=ds>Create precompiled <b>PreparedStatement</b> objects
+
+for dynamic SQL statements that are used repeatedly during a session.
+
+See <A HREF="prjdbcp22.htm">"Performance tuning for prepared statements in dynamic SQL"</A>.
+</li>
+<li class=ds>Batch updates improve performance by reducing network
+
+traffic; specifically, all queries are sent to the server in one
+
+group and all responses returned to the client are sent in one group.
+
+See <A HREF="prjdbcp10.htm#X24000">"Support for batch updates"</A>.
+</li>
+<li class=ds>For sessions that are likely to move image data,
+
+large row sets, and lengthy text data, use the PACKETSIZE connection
+
+property to set the maximum feasible packet size.
+</li>
+<li class=ds>For TDS-tunneled HTTP, set the maximum TDS packet
+
+size and configure your Web server to support the HTTP1.1 Keep-Alive feature.
+
+Also set the <i>SkipDoneProc</i> servlet argument
+
+to true.
+</li>
+<li class=ds>Use protocol cursors, the default setting of the
+
+LANGUAGE_CURSOR connection property. See <A HREF="prjdbcp23.htm#CHDEFCAI">"LANGUAGE_CURSOR
+
+connection property"</A> for more information.
+</li>
+<li class=ds>If you use TYPE_SCROLL_INSENSITIVE
+
+result sets, only use them when the result set is reasonably small.
+
+See <A HREF="prjdbcp10.htm#X18457">"Support for SCROLL_INSENSITIVE
+
+result sets in jConnect"</A> for
+
+more information.
+
+</li>
+</ul>
+</p>
+<p>Additional considerations for improving performance are described
+
+below.</p>
+<A NAME="TI79"></A><h2>BigDecimal rescaling</h2>
+<p>The
+
+JDBC 1.0 specification requires a scale factor with <b>getBigDecimal(
+
+)</b>. Then, when a <b>BigDecimal</b> object is
+
+returned from the server, it must be rescaled using the original
+
+scale factor you used with <b>getBigDecimal( )</b>.</p>
+<p>To eliminate the processing time required for rescaling, use
+
+the JDBC 2.0 <b>getBigDecimal( )</b> method, which jConnect
+
+implements in the <b>SybResultSet</b> class and does
+
+not require a <i>scale </i>value:  
+<pre>public  BigDecimal getBigDecimal(int columnIndex) 
+   throws  SQLException</pre>
+</p>
+<p>For example: 
+<pre>SybResultSet rs = 
+   (SybResultSet)stmt.executeQuery("SELECT 
+   numeric_column  from T1");
+ while (rs.next())
+ {
+   BigDecimal  bd rs.getBigDecimal( 
+     "numeric_column");
+       ...
+ }</pre>
+</p>
+<A NAME="X38325"></A><h2>REPEAT_READ connection  property</h2>
+<p>You
+
+can improve performance on retrieving a result set from the database
+
+if you set the REPEAT_READ connection property to false.
+
+However, when REPEAT_READ is "false:" 
+<ul>
+<li class=fi>You must read column values
+
+in order, according to column index. This is difficult if you want
+
+to access columns by name rather than column number.
+</li>
+<li class=ds>You cannot read a column value in a row more than
+
+once.
+
+</li>
+</ul>
+</p>
+<A NAME="X20584"></A><h2>Character-set conversion</h2>
+<A NAME="TI80"></A><h3>SunloConverter</h3>
+<p>If you are using multibyte character sets and need to improve
+
+driver performance, you can use the <b>SunIoConverter</b> class
+
+provided with the jConnect samples. This converter is based on the <b>sun.io</b> classes
+
+provided by the Java Software Division of Sun Microsystems, Inc.</p>
+<p>The <b>SunIoConverter</b> class is not a pure
+
+Java implementation of the character-set converter feature, and
+
+therefore is not integrated with the standard jConnect product.
+
+However, we have provided this converter class for your reference, and
+
+you can use it with the jConnect driver to improve character-set
+
+conversion performance.</p>
+<p><IMG SRC="images/note.gif" width=17 height=17 border=0 align="bottom" alt="Note">&nbsp;&nbsp; Based on Sybase testing, the <b>SunIoConverter</b> class
+
+improved performance on all VMs on which it was tested. However,
+
+the Java Software Division of Sun Microsystems, Inc. reserves the
+
+right to remove or change the <b>sun.io </b>classes
+
+with future releases of the JDK, and therefore this <b>SunIoConverter</b> class
+
+may not be compatible with later JDK releases.</P>
+<p>To use the <b>SunIoConverter</b> class, you must
+
+install the jConnect sample applications. See the <i>Sybase
+
+jConnect for JDBC Installation Guide </i>for complete instructions
+
+on installing jConnect and its components, including the sample
+
+applications. Once the samples are installed, set the CHARSET_CONVERTER_CLASS
+
+connection property to reference the <b>SunIoConverter</b> class
+
+in the <i>sample2</i> subdirectory under your jConnect installation
+
+directory.</p>
+<p>If you are using a database with its default character set
+
+as iso_1, or if you are using only the first 7 bits of
+
+ASCII, you can gain significant performance benefits by using the <b>TruncationConverter</b>.
+
+See <A HREF="prjdbcp9.htm#X37477">"jConnect character-set converters"</A>.</p>
+<P>&nbsp;</P><hr noshade size=1>
+<table cols=3><tr><td colspan=2 align=left>
+Copyright &copy; 2003 Sybase, Inc. All rights reserved.&nbsp;&nbsp;&nbsp;
+</td><td colspan=1>
+<A HREF="prjdbcp22.htm"><IMG SRC="images/arrow-right.gif" ALIGN=right></A>
+</td></tr></table>
+</BODY>
+</HTML>
+

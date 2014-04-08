@@ -1,0 +1,88 @@
+
+<html>
+<!-- 
+Copyright (C) 2003. Sybase Inc. All rights reserved.
+Programmer's Reference
+jConnect&#153; for JDBC&#153;
+-->
+
+<HEAD>
+<script language="JavaScript">
+<!--
+
+if (navigator.appName == "Netscape"){
+     document.write('<LINK REL=STYLESHEET HREF="netscape.css" TYPE="text/javascript">');
+     }
+else{
+     document.write('<LINK REL=STYLESHEET HREF="default.css" TYPE="text/css">');
+     }
+
+//-->
+</script>
+<NOSCRIPT><LINK REL=STYLESHEET HREF="default.css" TYPE="text/css"></NOSCRIPT>
+<TITLE>Memory usage in jConnect applications</TITLE></HEAD>
+<BODY bgproperties="FIXED" bgcolor="#ffffe2">
+<P ALIGN=RIGHT><A HREF="prjdbcp16.htm"><IMG SRC="images/arrow-left.gif" align=top></A>&nbsp;&nbsp;<A HREF="prjdbcp18.htm"><IMG SRC="images/arrow-right.gif" align=top></A></P>
+
+<P ALIGN=LEFT><I>Chapter 3  Troubleshooting</I><HR NOSHADE SIZE=1></P>
+<A NAME="X38531"></A><h1>Memory usage in jConnect applications</h1>
+<p>The following situations and their solutions may be helpful
+
+if you notice increased memory use in jConnect applications. 
+<ul>
+<li class=fi>In jConnect applications,
+
+you should explicitly close all <b>Statement</b> objects and
+
+subclasses (for example, <b>PreparedStatement</b>, <b>CallableStatement</b>)
+
+after their last use to prevent statements from accumulating in
+
+memory. Closing the <b>ResultSet</b> is not sufficient.
+<br><br>
+For example: 
+<pre>ResultSet rs = _conn.prepareCall(_query).execute();</pre>
+
+<pre>...
+rs.close();</pre>
+
+<br><br>
+will cause problems. Instead use: 
+<pre>PreparedStatement  ps = _conn.prepareCall(_query);
+ResultSet  rs = ps.execute();</pre>
+
+<pre>...
+ps.close();
+rs.close();</pre>
+
+</li>
+<li class=ds>jConnect uses the Tabular Data Stream (TDS)--Sybase's
+
+proprietary protocol--to communicate with Sybase database
+
+servers. As of jConnect 5.5, TDS does not support scrollable cursors.
+
+To support scrollable cursors, jConnect caches the row data on demand,
+
+on the client, on each call to <b>ResultSet.next( )</b>.
+
+However, when the end of the result set is reached, the entire result
+
+set is stored in the client's memory. Because this may cause
+
+a performance strain, Sybase recommends that you use TYPE_SCROLL_INSENSITIVE
+
+result sets only when the result set is reasonably small.
+
+</li>
+</ul>
+</p>
+<P>&nbsp;</P><hr noshade size=1>
+<table cols=3><tr><td colspan=2 align=left>
+Copyright &copy; 2003 Sybase, Inc. All rights reserved.&nbsp;&nbsp;&nbsp;
+</td><td colspan=1>
+<A HREF="prjdbcp18.htm"><IMG SRC="images/arrow-right.gif" ALIGN=right></A>
+</td></tr></table>
+</BODY>
+</HTML>
+

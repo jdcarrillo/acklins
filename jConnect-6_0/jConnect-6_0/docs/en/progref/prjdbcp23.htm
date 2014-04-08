@@ -1,0 +1,112 @@
+
+<html>
+<!-- 
+Copyright (C) 2003. Sybase Inc. All rights reserved.
+Programmer's Reference
+jConnect&#153; for JDBC&#153;
+-->
+
+<HEAD>
+<script language="JavaScript">
+<!--
+
+if (navigator.appName == "Netscape"){
+     document.write('<LINK REL=STYLESHEET HREF="netscape.css" TYPE="text/javascript">');
+     }
+else{
+     document.write('<LINK REL=STYLESHEET HREF="default.css" TYPE="text/css">');
+     }
+
+//-->
+</script>
+<NOSCRIPT><LINK REL=STYLESHEET HREF="default.css" TYPE="text/css"></NOSCRIPT>
+<TITLE>Cursor  performance</TITLE></HEAD>
+<BODY bgproperties="FIXED" bgcolor="#ffffe2">
+<P ALIGN=RIGHT><A HREF="prjdbcp22.htm"><IMG SRC="images/arrow-left.gif" align=top></A>&nbsp;&nbsp;<A HREF="prjdbcp24.htm"><IMG SRC="images/arrow-right.gif" align=top></A></P>
+
+<P ALIGN=LEFT><I>Chapter 4  Performance  and Tuning</I><HR NOSHADE SIZE=1></P>
+<A NAME="X17366"></A><h1>Cursor  performance</h1>
+<p>When
+
+you use the <b>Statement.setCursorName( )</b> method
+
+or the <b>setFetchSize( ) </b>method in the <b>SybCursorResultSet</b> class,
+
+jConnect creates a cursor in the database. Other methods cause jConnect
+
+to open, fetch, and update a cursor.</p>
+<p>Versions of jConnect earlier than 4.0 can create and manipulate
+
+cursors only by sending SQL statements with explicit cursor commands
+
+to the database for parsing and compilation.</p>
+<p>jConnect version 4.0 and later create and manipulate cursors
+
+either by sending SQL statements to the database or by encoding
+
+cursor commands as tokens within the Tabular Data Stream (TDS) communication
+
+protocol. Cursors of the first type are "language cursors;" cursors
+
+of the second type are "protocol cursors."</p>
+<p>Protocol cursors provide better performance than language
+
+cursors. In addition, not all databases support language cursors.
+
+For example, Adaptive Server Anywhere databases do not support language
+
+cursors.</p>
+<p>In jConnect, the default condition is for all cursors to be
+
+protocol cursors. However, the LANGUAGE_CURSOR connection
+
+property gives you the option of having cursors created and manipulated
+
+through language commands in the database.</p>
+<A NAME="CHDEFCAI"></A><h2>LANGUAGE_CURSOR  connection property</h2>
+<p>LANGUAGE_CURSOR
+
+is a Boolean-valued connection property in jConnect that allows
+
+you to determine whether cursors are created as protocol cursors
+
+or language cursors: 
+<ul>
+<li class=fi>If
+
+LANGUAGE_CURSOR is set to false, all cursors created during
+
+a session are protocol cursors, which provide better performance.
+
+jConnect creates and manipulates the cursors by sending cursor commands
+
+as tokens in the TDS protocol.
+<br><br>
+By default, LANGUAGE_CURSOR is set to false.
+</li>
+<li class=ds>If LANGUAGE_CURSOR is set to true, all
+
+cursors created during a session are language cursors. jConnect
+
+creates and manipulates the cursors by sending SQL statements to
+
+the database for parsing and compilation.
+<br><br>
+There is no known advantage to setting LANGUAGE_CURSOR
+
+to true, but the option is provided in case an application displays
+
+unexpected behavior when LANGUAGE_CURSOR is false.
+
+</li>
+</ul>
+</p>
+<P>&nbsp;</P><hr noshade size=1>
+<table cols=3><tr><td colspan=2 align=left>
+Copyright &copy; 2003 Sybase, Inc. All rights reserved.&nbsp;&nbsp;&nbsp;
+</td><td colspan=1>
+<A HREF="prjdbcp24.htm"><IMG SRC="images/arrow-right.gif" ALIGN=right></A>
+</td></tr></table>
+</BODY>
+</HTML>
+

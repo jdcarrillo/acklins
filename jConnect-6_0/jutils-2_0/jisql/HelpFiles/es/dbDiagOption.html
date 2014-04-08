@@ -1,0 +1,137 @@
+<html>
+<body bgcolor="#FFFFFF">
+<blockquote> 
+<table width="75%" border="0">
+  <tr> 
+    <td> 
+      <div align="left"><font face="Default" size="2"><a href="toc.html"><b>Índice</b></a></font></div>
+    </td>
+    <td> 
+      <div align="left"><font face="Default" size="2"><a href="overview.html"><b>Presentación</b></a></font></div>
+    </td>
+    <td bgcolor="#FFFFFF"> 
+      <div align="left"><font face="Default" size="2"><b><a href="menu.html">Menús</a></b></font></div>
+    </td>
+    <td> 
+      <div align="left"><font face="Default" size="2"><b><a href="windows.html">Ventanas</a></b></font></div>
+    </td>
+    <td bgcolor="#FFFFFF"> 
+      <div align="left"><font face="Default" size="2"><b><a href="button.html">Botones</a></b></font></div>
+    </td>
+  </tr>
+</table>
+<hr>
+  
+<h2 align="left"><font face="Default" color="#000099">Diagnósticos de bases de datos</font></h2>
+  
+  <p align="left"><font face="Default" size="2">Estas opciones constituyen un medio eficaz de configurar los parámetros de diagnosis que pueden ayudarle a verificar los temas relacionados con el rendimiento. Si desea obtener más información, consulte el manual <i>Adaptive Server Enterprise Performance and 
+    Tuning Guide</i>. Estas opciones dependen de la conexión, y por defecto están desactivadas.</font></p>
+  <p align="left"><font face="Default" size="2"> Para activar una opción, 
+    haga clic en el botón <font color="#000099"><b>On</b></font> correspondiente; 
+    a continuación, haga clic en <b><font color="#000099">Aplicar</font></b> para confirmar las selecciones de opciones que haya realizado. 
+    Estos valores no se actualizarán cuando cambien en la base de datos, ya que son sólo escritura. </font></p>
+  <table width="85%" border="1" cellspacing="0" cellpadding="5" height="80">
+    <tr> 
+      <td valign="top" width="12%" height="60"><b><i><font color="#660000" face="Default" size="2">NOTA</font><font color="#660000">:</font></i></b></td>
+      <td valign="top" width="88%" height="60"><font face="Default" size="2">Los 
+       botones <font color="#000099"> <b>On</b></font>|<font color="#000099"><b>Off</b></font> 
+        de las opciones quedarán sin marcar 
+      una vez que haga clic en <font color="#000099"><b>Aplicar</b></font> 
+        y el comando sea enviado a la base de datos, ya que <b>jisql</b> no puede 
+      estar seguro del estado actual de dichas opciones. Por ejemplo, si hace 
+      clic en <font color="#000099"><b>On</b></font> para &quot;Mostrar las estadísticas de E/S&quot;, 
+      después hace clic en Aplicar y, a continuación, ejecuta la misma 
+      instrucción en un lote de la ventana de entrada, 
+        <b>jisql</b> no recibirá la 
+      notificación de que el valor de la opción ha cambiado. 
+        </font></td>
+    </tr>
+  </table>
+  <p align="left"><font face="Default" size="2">Los mensajes generados por estas opciones aparecerán dependiendo del valor seleccionado para &quot;Deberían estar presentes las advertencias SQL</font><font size="2">&quot; de la ficha <a href="miscoptions.html">Varios</a> de la 
+    <a href="options.html">ventana de opciones de jisql</a>. <br>
+    </font></font></p>
+  <table width="100%" border="1" cellpadding="5" cellspacing="0" bordercolorlight="#999999" bordercolor="#999999">
+    <tr> 
+      <td width="50%" valign="top" bordercolor="#999999"> 
+    <b><font face="Default" size="2">OPCIÓN</font></b>
+      </td>
+      <td width="50%"><b><font face="Default" size="2">DESCRIPCIÓN</font></b></td>
+    </tr>
+    <tr> 
+      <td width="50%" valign="top"> 
+      <b><font face="Default" size="2">Mostrar plan de procesamiento de la consulta (showplan)</font></b>
+      </td>
+      
+    <td width="50%"><font face="Default" size="2">Cuando esta opción se encuentra activada,  
+      genera una descripción del plan de procesamiento de la consulta; algo que puede resultar
+      muy útil para realizar diagnósticos sobre rendimiento. Esta opción no presenta los resultados
+      cuando se utiliza en un procedimiento almacenado o un activador. 
+      Por defecto, la opción está desactivada. </font></td>
+    </tr>
+    <tr> 
+      <td width="50%" valign="top"> 
+       <b><font face="Default" size="2">Compilar las consultas, pero sin ejecutarlas (noexec)</font></b>
+      </td>
+      <td width="50%"> 
+        
+      <p><font face="Default" size="2">Cuando esta opción se encuentra activada,
+        compila todas las consultas, pero no las ejecuta. Una vez que se la haya activado, 
+		ningún comando que se introduzca posteriormente se ejecutará hasta que no se la desactive.</font></p>
+      </td>
+    </tr>
+    <tr> 
+      
+    <td width="50%" valign="top"> <b><font face="Default" size="2">Mostrar las estadísticas de E/S (statistics io)</font></b> </td>
+      
+      <td width="50%"> 
+        <p><font face="Default" size="2">Haga clic en &quot;On&quot; 
+          para visualizar el número de exploraciones, lecturas lógicas y lecturas físicas que
+		  se realizarán por cada tabla referenciada en la instrucción de la consulta. La salida aparece 
+		  siempre en la ventana de estado. </font></p>
+        <p><font face="Default" size="2"> Por defecto, esta opción está desactivada.</font></p>
+      </td>
+    </tr>
+    <tr> 
+      <td width="50%" valign="top"> 
+        <div align="left"><b><font face="Default" size="2">Mostrar las informaciones del caché de subconsulta (statistics subquerycache) </font></b></div>
+      </td>
+      
+    <td width="50%"><font face="Default" size="2">Cuando está activada, esta opción muestra 
+      el número de aciertos y de fallos del caché, así como el número de filas que contiene el caché de subconsultas
+	  por cada subconsulta. Por defecto, esta opción está desactivada.</font></td>
+    </tr>
+    <tr> 
+      <td width="50%" valign="top"> 
+        <div align="left"><b><font size="2" face="Default">Mostrar el tiempo de análisis, compilación y ejecución (statistics time)</font></b></div>
+      </td>
+      
+    <td width="50%"><font face="Default" size="2">Si esta opción está activada, 
+      muestra el tiempo que se ha tardado en analizar y compilar cada comando; y
+      para cada paso del comando, muestra el tiempo que llevó ejecutarlo. Estos 
+      tiempos se dan en milisegundos y en pulsaciones del reloj, cuyo valor exacto depende de
+      la máquina. Por defecto, esta opción está desactivada.</font></td>
+    </tr>
+  </table>
+
+<hr>
+<table width="75%" border="0">
+  <tr> 
+    <td> 
+      <div align="left"><font face="Default" size="2"><a href="toc.html"><b>Índice</b></a></font></div>
+    </td>
+    <td> 
+      <div align="left"><font face="Default" size="2"><a href="overview.html"><b>Presentación</b></a></font></div>
+    </td>
+    <td bgcolor="#FFFFFF"> 
+      <div align="left"><font face="Default" size="2"><b><a href="menu.html">Menús</a></b></font></div>
+    </td>
+    <td> 
+      <div align="left"><font face="Default" size="2"><b><a href="windows.html">Ventanas</a></b></font></div>
+    </td>
+    <td bgcolor="#FFFFFF"> 
+      <div align="left"><font face="Default" size="2"><b><a href="button.html">Botones</a></b></font></div>
+    </td>
+  </tr>
+</table>
+</blockquote> 
+</html>

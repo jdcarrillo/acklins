@@ -1,0 +1,139 @@
+
+<html>
+<!-- 
+Copyright (C) 2003. Sybase Inc. All rights reserved.
+Programmer's Reference
+jConnect&#153; for JDBC&#153;
+-->
+
+<HEAD>
+<script language="JavaScript">
+<!--
+
+if (navigator.appName == "Netscape"){
+     document.write('<LINK REL=STYLESHEET HREF="netscape.css" TYPE="text/javascript">');
+     }
+else{
+     document.write('<LINK REL=STYLESHEET HREF="default.css" TYPE="text/css">');
+     }
+
+//-->
+</script>
+<NOSCRIPT><LINK REL=STYLESHEET HREF="default.css" TYPE="text/css"></NOSCRIPT>
+<TITLE>Capturing TDS communication</TITLE></HEAD>
+<BODY bgproperties="FIXED" bgcolor="#ffffe2">
+<P ALIGN=RIGHT><A HREF="prjdbcp14.htm"><IMG SRC="images/arrow-left.gif" align=top></A>&nbsp;&nbsp;<A HREF="prjdbcp16.htm"><IMG SRC="images/arrow-right.gif" align=top></A></P>
+
+<P ALIGN=LEFT><I>Chapter 3  Troubleshooting</I><HR NOSHADE SIZE=1></P>
+<A NAME="X42105"></A><h1>Capturing TDS communication</h1>
+<p>Tabular Data Stream (TDS) is Sybase's proprietary
+
+protocol for handling communication between a client application
+
+and Adaptive Server. jConnect includes a PROTOCOL_CAPTURE
+
+connection property that allows you to capture raw TDS packets to
+
+a file.</p>
+<p>If you are having problems with an application that you cannot
+
+resolve within either the application or the server, you can use
+
+PROTOCOL_CAPTURE to capture the communication between the
+
+client and the server in a file. You can then send the file, which
+
+contains binary data and is not directly interpretable, to Sybase
+
+Technical Support for analysis.</p>
+<p><IMG SRC="images/note.gif" width=17 height=17 border=0 align="bottom" alt="Note">&nbsp;&nbsp; You can also use the <b>Ribo</b> utility
+
+to capture, translate, and display the protocol stream flowing between
+
+the client and the server. For details on how to obtain and use <b>Ribo</b>,
+
+visit the jConnect utilities Web page at<A HREF="http://www.sybase.com/detail/1.6904.1009793.00.html" TARGET="sybextern">http://www.sybase.com/detail/1.6904.1009793.00.html</A>
+.</P>
+<A NAME="TI73"></A><h2>PROTOCOL_CAPTURE connection property</h2>
+<p>Use the PROTOCOL_CAPTURE connection property to specify
+
+a file for receiving the TDS packets exchanged between an application
+
+and an Adaptive Server. PROTOCOL_CAPTURE takes effect immediately
+
+so that TDS packets exchanged during connection establishment are
+
+written to the specified file. All packets continue to be written
+
+to the file until <b>Capture.pause( )</b> is executed
+
+or the session is closed.</p>
+<p>The following example shows the use of PROTOCOL_CAPTURE
+
+to send TDS data to the file <i>tds_data</i>: 
+<pre>...
+ props.put("PROTOCOL_CAPTURE",  "tds_data")Connection conn = DriverManager.getConnection(<i>url</i>,  props);</pre>
+</p>
+<p>where <i>url</i> is the connection URL and <i>props</i> is
+
+a <b>Properties</b> object for specifying connection
+
+properties.</p>
+<A NAME="TI74"></A><h2><b>pause( ) </b>and <b>resume(
+
+) </b>methods in the <b>Capture</b> class</h2>
+<p>The <b>Capture</b> class is contained in the <b>com.sybase.jdbcx</b> package.
+
+It contains two public methods: 
+<ul>
+<li class=fi><b>public void pause( )</b>
+</li>
+<li class=ds><b>public void resume( )</b>
+
+</li>
+</ul>
+</p>
+<p><b>Capture.pause( )</b> stops the capture of raw
+
+TDS packets into a file; <b>Capture.resume( )</b> restarts
+
+the capture.</p>
+<p>The TDS capture file for an entire session can become very
+
+large. If you want to limit the size of the capture file, and you
+
+know where in an application you want to capture TDS data, you can
+
+do the following: 
+<ol>
+<li class=fi>Immediately
+
+after you have established a connection, get the <b>Capture</b> object
+
+for the connection and use the <b>pause( )</b> method
+
+to stop capturing TDS data: 
+<pre>Capture cap = ((SybConnection)conn).getCapture();
+ cap.pause();</pre>
+
+</li>
+<li class=ds>Place <b>cap.resume( )</b> just before
+
+the point where you want to start capturing TDS data.
+</li>
+<li class=ds>Place <b>cap.pause( )</b> just after
+
+the point where you want to stop capturing data.
+
+</li>
+</ol>
+</p>
+<P>&nbsp;</P><hr noshade size=1>
+<table cols=3><tr><td colspan=2 align=left>
+Copyright &copy; 2003 Sybase, Inc. All rights reserved.&nbsp;&nbsp;&nbsp;
+</td><td colspan=1>
+<A HREF="prjdbcp16.htm"><IMG SRC="images/arrow-right.gif" ALIGN=right></A>
+</td></tr></table>
+</BODY>
+</HTML>
+

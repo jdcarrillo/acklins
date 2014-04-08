@@ -1,0 +1,148 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">       
+<html>
+<head>
+<title>Untitled Document</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">   
+</head>
+
+<body bgcolor="#FFFFFF">
+<BLOCKQUOTE>
+  <table width="75%" border="0">
+    <tr> 
+      <td> 
+        <div align="left"><font  size="2"><a href="toc.html"><b>Table of Contents</b></a></font></div>
+      </td>
+      <td> 
+        <div align="left"><font  size="2"><a href="overview.html"><b>Overview</b></a></font></div>
+      </td>
+      <td bgcolor="#FFFFFF"> 
+        <div align="left"><font  size="2"><b><a href="menu.html">Menus</a></b></font></div>
+      </td>
+      <td> 
+        <div align="left"><font  size="2"><b><a href="windows.html">Windows</a></b></font></div>
+      </td>
+      <td> 
+        <div align="left"><font  size="2"><b><a href="button.html">Buttons</a></b></font></div>
+      </td>
+    </tr>
+  </table>
+<h2><b><font color="#0000A0">File Menu</font></b> 
+</h2>
+  <table width="90%" border="1" cellpadding="5" cellspacing="0" name="mrenus" bordercolorlight="#999999" bordercolor="#999999">
+    <tr> 
+      <td width="24%" height="26"> 
+        <h5 align="left">OPTION</h5>
+      </td>
+      <td width="76%" height="26"> 
+        <h5 align="left">DESCRIPTION</h5>
+      </td>
+    </tr>
+    <tr> 
+      <td width="24%" valign="top"> 
+        <div align="left"><font color="#000099"><b><font color="#000000"  size="2">Read 
+          Batchfile</font></b></font></div>
+      </td>
+      <td width="76%"> 
+        <p align="left"><font  size="2">Lets 
+          you execute prepared batch files. Depending on the state defined in 
+          the <a href="inputoptions.html">Input Window Options</a> tab, a file 
+          can be read into the input window where it can be edited, then executed 
+          using the <a href="button.html">Go button</a> or the <a
+href="query.html">Query menu's</a> <i>Execute</i> option. The <i> Command Line 
+          Delimiter</i> can be set in the <a
+href="inputoptions.html">Input Window Option</a> tab. </font></p>
+        <p align="left"><font  size="2"> To 
+          execute the batch quietly in the background, just mark the appropriate 
+          option in the <a
+href="inputoptions.html">Input Window Option</a> tab.</font></p>
+      </td>
+    </tr>
+    <tr> 
+      <td width="24%"><b><font  size="2">Save 
+        Input Window to File</font></b></td>
+      <td width="76%"><font  size="2">Saves 
+        the current content of the Input Window to a file. Later you can read 
+        and execute it again.</font></td>
+    </tr>
+    <tr> 
+      <td width="24%" valign="top"><b><font size="2" >Save 
+        Output Buffer to File</font></b></td>
+      <td width="76%">
+        <p><font  size="2">Each ResultSet 
+          is stored in an Output buffer. This option lets you save the contents 
+          of the Output buffer to a file. This is a straight-forward approach 
+          to saving data stored in the database. If the data is presented as a 
+          <i>Table-Component</i>, the <a href="outputoptions.html">Output Window 
+          Option</a> tab gives you the choice to define the field delimiter. This 
+          lets you prepare the output file for later use with <b>bcp</b> to read 
+          the data back into a database table. The line-delimiter is always <i> 
+          LineFeed</i>. </font></p>
+        <p><font  size="2">If the data is presented 
+          as <i>Text</i>, the stored just as you see it in the Output Window.</font></p>
+      </td>
+    </tr>
+    <tr> 
+      <td width="24%" valign="top"><b><font  size="2">Save 
+        History Buffer to File</font></b></td>
+      <td width="76%"><font  size="2">Each 
+        command you execute is stored in a History buffer that displays when you 
+        click the <a href="button.html">History</a> icon. You can edit the contents 
+        (for example, add comments) and save the History buffer to a file for 
+        logging purposes or to help you troubleshoot failures.</font></td>
+    </tr>
+    <tr> 
+      <td width="24%" valign="top"><b><font  size="2">Print 
+        ResultSets ASCII Style</font></b></td>
+      <td width="76%">
+        <p><font  size="2">Sends the current 
+          ResultSet to a printer. The data is presented as ASCII text.</font></p>
+        <p><font  size="2" color="#800000"><b>NOTE:</b></font><font  size="2"> 
+          &nbsp;If you make changes to the data in the Output Window, (for example, 
+          resizing or reordering the columns) these changes will not be reflected 
+          in the printed output.</font></p>
+      </td>
+    </tr>
+    <tr> 
+      <td width="24%" valign="top"><b><font  size="2">Print 
+        ResultSets in JTable Style</font></b> <font  size="2"><br>
+        (jdk 1.2 only)</font></td>
+      <td width="76%">
+        <p><font size="2" >Sends the current 
+          ResultSet to a printer. The data is presented as a rendered <a href="table.html">JTable</a></font>.</p>
+        <p><font  size="2" color="#800000"><b>NOTE:</b></font><font  size="2"> 
+          &nbsp;If you make changes to the data in the Output Window, (for example, 
+          resizing or reordering the columns) these changes will not be reflected 
+          in the printed output.</font></p>
+      </td>
+    </tr>
+    <tr> 
+      <td width="24%" valign="top"><b><font  size="2">Exit</font></b></td>
+      <td width="76%"><font  size="2">Closes 
+        all of the session windows (which also closes the associated database 
+        connections), and ends the application process. </font></td>
+    </tr>
+  </table>
+  <hr>
+<table width="75%" border="0">
+  <tr> 
+    <td> 
+      <div align="center"><font  size="2"><a href="toc.html"><b>Table of Contents</b></a></font></div>
+    </td>
+    <td> 
+      <div align="center"><font  size="2"><a href="overview.html"><b>Overview</b></a></font></div>
+    </td>
+    <td bgcolor="#FFFFFF"> 
+      <div align="center"><font  size="2"><b><a href="menu.html">Menus</a></b></font></div>
+    </td>
+    <td> 
+      <div align="center"><font  size="2"><b><a href="windows.html">Windows</a></b></font></div>
+    </td>
+    <td> 
+      <div align="center"><font  size="2"><b><a href="button.html">Buttons</a></b></font></div>
+    </td>
+  </tr>
+</table>
+</BLOCKQUOTE>
+<p>&nbsp;</p>
+</body>
+</html>

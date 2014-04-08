@@ -1,0 +1,95 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; CHARSET=shift_jis">
+<title>Untitled Document</title>
+</head>
+
+<body bgcolor="#FFFFFF">
+<BLOCKQUOTE>
+  <table width="75%" border="0">
+    <tr>
+      <td> <div align="left"><font size="2"><a href="toc.html"><b>目次</b></a></font></div>
+      </td>
+      <td> <div align="left"><font size="2"><a href="overview.html"><b>概要</b></a></font></div>
+      </td>
+      <td bgcolor="#FFFFFF"> <div align="left"><font size="2"><b><a href="menu.html">メニュー</a></b></font></div>
+      </td>
+      <td> <div align="left"><font size="2"><b><a href="windows.html">ウィンドウ</a></b></font></div>
+      </td>
+      <td> <div align="left"><font size="2"><b><a href="button.html">ボタン</a></b></font></div>
+      </td>
+    </tr>
+  </table>
+<h2><b><font color="#0000A0">［ファイル］メニュー</font></font></b>
+</h2>
+  <table width="90%" border="1" cellpadding="5" cellspacing="0" name="mrenus" bordercolorlight="#999999" bordercolor="#999999">
+    <tr>
+      <td width="24%" height="26">
+        <h5 align="left">オプション</font></h5>
+      </td>
+      <td width="76%" height="26">
+        <h5 align="left">説明</font></h5>
+      </td>
+    </tr>
+    <tr>
+      <td width="24%" valign="top"> <div align="left"><font color="#000099"><b><font color="#000000" size="2">［バッチ・ファイルの読み込み］</font></b></font></div>
+      </td>
+      <td width="76%">
+        <p align="left"><font size="2">準備が完了したバッチ・ファイルを実行します。 <a href="inputoptions.html">［入力ウィンドウ・オプション］</a>タブで定義されている条件によっては、ファイルが［入力］ウィンドウに読み込まれます。読み込んだファイルは編集することができ、<a href="button.html">［実行］ボタン</a>または<a href="query.html">［クエリ］メニュー</a>の<i>［実行］</i>オプションを使って実行できます。 <a href="inputoptions.html">［入力ウィンドウ・オプション］</a>タブでは、<i>コマンドライン・デリミタ</i>を設定することもできます。 </font></p>
+        <p align="left"><font size="2">バックグラウンドでバッチを実行するには、<a href="inputoptions.html">［入力ウィンドウ・オプション］</a>タブの該当するオプションを選択してください。</font></p>
+      </td>
+    </tr>
+    <tr>
+      <td width="24%"><b><font size="2">［入力ウィンドウの内容をファイルに保存］</font></b></td>
+      <td width="76%"><font size="2">現在の［入力］ウィンドウの内容をファイルに保存します。 保存した内容は、後で読み込んで実行できます。</font></td>
+    </tr>
+    <tr>
+      <td width="24%" valign="top"><b><font size="2"> ［出力バッファの内容をファイルに保存］</font></b></td>
+      <td width="76%">
+        <p><font size="2">各 ResultSet は、出力バッファに保管されます。 このオプションを使用すると、出力バッファの内容をファイルに保存できます。 これは、データベースに保管されているデータを保存する簡単な方法です。 データが<i>テーブル・コンポーネント</i>として表現されている場合は、<a href="outputoptions.html">［出力ウィンドウ・オプション］</a>タブでフィールド・デリミタを定義することができます。 これにより、後で <b>bcp</b> を使ってデータをデータベース・テーブルに戻せるよう、出力ファイルを準備できます。 ラインデリミタは常に <i>LineFeed</i> です。 </font></p>
+        <p><font size="2">データが<i>テキスト</i>として表現されている場合は、［出力］ウィンドウに表示されている形式で保存されます。</font></p>
+      </td>
+    </tr>
+    <tr>
+      <td width="24%" valign="top"><b><font size="2">［履歴バッファの内容をファイルに保存］</font></b></td>
+      <td width="76%"><font size="2">実行したコマンドはすべて履歴バッファに保管されます。このバッファの内容は、<a href="button.html">［履歴］</a>アイコンをクリックすると表示されます。 履歴バッファの内容を編集（たとえばコマンドを追加）したり、また、記録や問題解決のための情報としてファイルに保存することができます。</td>
+    </tr>
+    <tr>
+      <td width="24%" valign="top"><b><font size="2">［結果セットを ASCII スタイルで印刷］</font></b></td>
+      <td width="76%">
+        <p><font size="2">現在の ResultSet をプリンタに送ります。 データは ASCII テキストの形式で出力されます。</p>
+        <p><font size="2" color="#800000"><b>注意</b></font><font size="2"> &nbsp;［出力］ウィンドウでデータの変更（たとえば、カラムのリサイズや並べ替え）を行った場合、その変更は印刷には反映されません。</font></p>
+      </td>
+    </tr>
+    <tr>
+      <td width="24%" valign="top"><b><font size="2">［結果セットを ASCII スタイルで印刷］</font></b> <font size="2"><br>（jdk 1.2 のみ）</font></td>
+      <td width="76%">
+        <p><font size="2"> 現在の ResultSet をプリンタに送ります。 データは、<a href="table.html">JTable</a> の形式で出力されます。</font></p>
+        <p><font size="2" color="#800000"><b>注意</b></font><font size="2"> &nbsp;［出力］ウィンドウでデータの変更（たとえば、カラムのリサイズや並べ替え）を行った場合、その変更は印刷には反映されません。</font></p>
+      </td>
+    </tr>
+    <tr>
+      <td width="24%" valign="top"><b><font size="2">終了</font></b></td>
+      <td width="76%"><font size="2">すべてのセッション・ウィンドウを閉じ（そのセッションで接続されていたデータベースも閉じます）、アプリケーションを終了します。 </font></td>
+    </tr>
+  </table>
+  <hr>
+<table width="75%" border="0">
+  <tr>
+    <td> <div align="center"><font size="2"><a href="toc.html"><b>目次</b></a></font></div>
+    </td>
+    <td> <div align="center"><font size="2"><a href="overview.html"><b>概要</b></a></font></div>
+    </td>
+    <td bgcolor="#FFFFFF"> <div align="center"><font size="2"><b><a href="menu.html">メニュー</a></b></font></div>
+    </td>
+    <td> <div align="center"><font size="2"><b><a href="windows.html">ウィンドウ</a></b></font></div>
+    </td>
+    <td> <div align="center"><font size="2"><b><a href="button.html">ボタン</a></b></font></div>
+    </td>
+  </tr>
+</table>
+</BLOCKQUOTE>
+<p>&nbsp;</p>
+</body>
+</html>

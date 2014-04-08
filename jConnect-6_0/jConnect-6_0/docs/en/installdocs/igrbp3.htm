@@ -1,0 +1,286 @@
+
+<html>
+<!-- 
+Copyright (C) 2003. Sybase Inc. All rights reserved.
+Installation Guide
+jConnect&#153; for JDBC&#153;
+-->
+
+<HEAD>
+<script language="JavaScript">
+<!--
+
+if (navigator.appName == "Netscape"){
+     document.write('<LINK REL=STYLESHEET HREF="netscape.css" TYPE="text/javascript">');
+     }
+else{
+     document.write('<LINK REL=STYLESHEET HREF="default.css" TYPE="text/css">');
+     }
+
+//-->
+</script>
+<NOSCRIPT><LINK REL=STYLESHEET HREF="default.css" TYPE="text/css"></NOSCRIPT>
+<TITLE>Reviewing system requirements</TITLE></HEAD>
+<BODY bgproperties="FIXED" bgcolor="#ffffe2">
+<P ALIGN=RIGHT><A HREF="igrbp2.htm"><IMG SRC="images/arrow-left.gif" align=top></A>&nbsp;&nbsp;<A HREF="igrbp4.htm"><IMG SRC="images/arrow-right.gif" align=top></A></P>
+
+<P ALIGN=LEFT><I>Chapter 1  Installation Instructions</I><HR NOSHADE SIZE=1></P>
+<A NAME="BABEGEDA"></A><h1>Reviewing system requirements</h1>
+<p>This section lists system requirements for Windows, UNIX,
+
+and Linux.</p>
+<A NAME="TI15"></A><h2>Windows requirements</h2>
+<p><A HREF="igrbp3.htm#X36947">Table 1-1</A> lists the system
+
+requirements for installing jConnect for JDBC on Windows.</p>
+<A NAME="X36947"></A><table cellspacing=0 cellpadding=6 border=1 frame="void" rules="all"><caption>Table 1-2: System requirements for Windows NT/95/98/2K/2K3/XP</caption>
+<tr><td valign=top>Hardware
+</td>
+<td valign=top>PC with 486 or greater
+
+Intel processor.
+</td>
+</tr>
+<tr><td valign=top>Operating
+
+system
+</td>
+<td valign=top>Windows NT 3.5.1 or later,
+
+or Windows 95/98/2K/2K3/XP (supporting
+
+Java VM version 1.2 or later).
+</td>
+</tr>
+<tr><td valign=top>Memory
+</td>
+<td valign=top>16MB.
+</td>
+</tr>
+<tr><td valign=top>Free disk
+
+space
+</td>
+<td valign=top>10MB for default options.
+</td>
+</tr>
+<tr><td valign=top>Java Developer's Kit
+</td>
+<td valign=top>Sun JDK 1.2.x or later,
+
+or Microsoft jView.
+</td>
+</tr>
+<tr><td valign=top>Database
+</td>
+<td valign=top>One of the following:
+<br><br>
+
+<ul>
+<li class=fi>Adaptive Server&#174; Enterprise
+
+(SQL Server&#174; System 10, version 10.0.2, through Adaptive
+
+Server Enterprise 12.x)
+</li>
+<li class=ds>Sybase SQL Anywhere 5.5.23 or later, running Open Server
+
+Gateway&#153; dbos50
+</li>
+<li class=ds>Sybase SQL Anywhere 6.0 through 8.x
+
+</li>
+</ul>
+
+<br><br>
+<IMG SRC="images/note.gif" width=17 height=17 border=0 align="bottom" alt="Note">&nbsp;&nbsp; The following features in jConnect versions 5.2 and 5.5
+
+require Adaptive Server Enterprise 12.x or later:
+<ul>
+<li class=fi>Support for unichar datatypes
+</li>
+<li class=ds>Support for date and time datatypes
+</li>
+<li class=ds>Support for wide-column data
+</li>
+<li class=ds>Support for outer join syntax
+</li>
+<li class=ds>Support for Sybase Failover in high availability systems
+
+("HA Failover")
+</li>
+<li class=ds>Implementation of a DynamicClassLoader (also available
+
+in Adaptive Server Anywhere 6.x and later)
+</li>
+<li class=ds>Support for distributed transaction management: Java
+
+Transaction API (JTA) and Java Transaction Services (JTS)
+
+</li>
+</ul>
+For more information on these features, see the<i> jConnect for
+
+JDBC Programmer's Reference</i>.
+</td>
+</tr>
+<tr><td valign=top>Web browser
+</td>
+<td valign=top>Any browser that supports
+
+JDK 1.2.x or later.
+</td>
+</tr>
+<tr><td valign=top>Other Sybase products (optional)
+</td>
+<td valign=top>Adaptive Server IQ, OmniConnect&#153;,
+
+DirectConnect&#153;.
+</td>
+</tr>
+<tr><td valign=top>IDE (optional)
+</td>
+<td valign=top>Any Java application development
+
+environment, such as JBuilder or Visual J++.
+</td>
+</tr>
+<tr><td valign=top>Web server (optional)
+</td>
+<td valign=top>For jConnect's
+
+TDS-tunnelling servlet, any Web server that supports the HTTPS protocol
+
+and <b>javax.servlet</b> interfaces.
+</td>
+</tr>
+</table>
+<p><A HREF="igrbp3.htm#X24884">Table 1-2</A> lists the system
+
+requirements for installing jConnect for JDBC on UNIX or Linux.</p>
+<A NAME="X24884"></A><table cellspacing=0 cellpadding=6 border=1 frame="void" rules="all"><caption>Table 1-3: System
+
+requirements for UNIX and Linux</caption>
+<tr><td valign=top>Hardware
+</td>
+<td valign=top>Any UNIX or Linux platform
+
+that supports Java VM 1.2.x and later.
+</td>
+</tr>
+<tr><td valign=top>Operating
+
+system
+</td>
+<td valign=top>Sun Solaris, HP UX, IBM
+
+AIX, HP Tru64 UNIX, SGI IRIX, any vendor's Linux installation, and
+
+so on.
+</td>
+</tr>
+<tr><td valign=top>Memory
+</td>
+<td valign=top>16MB.
+</td>
+</tr>
+<tr><td valign=top>Free disk
+
+space
+</td>
+<td valign=top>10MB for default options.
+</td>
+</tr>
+<tr><td valign=top>Java Developer's Kit
+</td>
+<td valign=top>Sun's JDK 1.2.x
+
+or later.
+</td>
+</tr>
+<tr><td valign=top>Database
+</td>
+<td valign=top>One of the following:
+<br><br>
+
+<ul>
+<li class=fi>Adaptive Server Enterprise,
+
+from SQL Server System 10, version 10.0.2, through Adaptive Server
+
+Enterprise 12.x
+</li>
+<li class=ds>Sybase SQL Anywhere 5.5.23 or later running Open Server
+
+Gateway&#153; dbos50
+</li>
+<li class=ds>Sybase SQL Anywhere 6.0 through 8.x
+
+</li>
+</ul>
+
+<br><br>
+<IMG SRC="images/note.gif" width=17 height=17 border=0 align="bottom" alt="Note">&nbsp;&nbsp; The following features in jConnect versions 5.2 and 5.5
+
+require Adaptive Server Enterprise 12.x or later:
+<ul>
+<li class=fi>Support for unichar datatypes
+</li>
+<li class=ds>Support for <i>date</i> and <i>time</i> datatypes
+</li>
+<li class=ds>Support for wide-column data
+</li>
+<li class=ds>Support for outer join syntax
+</li>
+<li class=ds>Support for Sybase Failover in high availability systems
+
+("HA Failover")
+</li>
+<li class=ds>Implementation of a DynamicClassLoader (also available
+
+in Adaptive Server Anywhere 6.x and later)
+</li>
+<li class=ds>Support for distributed transaction management: Java
+
+Transaction API (JTA) and Java Transaction Services (JTS)
+
+</li>
+</ul>
+For more information on these features, see the <i> jConnect for
+
+JDBC Programmer's Reference</i>.
+</td>
+</tr>
+<tr><td valign=top>Web browser
+</td>
+<td valign=top>Any browser that supports
+
+JDK 1.2.x or later.
+</td>
+</tr>
+<tr><td valign=top>Other Sybase products (optional)
+</td>
+<td valign=top>Adaptive Server IQ, OmniConnect,
+
+DirectConnect.
+</td>
+</tr>
+<tr><td valign=top>Web server (optional)
+</td>
+<td valign=top>For jConnect's
+
+TDS-tunnelling servlet, any Web server that supports the HTTPS protocol
+
+and <b>javax.servlet</b> interfaces.
+</td>
+</tr>
+</table>
+<P>&nbsp;</P><hr noshade size=1>
+<table cols=3><tr><td colspan=2 align=left>
+Copyright &copy; 2003 Sybase, Inc. All rights reserved.&nbsp;&nbsp;&nbsp;
+</td><td colspan=1>
+<A HREF="igrbp4.htm"><IMG SRC="images/arrow-right.gif" ALIGN=right></A>
+</td></tr></table>
+</BODY>
+</HTML>
+

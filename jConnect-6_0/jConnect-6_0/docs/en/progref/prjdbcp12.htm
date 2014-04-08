@@ -1,0 +1,416 @@
+
+<html>
+<!-- 
+Copyright (C) 2003. Sybase Inc. All rights reserved.
+Programmer's Reference
+jConnect&#153; for JDBC&#153;
+-->
+
+<HEAD>
+<script language="JavaScript">
+<!--
+
+if (navigator.appName == "Netscape"){
+     document.write('<LINK REL=STYLESHEET HREF="netscape.css" TYPE="text/javascript">');
+     }
+else{
+     document.write('<LINK REL=STYLESHEET HREF="default.css" TYPE="text/css">');
+     }
+
+//-->
+</script>
+<NOSCRIPT><LINK REL=STYLESHEET HREF="default.css" TYPE="text/css"></NOSCRIPT>
+<TITLE>Restrictions on and interpretations of JDBC standards</TITLE></HEAD>
+<BODY bgproperties="FIXED" bgcolor="#ffffe2">
+<P ALIGN=RIGHT><A HREF="prjdbcp11.htm"><IMG SRC="images/arrow-left.gif" align=top></A>&nbsp;&nbsp;<A HREF="prjdbcp13.htm"><IMG SRC="images/arrow-right.gif" align=top></A></P>
+
+<P ALIGN=LEFT><I>Chapter 2  Programming  Information</I><HR NOSHADE SIZE=1></P>
+<A NAME="X27752"></A><h1>Restrictions on and interpretations of JDBC standards</h1>
+<p>This
+
+section discusses restrictions on and interpretations of JDBC standards that
+
+apply to jConnect, including how the jConnect implementation of
+
+JDBC deviates from the JDBC 1.x and 2.0 standards. The following
+
+topics are covered: 
+<ul>
+<li class=fi><A HREF="prjdbcp12.htm#BHCIAIBF">Connection.isClosed() and
+
+the IS_CLOSED_TEST connection property</A>
+</li>
+<li class=ds><A HREF="prjdbcp12.htm#BHCBFAAB">Statement.close() with unprocessed
+
+results</A>
+</li>
+<li class=ds><A HREF="prjdbcp12.htm#X24958">Making adjustments for multithreading</A>
+</li>
+<li class=ds><A HREF="prjdbcp12.htm#X41111">Using <b>ResultSet.getCursorName(
+
+)</b></A>
+</li>
+<li class=ds><A HREF="prjdbcp12.htm#X38789">Using <b>setLong( )</b> with
+
+large parameter values </A>
+</li>
+<li class=ds><A HREF="prjdbcp12.htm#X29770">Using COMPUTE statements</A>
+</li>
+<li class=ds><A HREF="prjdbcp12.htm#X14293">Executing stored
+
+procedures</A>
+
+</li>
+</ul>
+</p>
+<A NAME="BHCIAIBF"></A><h2>Connection.isClosed() and  the IS_CLOSED_TEST connection property</h2>
+<p>According to section 11.1 of the JDBC 2.1 specification:"The <b>Connection.isClosed()</b> method
+
+is only guaranteed to return true after <b>Connection.close()</b> has
+
+been called. <b>Connection.isClosed()</b> cannot be
+
+called, in general, to determine if a database connection is valid
+
+or invalid. A typical client can determine that a connection is
+
+invalid by catching the exception that is thrown when an operation
+
+is attempted."jConnect offers a default interpretation
+
+of the <b>isClosed() </b>method that is different from
+
+the behavior that is defined in the spec. When you call <b>Connection.isClosed()</b>,
+
+jConnect will first check if <b>Connection.close()</b> has
+
+been called on this connection. If <b>close()</b> has
+
+been called, jConnect will return true for <b>isClosed()</b>.However,
+
+if <b>Connection.close()</b> has not been called, jConnect
+
+will next try to execute the <b>sp_mda</b> stored
+
+procedure on the database. The <b>sp_mda</b> stored procedure
+
+is part of the standard metadata that jConnect users must install when
+
+they use jConnect with a database.The purpose of calling <b>sp_mda</b> is
+
+so that jConnect can try to execute a procedure that is known (or
+
+at least, expected) to reside on the database server. If the stored
+
+procedure executes normally, then jConnect returns <i>false</i> for <b>isClosed()</b> because
+
+we have verified that the database Connection is valid and working.
+
+However, if the call to <b>sp_mda</b> results
+
+in a SQLException being thrown, jConnect catches the exception and
+
+returns true for <b>isClosed()</b> because it appears
+
+that there is something wrong with the Connection.If you wish to
+
+force jConnect to more closely follow the standard JDBC behavior
+
+for <b>isClosed(</b>), you can do so by setting the
+
+IS_CLOSED_TEST connection property to the special
+
+value 'INTERNAL'. The INTERNAL setting means that
+
+jConnect will return true for <b>isClosed()</b> only
+
+when <b>Connection.close()</b> has been called, or when
+
+jConnect has detected an IOException that has disabled the Connection.You
+
+can also specify a query other than <b>sp_mda</b> to
+
+use when <b>isClosed()</b> is called. For example, if
+
+you wanted jConnect to try a <i>select 1</i> when <b>isClosed()</b> was
+
+called, you could set the IS_CLOSED_TEST connection
+
+property to <i><br>select 1</i>.</p>
+<A NAME="BHCBFAAB"></A><h2>Statement.close() with unprocessed  results</h2>
+<p>The JDBC specification is somewhat vague on how a driver should
+
+behave when you call <b>Statement.execute()</b> and
+
+later call <b>close()</b> on that same Statement object
+
+without processing all of the results (update counts and ResultSets) returned
+
+by the Statement.For example, assume that there is a stored procedure
+
+on the database that does seven row inserts. An application then
+
+executes that stored procedure using a <b>Statement.execute()</b>.
+
+In this case, a Sybase database will return seven update counts
+
+(one for each inserted row) to the application. In normal JDBC application
+
+logic, you would process those update counts in a loop using the <b>getMoreResults()</b>, <b>getResultSet()</b> and <b>getUpdateCount()</b> methods.
+
+These are clearly explained on the<i> java.sun.com </i>
+website
+
+in the javadocs for the java.sql.* package.An application
+
+programmer, however, might incorrectly choose to call <b>Statement.close()</b> before
+
+reading through all of the returned update counts. In this case,
+
+jConnect will send a cancel to the database, which could have unexpected
+
+and unwanted side effects.In this particular example, if the application
+
+called <b>Statement.close()</b> before the database
+
+had completed the inserts, the database might not execute all of
+
+the inserts. It might stop, for example, after only five rows were
+
+inserted because the cancel would be processed on the database before
+
+the stored procedure completed.The missing inserts would not be
+
+reported to you in this case. Future releases of jConnect may throw
+
+a SQLException when you try to close a Statement when there are
+
+still unprocessed results, but until then, jConnect programmers are
+
+strongly advised to adhere to the following guidelines:
+<ul>
+<li class=fi>When you call <b>Statement.close()</b>, a cancel
+
+is sent to the server if not all the results (update counts and
+
+ResultSets) have been completely processed by you. In cases where
+
+you only executed select statements, this is fine. However, in cases
+
+where you executed insert/update/delete operations, this
+
+could result in not all of those operations completing as expected.
+</li>
+<li class=ds>Therefore, you should never call <b>close()</b> with
+
+unprocessed results when you have executed anything but pure select
+
+statements.
+</li>
+<li class=ds>Instead, if you call <b>Statement.execute()</b> be
+
+sure your code processes all the results by using the <b>getUpdateCount()</b>, <b>getMoreResults()</b> and <b>getResultSet()</b> methods.
+
+</li>
+</ul>
+</p>
+<A NAME="X24958"></A><h2>Making adjustments for multithreading</h2>
+<p>If several threads simultaneously call methods on the same <b>Statement </b>instance, <b>CallableStatement</b>,
+
+or <b>PreparedStatement</b>--which we do not
+
+recommend-- you have to manually synchronize the calls to
+
+the methods on the <b>Statement</b>; jConnect does not
+
+do this automatically.</p>
+<p>For example, if you have two threads operating on the same <b>Statement</b> instance--one
+
+thread sending a query and the other thread processing warnings--you
+
+have to synchronize the calls to the methods on the <b>Statement</b> or
+
+conflicts may occur.</p>
+<A NAME="X41111"></A><h2>Using <b>ResultSet.getCursorName(  )</b></h2>
+<p>Some JDBC drivers generate a cursor name for any SQL query
+
+so that a string can always be returned. However, jConnect does
+
+not return a name when <b>ResultSet.getCursorName( )</b> is
+
+called, unless you either 
+<ul>
+<li class=fi>called<b> setFetchSize(
+
+) </b>or <b>setCursorName( )</b> on the corresponding <b>Statement</b>, or
+</li>
+<li class=ds>set the SELECT_OPENS_CURSOR connection
+
+property to true, and your query was in the form of SELECT... FOR
+
+UPDATE; for example, 
+<pre>select au_id  from authors for update</pre>
+
+
+</li>
+</ul>
+</p>
+<p>If you do not call <b>setFetchSize( ) </b>or <b>setCursorName(
+
+)</b> on the corresponding Statement, or set the SELECT_OPENS_CURSOR
+
+connection property to true, null is returned.</p>
+<p>According to the JDBC 2.0 API (chapter 11, "Clarifications"),
+
+all other SQL statements do not need to open a cursor and return
+
+a name.</p>
+<p>For more information on how to use cursors in jConnect, see <A HREF="prjdbcp10.htm#X15542">"Using cursors
+
+with result sets"</A>.</p>
+<A NAME="X38789"></A><h2>Using <b>setLong( )</b> with  large parameter values </h2>
+<p>Implementations of the <b>PreparedStatement.setLong(
+
+)</b> method set a parameter value to a SQL <i>BIGINT</i> datatype.
+
+Most Adaptive Server databases do not have an 8-byte <i>BIGINT</i> datatype.
+
+If a parameter value requires more than 4 bytes of a <i>BIGINT</i>,
+
+using <b>setLong( ) </b>may result in an overflow exception.</p>
+<A NAME="X29770"></A><h2>Using COMPUTE statements</h2>
+<p>jConnect does not support computed rows. Results are automatically
+
+cancelled when a query contains a computed row. For example, the
+
+following statement is rejected: 
+<pre>SELECT  name FROM sysobjects 
+WHERE type="S" COMPUTE COUNT(name)</pre>
+</p>
+<p>To avoid this problem, substitute the following code: 
+<pre>SELECT name from sysobjects WHERE type="S"
+SELECT  COUNT(name) from sysobjects WHERE type="S"</pre>
+</p>
+<A NAME="X14293"></A><h2>Executing stored  procedures</h2>
+<p>
+<ul>
+<li class=fi>If you execute a stored
+
+procedure in a <b>CallableStatement</b> object that represents
+
+parameter values as question marks, you get better performance than
+
+if you use both question marks and literal values for parameters. Further,
+
+if you mix literals and question marks, you cannot use output parameters
+
+with a stored procedure.
+<br><br>
+The following example creates <i>sp_stmt</i> as
+
+a <b>CallableStatement</b> object for executing the
+
+stored procedure <b>MyProc</b>: 
+<pre>CallableStatement  sp_stmt = conn.prepareCall( 
+   "{call  MyProc(?,?)}");</pre>
+
+<br><br>
+The two parameters in <b>MyProc</b> are represented
+
+as question marks. You can register one or both of them as output
+
+parameters using the <b>registerOutParameter( )</b> methods
+
+in the <b>CallableStatement</b> interface.
+<br><br>
+In the following example, <i>sp_stmt2</i> is
+
+a <b>CallableStatement</b> object for executing the
+
+stored procedure <b>MyProc2</b>. 
+<pre>CallableStatement  sp_stmt2 = conn.prepareCall( 
+   {"call  MyProc2(?,'javelin')}");</pre>
+
+<br><br>
+In <i>sp_stmt2</i>, one parameter value
+
+is given as a literal value and the other as a question mark. You
+
+cannot register either parameter as an output parameter.
+</li>
+<li class=ds>To execute stored procedures with RPC commands using
+
+name-binding for parameters, use either of the following procedures.
+<br><br>
+
+<ul>
+<li class=fi>Use language commands, passing input
+
+parameters to them directly from Java variables using the <b>PreparedStatement</b> class.
+
+This is illustrated in the following code fragment: 
+<pre>// Prepare the statement
+System.out.println("Preparing  the statement...");
+String stmtString = "exec  " + procname + " @p3=?, @p1=?";
+PreparedStatement  pstmt = con.preparedStatement(stmtString);
+ 
+// Set  the values
+pstmt.setString(1, "xyz");
+pstmt.setInt(2,  123);
+ 
+// Send the query
+System.out.println("Executing  the query...");
+ResultSet rs = pstmt.executeQuery();</pre>
+
+</li>
+<li class=ds>With jConnect version 5.x and later, use the <b>com.sybase.jdbcx.SybCallableStatement</b> interface,
+
+illustrated in this example:
+<pre>import com.sybase.jdbcx.*;</pre>
+
+<pre>....</pre>
+
+<pre>// prepare  the call for the stored procedure to execute as an RPC</pre>
+
+<pre>String execRPC = "{call " + procName + "  (?, ?)}";
+SybCallableStatement scs = (SybCallableStatement)
+con.prepareCall(execRPC);</pre>
+
+<pre></pre>
+
+<pre>// set  the values and name the parameters</pre>
+
+<pre>// also  (optional) register for any output parameters
+scs.setString(1,  "xyz");
+scs.setParameterName(1, "@p3");
+scs.setInt(2,  123);
+scs.setParameterName(2, "@p1");</pre>
+
+<pre></pre>
+
+<pre>// execute  the RPC
+// may also process the results  using getResultSet()
+// and getMoreResults()</pre>
+
+<pre></pre>
+
+<pre>// see  the samples for more information on processing results
+ResultSet  rs = scs.executeQuery();</pre>
+
+
+</li>
+</ul>
+
+
+</li>
+</ul>
+</p>
+<P>&nbsp;</P><hr noshade size=1>
+<table cols=3><tr><td colspan=2 align=left>
+Copyright &copy; 2003 Sybase, Inc. All rights reserved.&nbsp;&nbsp;&nbsp;
+</td><td colspan=1>
+<A HREF="prjdbcp13.htm"><IMG SRC="images/arrow-right.gif" ALIGN=right></A>
+</td></tr></table>
+</BODY>
+</HTML>
+

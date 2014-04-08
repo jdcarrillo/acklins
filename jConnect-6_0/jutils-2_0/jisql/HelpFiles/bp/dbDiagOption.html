@@ -1,0 +1,153 @@
+<html>
+<body bgcolor="#FFFFFF">
+<blockquote> 
+<table width="75%" border="0">
+  <tr> 
+    <td> 
+        <div align="left"><font face="Default" size="2"><a href="toc.html"><b>&Iacute;ndice</b></a></font></div>
+    </td>
+    <td> 
+        <div align="left"><font face="Default" size="2"><a href="overview.html"><b>Vis&atilde;o 
+          Geral</b></a></font></div>
+    </td>
+    <td bgcolor="#FFFFFF"> 
+      <div align="left"><font face="Default" size="2"><b><a href="menu.html">Menus</a></b></font></div>
+    </td>
+    <td> 
+        <div align="left"><font face="Default" size="2"><b><a href="windows.html">Janelas</a></b></font></div>
+    </td>
+    <td bgcolor="#FFFFFF"> 
+        <div align="left"><font face="Default" size="2"><b><a href="button.html">Bot&otilde;es</a></b></font></div>
+    </td>
+  </tr>
+</table>
+<hr>
+  
+  <h2 align="left"><font face="Default" color="#000099"> Diagn&oacute;stico de 
+    Base de Dados</font></h2>
+  
+  <p align="left"><font face="Default" size="2">Estas op&ccedil;&otilde;es oferecem 
+    um jeito conveniente de definir par&acirc;metros de diagn&oacute;stico que 
+    podem ajudar voc&ecirc; a checar quest&otilde;es de desempenho. Vide o <i>Adaptive 
+    Server Enterprise Performance and Tuning Guide</i> para mais informa&ccedil;&otilde;es. 
+    Estas op&ccedil;&otilde;es s&atilde;o espec&iacute;ficas de conex&atilde;o 
+    e t&ecirc;m como valor padr&atilde;o &quot;Desativado.&quot;</font></p>
+  <p align="left"><font face="Default" size="2"> Para ativar uma op&ccedil;&atilde;o, 
+    clique no bot&atilde;o <font color="#000099"><b>Ativado</b></font> dessa op&ccedil;&atilde;o, 
+    e em seguida clique em <b><font color="#000099">Aplicar</font></b> para implementar 
+    sua ou suas sele&ccedil;&otilde;es. Esses valores n&atilde;o s&atilde;o atualizados 
+    quando s&atilde;o modificados na base de dados - eles s&oacute; podem ser 
+    escritos. </font></p>
+  <table width="85%" border="1" cellspacing="0" cellpadding="5" height="80">
+    <tr> 
+      <td valign="top" width="12%" height="60"><b><i><font color="#660000" face="Default" size="2">OBSERVA&Ccedil;&Atilde;O</font><font color="#660000">:</font></i></b></td>
+      <td valign="top" width="88%" height="60"><font face="Default" size="2">Os 
+        bot&otilde;es <font color="#000099"> <b>Ativado</b></font>|<font color="#000099"><b>Desativado</b></font> 
+        para estas op&ccedil;&otilde;es ser&atilde;o desmarcados depois que voc&ecirc; 
+        clicar em <font color="#000099"><b>Aplicar</b></font> e o comando for 
+        mandado para a base de dados, pois o <b>jisql</b> n&atilde;o pode ter 
+        certeza do estado atual dessas op&ccedil;&otilde;es. Por exemplo, voc&ecirc; 
+        clica em <font color="#000099"><b>Ativado</b></font> para &quot;Exibir 
+        Estat&iacute;sticas I/O,&quot; clica em Aplicar, e em seguida executa 
+        a mesma instru&ccedil;&atilde;o num lote na Janela Entrada; o <b>jisql</b> 
+        n&atilde;o &eacute; notificado de que foi mudado o valor da op&ccedil;&atilde;o. 
+        </font></td>
+    </tr>
+  </table>
+  <p align="left"><font face="Default" size="2">As mensagens geradas para essas 
+    op&ccedil;&otilde;es s&atilde;o exibidas de acordo com a sua sele&ccedil;&atilde;o 
+    para &quot;Avisos de SQL devem ser</font><font size="2"> apresentados&quot; 
+    na guia <a href="miscoptions.html">Diversas</a> da <a href="options.html">Janela 
+    Op&ccedil;&otilde;es</a>. <br>
+    </font></p>
+  <table width="100%" border="1" cellpadding="5" cellspacing="0" bordercolorlight="#999999" bordercolor="#999999">
+    <tr> 
+      <td width="50%" valign="top" bordercolor="#999999"> <b><font face="Default" size="2">OP&Ccedil;&Atilde;O</font></b> 
+      </td>
+      <td width="50%"><b><font face="Default" size="2">DESCRI&Ccedil;&Atilde;O</font></b></td>
+    </tr>
+    <tr> 
+      <td width="50%" valign="top"> <b><font face="Default" size="2">Mostrar plano 
+        de processamento da consulta (showplan)</font></b> </td>
+      
+      <td width="50%"><font face="Default" size="2">Quando configurado como &quot;Ativado,&quot; 
+        gera uma descri&ccedil;&atilde;o do plano de processamento da consulta 
+        que pode ser &uacute;til para diagn&oacute;sticos de desempenho. Esta 
+        op&ccedil;&atilde;o n&atilde;o imprime resultados quando &eacute; usada 
+        dentro de um procedimento armazenado ou disparador. O padr&atilde;o &eacute; 
+        &quot;Desativado.&quot; </font></td>
+    </tr>
+    <tr> 
+      <td width="50%" valign="top"> <b><font face="Default" size="2">Compilar 
+        mas n&atilde;o executar consultas (noexec)</font></b> </td>
+      <td width="50%"> 
+        
+        <p><font face="Default" size="2">Quando definido como &quot;Ativado,&quot; 
+          compila cada consulta, mas n&atilde;o a executa. Uma vez que esta op&ccedil;&atilde;o 
+          esteja definida, nenhum comando subseq&uuml;ente &eacute; executado 
+          at&eacute; que voc&ecirc; a desative.</font></p>
+      </td>
+    </tr>
+    <tr> 
+      
+      <td width="50%" valign="top"> <b><font face="Default" size="2">Exibir Estat&iacute;sticas 
+        de Entrada/Sa&iacute;da (statistics io)</font></b> </td>
+      
+      <td width="50%"> 
+        <p><font face="Default" size="2">Clique em &quot;Ativado&quot; para exibir 
+          o n&uacute;mero de varreduras, leituras l&oacute;gicas e f&iacute;sicas 
+          para cada tabela referida na instru&ccedil;&atilde;o de consulta. A 
+          sa&iacute;da &eacute; sempre exibida na Janela Status. </font></p>
+        <p><font face="Default" size="2"> O padr&atilde;o &eacute; &quot;Desativado.&quot;</font></p>
+      </td>
+    </tr>
+    <tr> 
+      <td width="50%" valign="top"> 
+        <div align="left"><b><font face="Default" size="2">Exibir informa&ccedil;&atilde;o 
+          de cache de subconsulta (statistics subquerycache) </font></b></div>
+      </td>
+      
+      <td width="50%"><font face="Default" size="2">Quando definida como &quot;Desativado,&quot; 
+        exibe o n&uacute;mero de acertos e erros de cache, e o n&uacute;mero de 
+        linhas no cache de subconsulta para cada subconsulta. O padr&atilde;o 
+        &eacute; &quot;Desativado.&quot;</font></td>
+    </tr>
+    <tr> 
+      <td width="50%" valign="top"> 
+        <div align="left"><b><font size="2" face="Default">Exibir tempos de an&aacute;lise 
+          (parse), compila&ccedil;&atilde;o e execu&ccedil;&atilde;o (statistics 
+          time)</font></b></div>
+      </td>
+      
+      <td width="50%"><font face="Default" size="2">Quando definido como &quot;Ativado&quot;, 
+        exibe o tempo levado para analisar e compilar cada comando; para cada 
+        passo do comando,&eacute; exibido o tempo levado para execut&aacute;-lo. 
+        Os tempos s&atilde;o dados em milissegundos e em tiques de tempo, cujo 
+        valor exato depende de cada computador. O padr&atilde;o &eacute; &quot;Desativado.&quot;</font></td>
+    </tr>
+  </table>
+
+<hr>
+<table width="75%" border="0">
+  <tr> 
+    <td> 
+        <div align="left"><font face="Default" size="2"><a href="toc.html"><b>&Iacute;ndice 
+          </b></a></font></div>
+    </td>
+    <td> 
+        <div align="left"><font face="Default" size="2"><a href="overview.html"><b>Vis&atilde;o 
+          Geral</b></a></font></div>
+    </td>
+    <td bgcolor="#FFFFFF"> 
+      <div align="left"><font face="Default" size="2"><b><a href="menu.html">Menus</a></b></font></div>
+    </td>
+    <td> 
+        <div align="left"><font face="Default" size="2"><b><a href="windows.html">Janelas</a></b></font></div>
+    </td>
+    <td bgcolor="#FFFFFF"> 
+        <div align="left"><font face="Default" size="2"><b><a href="button.html">Bot&otilde;es</a></b></font></div>
+    </td>
+  </tr>
+</table>
+</blockquote> 
+</html>

@@ -1,0 +1,76 @@
+<HTML>
+<BODY bgcolor="#FFFFFF">
+<BLOCKQUOTE>
+  <table width="75%" border="0">
+    <tr> 
+      <td> <font face="Default" size="2"><a href="toc.html"><b>Índice</b></a></font> 
+      </td>
+      <td> <font face="Default" size="2"><a href="overview.html"><b>Presentación</b></a></font> 
+      </td>
+      <td bgcolor="#FFFFFF"> <font face="Default" size="2"><b><a href="menu.html">Menús</a></b></font> 
+      </td>
+      <td> <font face="Default" size="2"><b><a href="windows.html">Ventanas</a></b></font> 
+      </td>
+      <td> <font face="Default" size="2"><b><a href="button.html">Botones</a></b></font> 
+      </td>
+    </tr>
+  </table>
+<hr>
+  <h2><font face="Default" color="#000099">Columnas de imágenes</font></h2>
+  <p><font face="Default" size="2">Si selecciona datos que incluyan una columna de imágenes
+    y el conjunto de resultados se presenta en una tabla en lugar de como texto (ver <A
+HREF="table.html">Salida en formato tabla o en formato texto</A>), la columna de imágenes no mostrará 
+    los datos binarios. En su lugar, la tabla mostrará la etiqueta &quot;Haga clic en mí. Soy una imagen&quot;. 
+    </font></p>
+  <p><font face="Default" size="2">Al hacer clic en la celda se abrirá una nueva ventana que
+    presenta cuatro opciones: </font> </p>
+  <ul>
+    <li> <font face="Default" size="2"><b>Mostrar datos de imagen como una representación</b>:
+	  si los datos representan una imagen en formato gif o jpg, 
+      ésta aparecerá en una ventana de imagen. </font> 
+    <li> <font face="Default" size="2"><b>Mostrar datos de imagen como datos hexadecimales</b>:
+	  esta opción abre una ventana que muestra los datos en formato hexadecimal; 
+      es decir, tal y como aparecerían en <b>isql</b>. </font> 
+    <li> <font face="Default" size="2"><b>Guardar datos de imagen en archivo</b>:
+	 los datos se guardarán en un archivo para su posterior utilización. Esta opción 
+	  resulta muy útil, por ejemplo, en el caso de un archivo de sonido o de una serie de imágenes 
+	  de vídeo que desee ver con otro programa. </font> 
+    <li> <font face="Default" size="2"><b>Cancelar</b>: 
+      cierra la ventana de opciones. </font>
+  </ul>
+  <h2><font color="#000099">Columnas de objetos</font></font></h2>
+  <p><font size="2" face="Default">Si un conjunto de resultados contiene columnas con objetos Java, 
+    en la tabla del conjunto de resultados aparecerá el texto 
+    &quot;Haga clic en mí. Soy un objeto&quot;. Al hacerlo, <b>jisql</b> ejecutará el método 
+    <b>toString()</b> definido en ese objeto y presentará los valores que devuelva 
+    el método como datos en una tabla. Si el objeto utiliza un método distinto de 
+    <b> toString()</b> para imprimir los datos, introduzca ese nombre en la ficha 
+    <a href="outputoptions.html">Opciones de la ventana de salida</a> de la ventana de opciones de jisql;
+	es decir, </font><font size="2" face="Default">cambie 
+    &quot;Método utilizado en el objeto DB para mostrar los datos&quot; por el nombre del método empleado. 
+     </font></p>
+  <p><font size="2" face="Default">Si la opción &quot;Extraer automáticamente los datos del objeto Java DB&quot; se encuentra activada, <b>jisql</b> extraerá los datos inmediatamente
+	al detectar objetos Java en el conjunto de resultados; en cuyo caso, no verá el mensaje 
+    &quot;Haga clic en mí&quot; y no tendrá que hacer clic para recibir los datos. 
+    Esto ralentiza la creación de la tabla del conjunto de resultados, ya que <b>jisql</b> 
+    tiene que volver a consultar la base de datos una vez por cada fila para ejecutar el método
+     <b>toString()</b> (o equivalente) del objeto.</font> </p>
+  <hr>
+  <table width="75%" border="0">
+    <tr> 
+      <td> <font face="Default" size="2"><a href="toc.html"><b>Índice</b></a></font> 
+      </td>
+      <td> <font face="Default" size="2"><a href="overview.html"><b>Presentación</b></a></font> 
+      </td>
+      <td bgcolor="#FFFFFF"> <font face="Default" size="2"><b><a href="menu.html">Menús</a></b></font> 
+      </td>
+      <td> <font face="Default" size="2"><b><a href="windows.html">Ventanas</a></b></font> 
+      </td>
+      <td> <font face="Default" size="2"><b><a href="button.html">Botones</a></b></font> 
+      </td>
+    </tr>
+  </table>
+</BLOCKQUOTE>
+</BODY>
+</HTML>
+

@@ -1,0 +1,152 @@
+<HTML>
+<BODY bgcolor="#FFFFFF">
+<blockquote>
+<div align="left"></div>
+<table width="75%" border="0">
+  <tr> 
+    <td> 
+        <div align="left"><font face="Default" size="2"><a href="toc.html"><b>&Iacute;ndice</b></a></font></div>
+    </td>
+    <td> 
+        <div align="left"><font face="Default" size="2"><a href="overview.html"><b>Vis&atilde;o 
+          Geral</b></a></font></div>
+    </td>
+    <td bgcolor="#FFFFFF"> 
+      <div align="left"><font face="Default" size="2"><b><a href="menu.html">Menus</a></b></font></div>
+    </td>
+    <td> 
+        <div align="left"><font face="Default" size="2"><b><a href="windows.html">Janelas</a></b></font></div>
+    </td>
+    <td bgcolor="#FFFFFF"> 
+        <div align="left"><font face="Default" size="2"><b><a href="button.html">Bot&otilde;es</a></b></font></div>
+    </td>
+  </tr>
+</table>
+<hr>
+  <h2><font face="Default" color="#000099"> Op&ccedil;&otilde;es de Base de Dados</font></h2>
+  <p><font face="Default" size="2">Estas op&ccedil;&otilde;es oferecem um jeito 
+    conveniente de definir par&acirc;metros usados com freq&uuml;&ecirc;ncia. 
+    Vide os manuais Transact-SQL para detalhes acerca do uso e das fun&ccedil;&otilde;es 
+    dessas defini&ccedil;&otilde;es. Estes valores n&atilde;o s&atilde;o atualizados 
+    quando s&atilde;o modificados na base de dados. </font></p>
+  <table width="85%" border="1" cellspacing="0" cellpadding="5" height="80">
+    <tr> 
+      <td valign="top" width="12%" height="60"><b><i><font color="#660000" face="Default" size="2">OBSERVA&Ccedil;&Atilde;O</font><font color="#660000">:</font></i></b></td>
+      <td valign="top" width="88%" height="60"><font face="Default" size="2">Os 
+        bot&otilde;es <font color="#000099"> <b>Ativado</b></font>|<font color="#000099"><b>Desativado</b></font> 
+        para op&ccedil;&otilde;es ser&atilde;o desmarcados depois que voc&ecirc; 
+        clicar em <font color="#000099"><b>Aplicar</b></font> e o comando for 
+        enviado &agrave; base de dados, pois o <b>jisql</b> n&atilde;o pode ter 
+        certeza sobre o estado atual dessas op&ccedil;&otilde;es. Por exemplo, 
+        voc&ecirc; clica em <font color="#000099"><b>Ativado</b></font> para &quot;Use 
+        Transa&ccedil;&otilde;es Encadeadas,&quot; clica em <b><font color="#000099">Aplicar</font></b>, 
+        e ent&atilde;o executa a mesma instru&ccedil;&atilde;o na Janela de Entrada; 
+        o <b>jisql</b> n&atilde;o &eacute; notificado de que mudou o valor da 
+        op&ccedil;&atilde;o. </font></td>
+    </tr>
+  </table>
+  <p><font face="Default" size="2">Clique em <b>Aplicar</b> para salvar as mudan&ccedil;as.<br>
+    </font></p>
+  <table width="95%" border="1" cellpadding="5" cellspacing="0" bordercolor="#999999" bordercolorlight="#999999">
+    <tr> 
+      <td width="50%" valign="top" bordercolor="#999999"><b><font face="Default" size="2">OP&Ccedil;&Atilde;O</font></b></td>
+      <td width="50%"><b><font face="Default" size="2">DESCRI&Ccedil;&Atilde;O</font></b></td>
+  </tr>
+  <tr> 
+      <td width="50%" valign="top"><b><font face="Default" size="2">N&uacute;mero 
+        M&aacute;ximo de Linhas a retornar (rowcount)</font></b></td>
+      <td width="50%"><font face="Default" size="2">Faz a consulta (<b>selecionar</b>, 
+        <b>inserir</b>, <b>atualizar</b> ou <b>excluir</b>) parar o processamento 
+        depois que o n&uacute;mero especificado de linhas &eacute; atingido. Para 
+        desativar esta op&ccedil;&atilde;o, digite 0 (zero).</font></td>
+  </tr>
+  <tr> 
+      <td width="50%" valign="top"><b><font face="Default" size="2">Limite de 
+        tamanho de <i>Texto </i>ou <i>Imagem</i> a retornar (textsize)</font></b></td>
+    <td width="50%"> 
+        <p>Es<font face="Default" size="2">pecifica o limite, em bytes, dos dados 
+          de <i>texto</i> ou <i>imagem</i> a serem retornados com uma instru&ccedil;&atilde;o 
+          <b>selecionar</b>.</font></p>
+    </td>
+  </tr>
+  <tr> 
+      <td width="50%" valign="top"><b><font face="Default" size="2">Definir o 
+        n&iacute;vel de isolamento da transa&ccedil;&atilde;o (0 - 3)</font></b></td>
+    <td width="50%">
+        <p><font size="2" face="Default">Especifica at&eacute; que ponto os dados 
+          podem ser acessados por outros usu&aacute;rios durante uma transa&ccedil;&atilde;o.</font></p>
+        <p><font face="Default" size="2"><b>0</b> - Outras transa&ccedil;&otilde;es 
+          s&atilde;o impedidas de modificar os dados at&eacute; que a transa&ccedil;&atilde;o 
+          seja confirmada. Por&eacute;m, outras transa&ccedil;&otilde;es ainda 
+          podem ler os dados n&atilde;o confirmados.</font></p>
+        <p><font face="Default" size="2"><b>1</b> - Previne que uma transa&ccedil;&atilde;o 
+          modifique uma linha enquanto uma segunda transa&ccedil;&atilde;o l&ecirc; 
+          a linha antes que a primeira transa&ccedil;&atilde;o confirme a mudan&ccedil;a.</font></p>
+        <p><font face="Default" size="2"><b>2</b> - Previne que uma transa&ccedil;&atilde;o 
+          leia uma linha enquanto uma segunda transa&ccedil;&atilde;o modifica 
+          a mesma linha.</font></p>
+        <p><font face="Default" size="2"><b>3</b> - Previne que uma transa&ccedil;&atilde;o 
+          leia um conjunto de linhas que respondam a uma consulta, enquanto uma 
+          segunda transa&ccedil;&atilde;o modifica os dados. Isto garante que 
+          os dados lidos por uma transa&ccedil;&atilde;o sejam v&aacute;lidos 
+          at&eacute; o fim dessa transa&ccedil;&atilde;o.</font></p>
+    </td>
+  </tr>
+  <tr> 
+      <td width="50%" valign="top"><b><font face="Default" size="2">Mostrar n&uacute;mero 
+        de linhas afetadas</font></b></td>
+      <td width="50%"><font face="Default" size="2">Ativa ou desativa a exibi&ccedil;&atilde;o 
+        das linhas afetadas por uma instru&ccedil;&atilde;o <b>inserir</b>, <b>atualizar</b> 
+        ou <b>excluir</b>. O padr&atilde;o &eacute; &quot;Desativado.&quot;</font></td>
+  </tr>
+  <tr> 
+      <td width="50%" valign="top"><b><font face="Default" size="2">Usar Transa&ccedil;&otilde;es 
+        Encadeadas (chained)</font></b></td>
+      <td width="50%"><font size="2" face="Default"> Em modo encadeado, todos 
+        os comandos de recupera&ccedil;&atilde;o e modifica&ccedil;&atilde;o de 
+        dados(<b>excluir</b>, <b>inserir</b>, <b>abrir</b>, <b>extrair</b>, <b>selecionar</b> 
+        e <b>atualizar</b>) iniciam uma transa&ccedil;&atilde;o. Este comportamento 
+        &eacute; incompat&iacute;vel com muitos aplicativos T-SQL. O padr&atilde;o 
+        &eacute; &quot;Desativado.&quot;</font></td>
+  </tr>
+  <tr> 
+      <td width="50%" valign="top"><b><font face="Default" size="2">Reconhecer 
+        identificadores delimitados (quoted_identifier) </font></b></td>
+      <td width="50%"><font face="Default" size="2">Esta op&ccedil;&atilde;o permite 
+        que a base de dados reconhe&ccedil;a identificadores delimitados. Cada 
+        vez que voc&ecirc; usa o identificador citado numa instru&ccedil;&atilde;o, 
+        voc&ecirc; deve coloc&aacute;-lo entre aspas duplas. Quando esta op&ccedil;&atilde;o 
+        est&aacute; configurada como&quot;Ativado,&quot; n&atilde;o use aspas 
+        duplas para delimitar seq&uuml;&ecirc;ncias de caracteres ou datas; use 
+        em vez disso aspas simples. Para inserir aspas simples numa coluna, use 
+        duas aspas simples consecutivas. O padr&atilde;o &eacute; &quot;Desativado.&quot; 
+        </font></td>
+  </tr>
+</table>
+  <p><font face="Default" size="2">Para mais informa&ccedil;&otilde;es, vide o<i>Transact-SQL 
+    User's Guide</i>.</font></p>
+  <div align="left">
+    <table width="75%" border="0">
+      <tr> 
+        <td> 
+          <div align="left"><font face="Default" size="2"><a href="toc.html"><b>&Iacute;ndice</b></a></font></div>
+        </td>
+        <td> 
+          <div align="left"><font face="Default" size="2"><a href="overview.html"><b>Vis&atilde;o 
+            Geral</b></a></font></div>
+        </td>
+        <td bgcolor="#FFFFFF"> 
+          <div align="left"><font face="Default" size="2"><b><a href="menu.html">Menus</a></b></font></div>
+        </td>
+        <td> 
+          <div align="left"><font face="Default" size="2"><b><a href="windows.html">Janelas</a></b></font></div>
+        </td>
+        <td bgcolor="#FFFFFF"> 
+          <div align="left"><font face="Default" size="2"><b><a href="button.html">Bot&otilde;es</a></b></font></div>
+        </td>
+      </tr>
+    </table>
+  </div>
+</blockquote>
+</BODY>
+</HTML>

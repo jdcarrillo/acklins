@@ -1,0 +1,95 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+
+<HEAD>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; CHARSET=shift_jis"><html>
+</HEAD>
+<body bgcolor="#FFFFFF">
+<blockquote>
+<table width="75%" border="0">
+  <tr>
+    <td> <div align="left"><font size="2"><a href="toc.html"><b>目次</b></a></font></div>
+    </td>
+    <td> <div align="left"><font size="2"><a href="overview.html"><b>概要</b></a></font></div>
+    </td>
+    <td bgcolor="#FFFFFF"> <div align="left"><font size="2"><b><a href="menu.html">メニュー</a></b></font></div>
+    </td>
+    <td> <div align="left"><font size="2"><b><a href="windows.html">ウィンドウ</a></b></font></div>
+    </td>
+    <td bgcolor="#FFFFFF"> <div align="left"><font size="2"><b><a href="button.html">ボタン</a></b></font></div>
+    </td>
+  </tr>
+</table>
+<hr>
+
+<h2 align="left"><font color="#000099">［データベース診断］</font></h2>
+
+  <p align="left"><font size="2">ここに示すオプションを使って、システムのパフォーマンスを調べる際に利用できる診断用パラメータを簡単に設定できます。 詳細については、『Adaptive Server Enterprise Performance and Tuning Guide』を参照してください。 ここで示すオプションは、接続ごとに特有なものです。デフォルトの設定は［オフ］です。</font></p>
+  <p align="left"><font size="2">オプションをアクティブにするには、そのオプションの<font color="#000099"><b>［オン］</b></font>ボタンをクリックし、<b><font color="#000099">［適用］</font></b>をクリックします。 データベース内で変更を行った場合には、これらの設定値は更新されません。変更は書き込みのみです。 </font></p>
+  <table width="85%" border="1" cellspacing="0" cellpadding="5" height="80">
+    <tr>
+      <td valign="top" width="12%" height="60"><b><i><font color="#660000" size="2">注意</font><font color="#660000"></td>
+      <td valign="top" width="88%" height="60"><font size="2"><font color="#000099"><b>［適用］</b></font>をクリックしてコマンドをデータベースに送信すると、各オプションの<font color="#000099"> <b>［オン］</b></font>または<font color="#000099"><b>［オフ］</b></font>ボタンのチェックマークが消えます。これは、<b>jisql</b> で各オプションの現在の状態が認識されないためです。 たとえば、［xxx］オプションの<font color="#000099"><b>［オン］</b></font>をクリックして<b><font color="#000099">［適用］</font></b>をクリックした後、同じ文を［入力］ウィンドウで実行すると、先に行ったオプション設定の変更は <b>jisql</b> では認識されません。 </font></td>
+    </tr>
+  </table>
+  <p align="left"><font size="2">これらのオプション用に生成される</font><font size="2">メッセージが、<a href="options.html">［オプション］ウィンドウ</a>の<a href="miscoptions.html">［その他］</a>タブの［SQL 警告メッセージを表示］の設定に従って表示されます。 <br> </font></font></p>
+  <table width="100%" border="1" cellpadding="5" cellspacing="0" bordercolorlight="#999999" bordercolor="#999999">
+    <tr>
+      <td width="50%" valign="top" bordercolor="#999999"> <b><font size="2">オプション</font></b>
+      </td>
+      <td width="50%"><b><font size="2">説明</font></b></td>
+    </tr>
+    <tr>
+      <td width="50%" valign="top"> <b><font size="2">［クエリ処理プランの表示（showplan）］</font></b>
+      </td>
+
+    <td width="50%"><font size="2">［オン］に設定するとクエリの処理プランの説明が生成され、パフォーマンスの診断に利用できます。 このオプションをストアド・プロシージャまたはトリガ内で使用した場合、結果は出力されません。 デフォルトの設定は［オフ］です。</font> </font></td>
+    </tr>
+    <tr>
+      <td width="50%" valign="top"> <b><font size="2">［クエリのコンパイル（実行はしない - noexec）］</font></b>
+      </td>
+      <td width="50%">
+
+      <p><font size="2">［オン］に設定するとクエリがコンパイルされますが、実行はされません。 ［オン］に設定した後は、［オフ］に設定するまで後続のコマンドは実行されません。</p>
+      </td>
+    </tr>
+    <tr>
+
+    <td width="50%" valign="top"> <b><font size="2">［I/O 統計の表示（statistics io）］</font></b> </td>
+
+      <td width="50%">
+        <p><font size="2">［オン］に設定すると、クエリ文で参照されている各テーブルに対するスキャン、論理読み込み、および物理読み込みの回数が表示されます。 結果出力は、常に［ステータス］ウィンドウに表示されます。 </font></p>
+        <p><font size="2"> デフォルトの設定は［オフ］です。</font></font></p>
+      </td>
+    </tr>
+    <tr>
+      <td width="50%" valign="top"> <div align="left"><b><font size="2">［サブクエリ・キャッシュ情報の表示（statistics subquerycache）］ </font></b></div>
+      </td>
+
+    <td width="50%"><font size="2">［オン］に設定すると、キャッシュのヒットとミスの回数、および各サブクエリに対するサブクエリ・キャッシュ内のローの数が表示されます。 デフォルトの設定は［オフ］です。</font></td>
+    </tr>
+    <tr>
+      <td width="50%" valign="top"> <div align="left"><b><font size="2"> ［解析、コンパイル、実行時間の表示（statistics time）］</font></b></div>
+      </td>
+
+    <td width="50%"><font size="2">［オン］に設定すると、各コマンドを解析してコンパイルする時間と、コマンドの各ステップに対しての実行時間とが表示されます。 時間は、マシンによって、ミリセカンドまたはタイムチックで表示されます。 デフォルトの設定は［オフ］です。</font></td>
+    </tr>
+  </table>
+
+<hr>
+<table width="75%" border="0">
+  <tr>
+    <td> <div align="left"><font size="2"><a href="toc.html"><b>目次</b></a></font></div>
+    </td>
+    <td> <div align="left"><font size="2"><a href="overview.html"><b>概要</b></a></font></div>
+    </td>
+    <td bgcolor="#FFFFFF"> <div align="left"><font size="2"><b><a href="menu.html">メニュー</a></b></font></div>
+    </td>
+    <td> <div align="left"><font size="2"><b><a href="windows.html">ウィンドウ</a></b></font></div>
+    </td>
+    <td bgcolor="#FFFFFF"> <div align="left"><font size="2"><b><a href="button.html">ボタン</a></b></font></div>
+    </td>
+  </tr>
+</table>
+</blockquote> 
+</html>

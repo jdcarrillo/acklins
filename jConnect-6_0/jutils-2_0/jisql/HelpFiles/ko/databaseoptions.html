@@ -1,0 +1,88 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+<title>Untitled Document</title>
+<meta http-equiv="Content-Type" content="text/html; charset=euc-kr">
+</head>  
+<BODY bgcolor="#FFFFFF">
+<blockquote> <div align="left"></div>
+<table width="75%" border="0">
+  <tr>
+    <td> <div align="left"><font  size="2"><a href="toc.html"><b>목차</b></a></font></div>
+    </td>
+    <td> <div align="left"><font  size="2"><a href="overview.html"><b>개요</b></a></font></div>
+    </td>
+    <td bgcolor="#FFFFFF"> <div align="left"><font  size="2"><b><a href="menu.html">메뉴</a></b></font></div>
+    </td>
+    <td> <div align="left"><font  size="2"><b><a href="windows.html">창</a></b></font></div>
+    </td>
+    <td bgcolor="#FFFFFF"> <div align="left"><font  size="2"><b><a href="button.html">단추</a></b></font></div>
+    </td>
+  </tr>
+</table>
+<hr>
+<h2><font  color="#000099">데이터베이스 옵션</font></h2>
+  <p><font  size="2">이러한 옵션을 사용하여 자주 사용하는 매개 변수를 편리하게 설정할 수 있습니다. 이 설정의 기능 및 사용에 대한 자세한 내용은 Transact-SQL 설명서를 참조하십시오. 이 값은 데이터베이스에서 변경되어도 업데이트되지 않습니다.</font></p>
+  <table width="85%" border="1" cellspacing="0" cellpadding="5" height="80">
+    <tr>
+      <td valign="top" width="12%" height="60"><b><i><font color="#660000"  size="2">참고</font><font color="#660000">:</font></i></b></td>
+      <td valign="top" width="88%" height="60"><font  size="2"><font color="#000099"><b>적용</b></font>을 눌러 명령이 데이터베이스로 전달된 후에는 <b>jisql</b>이 옵션의 현재 상태를 확인할 수 없기 때문에 옵션의 <font color="#000099"> <b>설정</b></font>|<font color="#000099"><b>해제</b></font> 단추가 선택되지 않은 상태로 나타납니다. 예를 들어 "연쇄 트랜잭션 사용"을 <font color="#000099"><b>설정</b></font>으로 선택하고 <b><font color="#000099">적용</font></b>을 누른 후 입력 창에서 동일한 구문을 실행하면, <b>jisql</b>이 옵션의 값이 변경되었다는 것을 인식하지 못합니다.</font></td>
+    </tr>
+  </table>
+  <p><font  size="2"><b>적용</b>을 눌러 변경 사항을 저장하십시오.<br> </font></p>
+  <table width="95%" border="1" cellpadding="5" cellspacing="0" bordercolor="#999999" bordercolorlight="#999999">
+    <tr>
+    <td width="50%" valign="top" bordercolor="#999999"><b><font  size="2">옵션</font></b></td>
+    <td width="50%"><b><font  size="2">설명</font></b></td>
+  </tr>
+  <tr>
+    <td width="50%" valign="top"><b><font  size="2">반환할 행의 최대 수(rowcount)</font></b></td>
+    <td width="50%"><font  size="2">지정한 행 수에 이르면 질의(<b>select</b>, <b>insert</b>, <b>update</b>, <b>delete</b> 등)를 종료합니다. 이 옵션을 해제하려면 0을 입력합니다.</font></td>
+  </tr>
+  <tr>
+    <td width="50%" valign="top"><b><font  size="2">반환할 <i>텍스트</i> 또는 <i>이미지</i>의 크기 제한(textsize)</font></b></td>
+    <td width="50%">
+      <p><font  size="2"><b>select</b> 문을 사용하여 반환할 <i>텍스트</i> 또는 <i>이미지</i> 데이터의 크기 제한을 바이트 단위로 지정합니다.</font></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="50%" valign="top"><b><font  size="2">트랜잭션 격리 수준 설정(0 - 3)</font></b></td>
+    <td width="50%">
+      <p><font size="2" >트랜잭션 중 다른 사용자가 데이터에 액세스할 수 있는 정도를 지정합니다.</font></p>
+      <p><font  size="2"><b>0</b> - 트랜잭션이 커밋되기 전에는 다른 트랜잭션에서 수정할 수 없습니다. 그러나 다른 트랜잭션에서 커밋되지 않은 데이터를 읽을 수는 있습니다.</font></p>
+      <p><font  size="2"><b>1</b> - 첫번째 트랜잭션이 변경 사항을 적용하기 전에 두번째 트랜잭션이 행을 읽고 있으면 첫번째 트랜잭션은 해당 행을 수정할 수 없습니다.</font></p>
+      <p><font  size="2"><b>2</b> - 두번째 트랜잭션이 행을 수정하는 동안 첫번째 트랜잭션은 해당 행을 읽을 수 없습니다.</font></p>
+      <p><font  size="2"><b>3</b> - 두번째 트랜잭션이 데이터를 수정하는 동안 첫번째 트랜잭션은 질의를 만족하는 행을 읽을 수 없습니다. 따라서 트랜잭션이 읽는 데이터는 그 트랜잭션의 마지막까지 유효합니다.</font></p>
+    </td>
+  </tr>
+  <tr>
+    <td width="50%" valign="top"><b><font  size="2">적용된 행 수 보기</font></b></td>
+      <td width="50%"><font  size="2"><b>insert</b>, <b>update</b>, <b>delete</b> 문이 적용된 행을 표시하거나 표시하지 않습니다. 기본값은 "해제"입니다.</font></td>
+  </tr>
+  <tr>
+    <td width="50%" valign="top"><b><font  size="2">연쇄 트랜잭션 사용(chained)</font></b></td>
+    <td width="50%"><font size="2" >연쇄 모드에서는 모든 데이터 검색 및 수정 명령(<b>fetch</b>, <b>insert</b>, <b>open</b>, <b>fetch</b>, <b>select</b>, <b>update</b>)이 트랜잭션을 시작합니다. 이 기능은 대부분의 T-SQL 응용 프로그램과 호환되지 않습니다. 기본값은 "해제"입니다.</font></td>
+  </tr>
+  <tr>
+    <td width="50%" valign="top"><b><font  size="2">구분 식별자 인식(quoted_identifier) </font></b></td>
+    <td width="50%"><font  size="2">이 옵션을 사용하면 데이터베이스가 구분 식별자를 인식할 수 있습니다. 명령문에 인용 식별자를 사용할 경우 항상 큰따옴표로 묶어야 합니다. 이 옵션을 설정할 경우 문자나 날짜 문자열에 큰따옴표를 사용하는 대신 작은따옴표를 사용하십시오. 열에 작은따옴표를 삽입하려면 작은따옴표를 연속해서 두 개 입력합니다. 기본값은 "해제"입니다.</font></td>
+  </tr>
+</table>
+<p><font  size="2">자세한 내용은 <i>Transact-SQL 사용자 안내서</i>를 참조하십시오.</font></p> <div align="left">
+    <table width="75%" border="0">
+      <tr>
+        <td> <div align="left"><font  size="2"><a href="toc.html"><b>목차</b></a></font></div>
+        </td>
+        <td> <div align="left"><font  size="2"><a href="overview.html"><b>개요</b></a></font></div>
+        </td>
+        <td bgcolor="#FFFFFF"> <div align="left"><font  size="2"><b><a href="menu.html">메뉴</a></b></font></div>
+        </td>
+        <td> <div align="left"><font  size="2"><b><a href="windows.html">창</a></b></font></div>
+        </td>
+        <td bgcolor="#FFFFFF"> <div align="left"><font  size="2"><b><a href="button.html">단추</a></b></font></div>
+        </td>
+      </tr>
+    </table> </div>
+</blockquote>
+</BODY>
+</HTML>

@@ -1,0 +1,210 @@
+
+<html>
+<!-- 
+Copyright (C) 2003. Sybase Inc. All rights reserved.
+Programmer's Reference
+jConnect&#153; for JDBC&#153;
+-->
+
+<HEAD>
+<script language="JavaScript">
+<!--
+
+if (navigator.appName == "Netscape"){
+     document.write('<LINK REL=STYLESHEET HREF="netscape.css" TYPE="text/javascript">');
+     }
+else{
+     document.write('<LINK REL=STYLESHEET HREF="default.css" TYPE="text/css">');
+     }
+
+//-->
+</script>
+<NOSCRIPT><LINK REL=STYLESHEET HREF="default.css" TYPE="text/css"></NOSCRIPT>
+<TITLE>Running IsqlApp</TITLE></HEAD>
+<BODY bgproperties="FIXED" bgcolor="#ffffe2">
+<P ALIGN=RIGHT><A HREF="prjdbcp32.htm"><IMG SRC="images/arrow-left.gif" align=top></A>&nbsp;&nbsp;<A HREF="prjdbcp34.htm"><IMG SRC="images/arrow-right.gif" align=top></A></P>
+
+<P ALIGN=LEFT><I>Appendix B  jConnect  Sample Programs</I><HR NOSHADE SIZE=1></P>
+<A NAME="X39410"></A><h1>Running IsqlApp</h1>
+<p><b>IsqlApp</b> allows you to issue <b>isql</b> commands
+
+from the command line, and run jConnect sample programs.</p>
+<p>The syntax for <b>IsqlApp</b> is: 
+<pre>IsqlApp [-U <i>username</i>] [-P <i>password</i>]
+   [-S <i>servername</i>]
+   [-G <i>gateway</i>]
+   [-p {http|https}]
+   [-D <i>debug-class-list]
+   </i>[-v] 
+   [-I <i>input-command-file</i>]
+   [-c <i>command_terminator]
+   </i>[-C <i>charset</i>] [-L <i>language</i>]
+   [-T <i>sessionID]
+</i>   [-V &lt;<i>version</i> {2,3,4,5}&gt;]</pre>
+</p>
+<A NAME="TI117"></A><table cellspacing=0 cellpadding=6 border=1 frame="void" rules="all"><tr><th align="left" valign=bottom>Parameter
+</th>
+<th align="left" valign=bottom>Description
+</th>
+</tr>
+<tr><td valign=top><b>-U</b>
+</td>
+<td valign=top>The login ID with which
+
+you want to connect to a server.
+</td>
+</tr>
+<tr><td valign=top><b>-P</b>
+</td>
+<td valign=top>The password for the specified
+
+login ID.
+</td>
+</tr>
+<tr><td valign=top><b>-S</b>
+</td>
+<td valign=top>The name of the server
+
+to which you want to connect.
+</td>
+</tr>
+<tr><td valign=top><b>-G</b>
+</td>
+<td valign=top>Gateway address. For the
+
+HTTP protocol, the URL is: http://<i>host:port</i>.
+<br><br>
+To use the HTTPS protocol that supports encryption, the URL
+
+is https://<i>host</i>:<i>port</i>/<i>servlet_alias</i>.
+</td>
+</tr>
+<tr><td valign=top><b>-p</b>
+</td>
+<td valign=top>Specifies whether you
+
+want to use the HTTP protocol or the HTTPS protocol that supports
+
+encryption.
+</td>
+</tr>
+<tr><td valign=top><b>-D</b>
+</td>
+<td valign=top>Turns on debugging for
+
+all classes or for just the ones you specify, separated by a comma.
+
+For example,
+<br><br>
+<i>-D ALL </i>
+
+<br><br>
+displays debugging output for all classes.
+<br><br>
+<i>-D SybConnection, Tds</i>
+
+<br><br>
+displays debugging output only for the <b>SybConnection</b> and <b>Tds</b> classes.
+</td>
+</tr>
+<tr><td valign=top><b>-v</b>
+</td>
+<td valign=top>Turns on verbose output
+
+for display or printing.
+</td>
+</tr>
+<tr><td valign=top><b>-I</b>
+</td>
+<td valign=top>Causes <b>IsqlApp</b> to
+
+take commands from a file instead of the keyboard.
+<br><br>
+After the parameter, you specify the name of the file to use
+
+for the <b>IsqlApp</b> input. The file must contain
+
+command terminators ("go" by default).
+</td>
+</tr>
+<tr><td valign=top><b>-c</b>
+</td>
+<td valign=top>Lets you specify a keyword
+
+(for example, "go") that, when entered on a line
+
+by itself, terminates the command. This lets you enter multiline
+
+commands before using the terminator keyword. If you do not specify
+
+a command terminator, each new line terminates a command.
+</td>
+</tr>
+<tr><td valign=top><b>-C</b>
+</td>
+<td valign=top>Specifies the character
+
+set for strings passed through TDS.
+<br><br>
+If you do not specify a character set, <b>IsqlApp</b> uses
+
+the server's default charset.
+</td>
+</tr>
+<tr><td valign=top><b>-L</b>
+</td>
+<td valign=top>The language in which
+
+to display error messages returned from the server and for jConnect
+
+messages.
+</td>
+</tr>
+<tr><td valign=top><b>-T</b>
+</td>
+<td valign=top>When this parameter is
+
+set, jConnect assumes that an application is trying to resume communication
+
+on an existing TDS session held open by the TDS-tunnelling gateway.
+
+jConnect skips the login negotiations and forwards all requests
+
+from the application to the specified session ID.
+</td>
+</tr>
+<tr><td valign=top><b>-V</b>
+</td>
+<td valign=top>Enables the use version-specific
+
+characteristics. See <A HREF="prjdbcp6.htm#X19884">"JCONNECT_VERSION connection property"</A>.
+</td>
+</tr>
+</table>
+<p><IMG SRC="images/note.gif" width=17 height=17 border=0 align="bottom" alt="Note">&nbsp;&nbsp; You must enter a space after each option flag.</P>
+<p>To obtain a full description of the command-line options,
+
+enter: 
+<pre>java IsqlApp -help</pre>
+</p>
+<p>The following example shows how to connect to a database on
+
+a host named "myserver" through port "3756" and
+
+run an <b>isql</b> script named "myscript": 
+<pre>java IsqlApp -U sa -P sapassword 
+   -S  jdbc:sybase:Tds:myserver:3756 
+   -I $JDBC_HOME/sp/myscript  -c run</pre>
+</p>
+<p><IMG SRC="images/note.gif" width=17 height=17 border=0 align="bottom" alt="Note">&nbsp;&nbsp; An applet that provides GUI access to <b>isql</b> commands
+
+is available as:<br> <br><i>$JDBC_HOME/sample2/gateway.html</i> (UNIX)<br> <i>%JDBC_HOME%\sample2\gateway.html</i> (Windows)</P>
+<P>&nbsp;</P><hr noshade size=1>
+<table cols=3><tr><td colspan=2 align=left>
+Copyright &copy; 2003 Sybase, Inc. All rights reserved.&nbsp;&nbsp;&nbsp;
+</td><td colspan=1>
+<A HREF="prjdbcp34.htm"><IMG SRC="images/arrow-right.gif" ALIGN=right></A>
+</td></tr></table>
+</BODY>
+</HTML>
+

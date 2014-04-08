@@ -1,0 +1,166 @@
+
+<html>
+<!-- 
+Copyright (C) 2003. Sybase Inc. All rights reserved.
+Programmer's Reference
+jConnect&#153; for JDBC&#153;
+-->
+
+<HEAD>
+<script language="JavaScript">
+<!--
+
+if (navigator.appName == "Netscape"){
+     document.write('<LINK REL=STYLESHEET HREF="netscape.css" TYPE="text/javascript">');
+     }
+else{
+     document.write('<LINK REL=STYLESHEET HREF="default.css" TYPE="text/css">');
+     }
+
+//-->
+</script>
+<NOSCRIPT><LINK REL=STYLESHEET HREF="default.css" TYPE="text/css"></NOSCRIPT>
+<TITLE>What is JDBC?</TITLE></HEAD>
+<BODY bgproperties="FIXED" bgcolor="#ffffe2">
+<P ALIGN=RIGHT><A HREF="prjdbcp2.htm"><IMG SRC="images/arrow-left.gif" align=top></A>&nbsp;&nbsp;<A HREF="prjdbcp4.htm"><IMG SRC="images/arrow-right.gif" align=top></A></P>
+
+<P ALIGN=LEFT><I>Chapter 1  Introduction</I><HR NOSHADE SIZE=1></P>
+<A NAME="X15969"></A><h1>What is JDBC?</h1>
+<p>JDBC (Java Database Connectivity) from the Java Software Division
+
+of Sun MicroSystems, Inc. is a specification for an application
+
+program interface (API) that allows Java applications to access
+
+multiple database management systems using Structured Query Language
+
+(SQL). The JDBC driver manager handles multiple drivers that connect
+
+to different databases.</p>
+<p>A set of interfaces is included in the standard JDBC API so
+
+you can open connections to databases, execute SQL commands, and
+
+process results. The interfaces are described
+
+in <A HREF="prjdbcp3.htm#X33611">Table 1-1</A>.</p>
+<A NAME="X33611"></A><table cellspacing=0 cellpadding=6 border=1 frame="void" rules="all"><caption>Table 1-1: JDBC interfaces</caption>
+<tr><th align="left" valign=bottom>Interface
+</th>
+<th align="left" valign=bottom>Description
+</th>
+</tr>
+<tr><td valign=top><b>java.sql.Driver</b>
+</td>
+<td valign=top>Locates the driver for
+
+a database URL
+</td>
+</tr>
+<tr><td valign=top><b>java.sql.Connection</b>
+</td>
+<td valign=top>Connection to a specific
+
+database
+</td>
+</tr>
+<tr><td valign=top><b>java.sql.Statement</b>
+</td>
+<td valign=top>Executes SQL statements
+</td>
+</tr>
+<tr><td valign=top><b>java.sql.PreparedStatement</b>
+</td>
+<td valign=top>Handles parameterized
+
+SQL statements
+</td>
+</tr>
+<tr><td valign=top><b>java.sql.CallableStatement</b>
+</td>
+<td valign=top>Handles database stored
+
+procedure calls
+</td>
+</tr>
+<tr><td valign=top><b>java.sql.ResultSet</b>
+</td>
+<td valign=top>Gets the results of SQL
+
+statements
+</td>
+</tr>
+<tr><td valign=top><b>java.sql.DatabaseMetaData</b>
+</td>
+<td valign=top>Used to access a variety
+
+of information about a connection's DBMS and database
+</td>
+</tr>
+<tr><td valign=top><b>java.sql.ResultSetMetaData</b>
+</td>
+<td valign=top>Used to access a variety
+
+of information describing a ResultSet's attributes
+</td>
+</tr>
+</table>
+<p>Each relational database management system requires a driver
+
+to implement these interfaces. All JDBC calls are sent to the JDBC
+
+driver manager, which passes the call to the specified driver.</p>
+<p>There are four types of JDBC drivers: 
+<ul>
+<li class=fi><i>Type 1 JDBC-ODBC bridge</i>
+ - translates
+
+JDBC calls into ODBC calls and passes them to an ODBC driver. Some
+
+ODBC software must be resident on the client machine. Some client
+
+database code may also reside on the client machine.
+</li>
+<li class=ds><i>Type 2
+
+native-API partly-Java driver </i>
+- converts JDBC
+
+calls into database-specific calls. This driver, which communicates
+
+directly with the database server, also requires some binary code
+
+on the client machine.
+</li>
+<li class=ds><i>Type
+
+3 net-protocol all-Java driver </i>
+- communicates
+
+to a middle-tier server using a DBMS-independent net protocol. A
+
+middle-tier gateway then converts the request to a vendor-specific
+
+protocol.
+</li>
+<li class=ds><i>Type
+
+4 native-protocol all-Java driver </i>
+- converts
+
+JDBC calls to the vendor-specific DBMS protocol, allowing client
+
+applications direct communication with the database server.
+
+</li>
+</ul>
+</p>
+<P>&nbsp;</P><hr noshade size=1>
+<table cols=3><tr><td colspan=2 align=left>
+Copyright &copy; 2003 Sybase, Inc. All rights reserved.&nbsp;&nbsp;&nbsp;
+</td><td colspan=1>
+<A HREF="prjdbcp4.htm"><IMG SRC="images/arrow-right.gif" ALIGN=right></A>
+</td></tr></table>
+</BODY>
+</HTML>
+

@@ -1,0 +1,153 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+<title>Untitled Document</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+</head>   
+<body bgcolor="#FFFFFF">
+<blockquote> 
+<table width="75%" border="0">
+  <tr> 
+    <td> 
+      <div align="left"><font  size="2"><a href="toc.html"><b>Table of Contents</b></a></font></div>
+    </td>
+    <td> 
+      <div align="left"><font  size="2"><a href="overview.html"><b>Overview</b></a></font></div>
+    </td>
+    <td bgcolor="#FFFFFF"> 
+      <div align="left"><font  size="2"><b><a href="menu.html">Menus</a></b></font></div>
+    </td>
+    <td> 
+      <div align="left"><font  size="2"><b><a href="windows.html">Windows</a></b></font></div>
+    </td>
+    <td bgcolor="#FFFFFF"> 
+      <div align="left"><font  size="2"><b><a href="button.html">Buttons</a></b></font></div>
+    </td>
+  </tr>
+</table>
+<hr>
+  
+<h2 align="left"><font  color="#000099">Database 
+  Diagnostics</font></h2>
+  
+  <p align="left"><font  size="2">These options 
+    offer a convenient way to set diagnostic parameters that can help you check 
+    performance issues. See the <i>Adaptive Server Enterprise Performance and 
+    Tuning Guide</i> for more information. These options are connection-specific 
+    and have a default value of &quot;Off.&quot;</font></p>
+  <p align="left"><font  size="2"> To activate 
+    an option, click that option's <font color="#000099"><b>On</b></font> button, 
+    then click <b><font color="#000099">Apply</font></b> to implement your selection(s). 
+    These values do not update when they change in the database - they are write 
+    only. </font></p>
+  <table width="85%" border="1" cellspacing="0" cellpadding="5" height="80">
+    <tr> 
+      <td valign="top" width="12%" height="60"><b><i><font color="#660000"  size="2">NOTE</font><font color="#660000">:</font></i></b></td>
+      <td valign="top" width="88%" height="60"><font  size="2">The 
+        <font color="#000099"> <b>On</b></font>|<font color="#000099"><b>Off</b></font> 
+        buttons for these options willl be unmarked after you click <font color="#000099"><b>Apply</b></font> 
+        and the command is sent to the database because <b>jisql</b> can not be 
+        certain of the current state of these options. For example, you click 
+        <font color="#000099"><b>On</b></font> for &quot;Display I/O Statistics,&quot; 
+        click Apply, then execute the same statement in a batch in the Input Window, 
+        <b>jisql</b> does not get notified that the option's value has been changed. 
+        </font></td>
+    </tr>
+  </table>
+  <p align="left"><font  size="2">The messages 
+    generated for these options display according to your selection for &quot;SQL 
+    Warnings should 
+    be presented&quot; on the <a href="miscoptions.html">Miscellaneous</a> tab 
+    of the <a href="options.html">Options Window</a>. <br>
+    </font></p>
+  <table width="100%" border="1" cellpadding="5" cellspacing="0" bordercolorlight="#999999" bordercolor="#999999">
+    <tr> 
+      <td width="50%" valign="top" bordercolor="#999999"> 
+    <b><font  size="2">OPTION</font></b>
+      </td>
+      <td width="50%"><b><font  size="2">DESCRIPTION</font></b></td>
+    </tr>
+    <tr> 
+      <td width="50%" valign="top"> 
+      <b><font  size="2">Show 
+          query's processing plan (showplan)</font></b>
+      </td>
+      
+    <td width="50%"><font  size="2">When set 
+      to &quot;On,&quot; generates a description of the processing plan for the 
+      query, which can be useful in performance diagnostics. This option does 
+      not print results when it is used inside a stored procedure or trigger. 
+      The default is &quot;Off.&quot; </font></td>
+    </tr>
+    <tr> 
+      <td width="50%" valign="top"> 
+       <b><font  size="2">Compile 
+          but don't execute queries (noexec)</font></b>
+      </td>
+      <td width="50%"> 
+        
+      <p><font  size="2">When set to &quot;On,&quot; 
+        compiles each query, but does not execute it. Once this option is set, 
+        no subsequent commands are executed until you turn it &quot;Off.&quot;</font></p>
+      </td>
+    </tr>
+    <tr> 
+      
+    <td width="50%" valign="top"> <b><font  size="2">Display 
+      I/O statistics (statistics io)</font></b> </td>
+      
+      <td width="50%"> 
+        <p><font  size="2">Click &quot;On&quot; 
+          to display the number of scans, logical reads, and physical reads for 
+          each table referenced in the query statement. The output is always displays 
+          in the Status Window. </font></p>
+        <p><font  size="2"> The default is 
+          &quot;Off.&quot;</font></p>
+      </td>
+    </tr>
+    <tr> 
+      <td width="50%" valign="top"> 
+        <div align="left"><b><font  size="2">Display 
+          subquery cache information (statistics subquerycache) </font></b></div>
+      </td>
+      
+    <td width="50%"><font  size="2">When set 
+      to &quot;On,&quot; displays the number of cache hits, misses, and the number 
+      of rows in the subquery cache for each subquery. The default is &quot;Off.&quot;</font></td>
+    </tr>
+    <tr> 
+      <td width="50%" valign="top"> 
+        <div align="left"><b><font size="2" >Display 
+          parse, compile, and execution times (statistics time)</font></b></div>
+      </td>
+      
+    <td width="50%"><font  size="2">When set 
+      to &quot;On,&quot; displays the time it took to parse and compile each command; 
+      for each step of the command, it displays the time it took to execute. Times 
+      are given in milliseconds and in timeticks, the exact value of which is 
+      machine-dependent. The default is &quot;Off.&quot;</font></td>
+    </tr>
+  </table>
+
+<hr>
+<table width="75%" border="0">
+  <tr> 
+    <td> 
+      <div align="left"><font  size="2"><a href="toc.html"><b>Table of Contents</b></a></font></div>
+    </td>
+    <td> 
+      <div align="left"><font  size="2"><a href="overview.html"><b>Overview</b></a></font></div>
+    </td>
+    <td bgcolor="#FFFFFF"> 
+      <div align="left"><font  size="2"><b><a href="menu.html">Menus</a></b></font></div>
+    </td>
+    <td> 
+      <div align="left"><font  size="2"><b><a href="windows.html">Windows</a></b></font></div>
+    </td>
+    <td bgcolor="#FFFFFF"> 
+      <div align="left"><font  size="2"><b><a href="button.html">Buttons</a></b></font></div>
+    </td>
+  </tr>
+</table>
+</blockquote> 
+</html>

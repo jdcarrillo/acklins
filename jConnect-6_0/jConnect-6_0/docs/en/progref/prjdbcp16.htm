@@ -1,0 +1,89 @@
+
+<html>
+<!-- 
+Copyright (C) 2003. Sybase Inc. All rights reserved.
+Programmer's Reference
+jConnect&#153; for JDBC&#153;
+-->
+
+<HEAD>
+<script language="JavaScript">
+<!--
+
+if (navigator.appName == "Netscape"){
+     document.write('<LINK REL=STYLESHEET HREF="netscape.css" TYPE="text/javascript">');
+     }
+else{
+     document.write('<LINK REL=STYLESHEET HREF="default.css" TYPE="text/css">');
+     }
+
+//-->
+</script>
+<NOSCRIPT><LINK REL=STYLESHEET HREF="default.css" TYPE="text/css"></NOSCRIPT>
+<TITLE>Unsuccessful  connection errors</TITLE></HEAD>
+<BODY bgproperties="FIXED" bgcolor="#ffffe2">
+<P ALIGN=RIGHT><A HREF="prjdbcp15.htm"><IMG SRC="images/arrow-left.gif" align=top></A>&nbsp;&nbsp;<A HREF="prjdbcp17.htm"><IMG SRC="images/arrow-right.gif" align=top></A></P>
+
+<P ALIGN=LEFT><I>Chapter 3  Troubleshooting</I><HR NOSHADE SIZE=1></P>
+<A NAME="X15991"></A><h1>Unsuccessful  connection errors</h1>
+<p>This section addresses problems that may arise when you are
+
+trying to establish a connection or start a gateway.</p>
+<A NAME="TI75"></A><h2>Gateway connection refused</h2>
+<p>
+<pre>Gateway connection refused: </pre>
+
+<pre>HTTP/1.0 502 Bad Gateway|Restart  Connection</pre>
+</p>
+<p>This error message indicates that something is wrong with
+
+the <i>hostname</i> or <i>port#</i> used
+
+to connect to your Adaptive Server. Check the [query] entry
+
+in <i>$SYBASE/interfaces </i>(UNIX)
+
+or in <i>%SYBASE%\ini\sql.ini </i>(Windows).</p>
+<p>If the problem persists after you have verified the <i>hostname</i> and <i>port#</i>,
+
+you can learn more by starting the HTTP server using the "verbose" system
+
+property.</p>
+<p>For Windows, go to a DOS prompt and enter: 
+<pre>httpd -Dverbose=1 &gt; <i>filename</i></pre>
+</p>
+<p>For UNIX, enter: 
+<pre>sh httpd.sh -Dverbose=1 &gt; <i>filename</i> &amp;</pre>
+</p>
+<p>where <i>filename is</i> the debug messages
+
+output file.</p>
+<p>Your Web server probably does not support the connect method.
+
+Applets can connect only to the host from which they were downloaded.</p>
+<p>The HTTP gateway and your Web server must run on the same
+
+host. In this scenario, your applet can connect to the same machine/host
+
+through the port controlled by the HTTP gateway, which routes the
+
+request to the appropriate database.</p>
+<p>To see how this is accomplished, review the source of <i>Isql.java</i> and <i>gateway.html</i> in
+
+the <i>sample2</i> subdirectory under the jConnect
+
+installation directory. Search for "proxy."</p>
+<A NAME="TI76"></A><h2>Unable to connect to a 4.9.2 SQL Server</h2>
+<p>jConnect uses TDS 5.0 (Sybase transfer protocol). SQL Server
+
+4.9.x uses TDS 4.6, which is not compatible with TDS 5.0.</p>
+<p>SQL Server 10.0.2 or later is required for use with jConnect.</p>
+<P>&nbsp;</P><hr noshade size=1>
+<table cols=3><tr><td colspan=2 align=left>
+Copyright &copy; 2003 Sybase, Inc. All rights reserved.&nbsp;&nbsp;&nbsp;
+</td><td colspan=1>
+<A HREF="prjdbcp17.htm"><IMG SRC="images/arrow-right.gif" ALIGN=right></A>
+</td></tr></table>
+</BODY>
+</HTML>
+

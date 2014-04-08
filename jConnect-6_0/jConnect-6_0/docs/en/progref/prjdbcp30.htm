@@ -1,0 +1,424 @@
+
+<html>
+<!-- 
+Copyright (C) 2003. Sybase Inc. All rights reserved.
+Programmer's Reference
+jConnect&#153; for JDBC&#153;
+-->
+
+<HEAD>
+<script language="JavaScript">
+<!--
+
+if (navigator.appName == "Netscape"){
+     document.write('<LINK REL=STYLESHEET HREF="netscape.css" TYPE="text/javascript">');
+     }
+else{
+     document.write('<LINK REL=STYLESHEET HREF="default.css" TYPE="text/css">');
+     }
+
+//-->
+</script>
+<NOSCRIPT><LINK REL=STYLESHEET HREF="default.css" TYPE="text/css"></NOSCRIPT>
+<TITLE>Using the TDS-tunnelling servlet</TITLE></HEAD>
+<BODY bgproperties="FIXED" bgcolor="#ffffe2">
+<P ALIGN=RIGHT><A HREF="prjdbcp29.htm"><IMG SRC="images/arrow-left.gif" align=top></A>&nbsp;&nbsp;<A HREF="prjdbcp31.htm"><IMG SRC="images/arrow-right.gif" align=top></A></P>
+
+<P ALIGN=LEFT><I>Chapter 6  Web Server  Gateways</I><HR NOSHADE SIZE=1></P>
+<A NAME="X28557"></A><h1>Using the TDS-tunnelling servlet</h1>
+<p>To use the TDS-tunnelling servlet, you need a Web server that
+
+supports the <b>javax.servlet</b> interfaces, such as
+
+Sun Microsystems, Inc.'s Java Web server. When you install
+
+the Web server, include the jConnect TDS-tunnelling servlet in the
+
+list of active servlets. You can also set servlet parameters to
+
+define connection timeouts and maximum packet size.</p>
+<p>With the TDS-tunnelling servlet, requests
+
+from a client to the back-end server that go through the gateway
+
+include a GET or POST command, the TDS session ID (after the initial
+
+request), back-end address, and status of the request.</p>
+<p>TDS is in the body of the request. Two header fields indicate
+
+the length of the TDS stream and the session ID assigned by the
+
+gateway.</p>
+<p>When the client sends a request, the Content-Length header
+
+field indicates the size of the TDS content, and the request command
+
+is POST. If there is no TDS data in the request because the client
+
+is either retrieving the next portion of the response data from
+
+the server, or closing the connection, the request command is GET.</p>
+<p>The following example illustrates how information is passed
+
+between the client and an HTTPS gateway using the TDS-tunneled HTTPS
+
+protocol; it shows a connection to a back-end server named DBSERVER
+
+with a port number "1234."</p>
+<A NAME="TI107"></A><table cellspacing=0 cellpadding=6 border=1 frame="void" rules="all"><caption>Table 6-1: Client to
+
+gateway login request. No session ID.</caption>
+<tr><td valign=top><i>Query</i>
+
+</td>
+<td valign=top>POST/tds?ServerHost=dbserver&amp;ServerPort=1234&amp;<br>Operation=more
+
+HTTP/1.0
+</td>
+</tr>
+<tr><td valign=top><i>Header</i>
+
+</td>
+<td valign=top>Content-Length: 605
+</td>
+</tr>
+<tr><td valign=top><i>Content</i>
+ (TDS)
+</td>
+<td valign=top>Login request
+</td>
+</tr>
+</table>
+<A NAME="TI108"></A><table cellspacing=0 cellpadding=6 border=1 frame="void" rules="all"><caption>Table 6-2: Gateway to
+
+client. Header contains session ID <br>assigned by the TDS
+
+servlet.</caption>
+<tr><td valign=top><i>Query</i>
+
+</td>
+<td valign=top>200 SUCCESS HTTP/1.0
+</td>
+</tr>
+<tr><td valign=top><i>Header</i>
+
+</td>
+<td valign=top>Content-Length: 210<br> TDS-Session:
+
+TDS00245817298274292
+</td>
+</tr>
+<tr><td valign=top><i>Content</i>
+ (TDS)
+</td>
+<td valign=top>Login acknowledgment<br> EED
+</td>
+</tr>
+</table>
+<A NAME="TI109"></A><table cellspacing=0 cellpadding=6 border=1 frame="void" rules="all"><caption>Table 6-3: Client to
+
+gateway. Headers for all subsequent requests contain the session
+
+ID.</caption>
+<tr><td valign=top><i>Query</i>
+
+</td>
+<td valign=top>POST/tds?TDS-Session=TDS00245817298274292&amp;Operation=more
+
+HTTP/1.0
+</td>
+</tr>
+<tr><td valign=top><i>Header</i>
+
+</td>
+<td valign=top>Content-Length: 32
+</td>
+</tr>
+<tr><td valign=top><i>Content</i>
+ (TDS)
+</td>
+<td valign=top>Query "SELECT * from
+
+authors"
+</td>
+</tr>
+</table>
+<A NAME="TI110"></A><table cellspacing=0 cellpadding=6 border=1 frame="void" rules="all"><caption>Table 6-4: Gateway to
+
+client. Headers for all subsequent responses contain the session
+
+ID.</caption>
+<tr><td valign=top><i>Query</i>
+
+</td>
+<td valign=top>200 SUCCESS HTTP/1.0
+</td>
+</tr>
+<tr><td valign=top><i>Header</i>
+
+</td>
+<td valign=top>Content-Length: 2048<br> TDS-Session:
+
+TDS00245817298274292
+</td>
+</tr>
+<tr><td valign=top><i>Content</i>
+ (TDS)
+</td>
+<td valign=top>Row format and some rows
+
+from query response
+</td>
+</tr>
+</table>
+<A NAME="X26848"></A><h2>TDS-tunnelling  servlet system requirements</h2>
+<p>To use the jConnect servlet for TDS-tunneled HTTP, you need: 
+<ul>
+<li class=fi>A Web server that supports <b>javax.servlet</b> interfaces.
+
+To install the server, follow the instructions that are provided
+
+with it.
+</li>
+<li class=ds>A Web browser that supports JDK 1.1, such as Netscape
+
+4.0, Internet Explorer 4.0, or HotJava.
+
+</li>
+</ul>
+</p>
+<A NAME="X34451"></A><h2>Installing  the servlet</h2>
+<p>Your jConnect installation includes a <i>gateway2</i> subdirectory under
+
+the <i>classes</i> directory. The subdirectory contains
+
+files required for the TDS-tunnelling servlet.</p>
+<p>Copy the jConnect <b>gateway</b> package to a <i>gateway2</i> subdirectory under
+
+your Web server's servlets directory. Once you have copied
+
+the servlets, activate the servlets by following the instructions
+
+for your Web server.</p>
+<A NAME="X24500"></A><h3>Setting servlet arguments</h3>
+<p>When you add the servlet to your Web server, you can enter
+
+optional arguments to customize performance: 
+<ul>
+<li class=fi><i>SkipDoneProc [true|false] - </i>Sybase
+
+databases often return row count information as intermediate processing
+
+steps are performed during the execution of a query. Usually client
+
+applications ignore this data. If you set <i>SkipDoneProc</i> to
+
+true, the servlet will remove this extra information from responses "on
+
+the fly," which reduces network usage and processing requirements
+
+on the client. This is particularly useful when using HTTPS/SSL
+
+because the unwanted data does not get encrypted/decrypted before
+
+it is ignored.
+</li>
+<li class=ds><i>TdsResponseSize - </i>set
+
+the maximum TDS packet size for the tunneled HTTPS. A larger <i>TdsResponseSize</i> is
+
+more efficient if you have only a few users with a large volume
+
+of data. Use a smaller <i>TdsResponseSize</i> if you have
+
+many users making smaller transactions.
+</li>
+<li class=ds><i>TdsSessionIdleTimeout - </i>define
+
+the amount of time (in milliseconds) that the server connection
+
+can remain idle before the connection is automatically closed. The
+
+default <i>TdsSessionIdleTimeout</i> is 600,000 (10 minutes).
+<br><br>
+If you have interactive client programs that may be idle for
+
+long periods of time and you do not want the connections broken,
+
+increase the <i>TdsSessionIdleTimeout</i>.
+<br><br>
+You can also set the connection timeout value from the jConnect
+
+client using the SESSION_TIMEOUT connection property. This
+
+is useful if you have specific applications that may be idle for
+
+longer periods. In this case, set a longer timeout for those connections
+
+with the SESSION_TIMEOUT connection property, rather than
+
+setting it for the servlet.
+</li>
+<li class=ds><i>Debug - </i>turn on debugging.
+
+See <A HREF="prjdbcp14.htm">"Debugging
+
+with jConnect"</A>.
+
+</li>
+</ul>
+</p>
+<p>Enter the servlet arguments in a comma-delimited string. For
+
+example: 
+<pre>TdsResponseSize=[size],TdsSessionIdleTimeout=
+  [timeout],Debug=true</pre>
+</p>
+<p>Refer to your Web server documentation for complete instructions
+
+on entering servlet arguments.</p>
+<A NAME="X41979"></A><h2>Invoking the servlet</h2>
+<p>jConnect determines when to use the gateway where the TDS-tunnelling servlet
+
+is installed based on the path extension of the <i>proxy</i> connection property.
+
+jConnect recognizes the servlet path extension to the <i>proxy</i> and invokes
+
+the servlet on the designated gateway.</p>
+<p>Define the connection URL using this format: 
+<pre>http://<i>host</i>:<i>port</i>/<i>TDS-servlet-path</i></pre>
+</p>
+<p>jConnect invokes the TDS-tunnelling servlet on the Web server
+
+to tunnel TDS through HTTP. The servlet path must be the path you
+
+defined in your Web server's servlet alias list.</p>
+<A NAME="TI111"></A><h2>Tracking
+
+active TDS sessions</h2>
+<p>You can view information about active TDS sessions, including
+
+the server connections for each session. Use your Web browser to
+
+open the administrative URL: 
+<pre>http://<i>host</i>:<i>port</i>/<i>TDS-servlet-path</i>?Operation=list</pre>
+</p>
+<p>For example, if your server is MYSERVER and the TDS servlet
+
+path is <i>/tds</i>, enter: 
+<pre>http://myserver:8080/tds?Operation=list</pre>
+</p>
+<p>This shows you a list of active TDS sessions. You can click
+
+on a session to see more information, including the server connection.</p>
+<A NAME="TI112"></A><h3>Terminating TDS sessions</h3>
+<p>You can use the URL described above to terminate any active
+
+TDS session. Click on an active session from the list of sessions
+
+on the first page, then click Terminate This Session.</p>
+<A NAME="TI113"></A><h2>Resuming
+
+a TDS session</h2>
+<p>You can set the SESSION_ID connection property so
+
+that, if necessary, you can resume an existing open connection.
+
+When you specify a SESSION_ID, jConnect skips the login
+
+phase of the protocol and resumes the connection with the gateway
+
+using the designated session ID. If the session ID you specified does
+
+not exist on the servlet, jConnect throws a SQL exception the first
+
+time you attempt to use the connection.</p>
+<A NAME="TI114"></A><h2>TDS and Netscape Enterprise Server 3.5.1 on Solaris</h2>
+<p>Netscape Enterprise Server 3.5.1 does not support the <b>javax.servlet.ServletConfig.getInitParameters(
+
+)</b> or <b>javax.servlet.ServletConfig.getInitParameterNames(
+
+)</b> methods. To provide the necessary parameter values,
+
+you need to replace calls to <b>getInitParameter( )</b> and <b>getInitParameterNames(
+
+)</b> with hard-coded parameter values in <i>TDSTunnelServlet.java</i>.</p>
+<p>To enter the required parameter values in <i>TDSTunnelServlet.java</i> and
+
+use TDS tunnelling with Netscape Enterprise Server 3.5.1 on Solaris: 
+<ol>
+<li class=fi>Hard code parameter values
+
+in <i>TDSTunnelServlet.java</i>.
+</li>
+<li class=ds>Create <i>.class</i> files from the
+
+class declarations in <i>TDSTunnelServlet.java</i>.
+<br><br>
+This should result in the following files: 
+<ul>
+<li class=fi><i>TDSTunnelServet.class</i>
+</li>
+<li class=ds><i>TdsSession.class</i>
+</li>
+<li class=ds><i>TdsSessionManager.class</i>
+
+</li>
+</ul>
+
+</li>
+<li class=ds>Create a directory for the <i>.class</i> files
+
+under your Netscape Enterprise Server 3.5.1 (NSE_3.5.1)
+
+installation directory, as follows: 
+<pre>mkdir <i>NSE_3.5.1_install_dir</i>/plugins/java/servlets/gateway</pre>
+
+</li>
+<li class=ds>Copy the <i>.class</i> files derived
+
+from <i>TDSTunnelServlet.java</i> to the directory you
+
+just created.
+</li>
+<li class=ds>Copy the classes under <i>$JDBC_HOME/classes/com/sybase</i> to <i>NSE_3.5.1_install_dir</i><i>/docs/com/sybase</i>.
+<br><br>
+An easy way to do this is to recursively copy everything under <i>$JDBC_HOME/classes</i> to <i>NSE_3.5.1_install_dir</i><i>/docs</i>,
+
+as: 
+<pre>cp -r $JDBC_HOME/classes <i>NSE_3.5.1_install_dir</i>/docs</pre>
+
+<br><br>
+This copies a number of files and directories that are not
+
+under <i>$JDBC_HOME/classes/com/sybase</i>.
+
+The extra files and directories are harmless, but take up disk space.
+
+You can delete them to reclaim the disk space.
+</li>
+<li class=ds>Set the <i>proxy</i> URL to the TDS-tunnelling
+
+servlet.
+<br><br>
+For example, in <i>$JDBC_HOME/sample2/gateway.html</i>,
+
+you would edit the <i>proxy</i> parameter to appear
+
+as follows: 
+<pre>&lt;param name=proxy  value="http://<i>hostname</i>/servlet/
+ <i>  gateway_name</i>.TDSTunnel_Servlet_name"&gt; </pre>
+
+
+</li>
+</ol>
+</p>
+<P>&nbsp;</P><hr noshade size=1>
+<table cols=3><tr><td colspan=2 align=left>
+Copyright &copy; 2003 Sybase, Inc. All rights reserved.&nbsp;&nbsp;&nbsp;
+</td><td colspan=1>
+<A HREF="prjdbcp31.htm"><IMG SRC="images/arrow-right.gif" ALIGN=right></A>
+</td></tr></table>
+</BODY>
+</HTML>
+

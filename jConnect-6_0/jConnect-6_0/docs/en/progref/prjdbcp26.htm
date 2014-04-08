@@ -1,0 +1,177 @@
+
+<html>
+<!-- 
+Copyright (C) 2003. Sybase Inc. All rights reserved.
+Programmer's Reference
+jConnect&#153; for JDBC&#153;
+-->
+
+<HEAD>
+<script language="JavaScript">
+<!--
+
+if (navigator.appName == "Netscape"){
+     document.write('<LINK REL=STYLESHEET HREF="netscape.css" TYPE="text/javascript">');
+     }
+else{
+     document.write('<LINK REL=STYLESHEET HREF="default.css" TYPE="text/css">');
+     }
+
+//-->
+</script>
+<NOSCRIPT><LINK REL=STYLESHEET HREF="default.css" TYPE="text/css"></NOSCRIPT>
+<TITLE>Sybase extensions </TITLE></HEAD>
+<BODY bgproperties="FIXED" bgcolor="#ffffe2">
+<P ALIGN=RIGHT><A HREF="prjdbcp25.htm"><IMG SRC="images/arrow-left.gif" align=top></A>&nbsp;&nbsp;<A HREF="prjdbcp27.htm"><IMG SRC="images/arrow-right.gif" align=top></A></P>
+
+<P ALIGN=LEFT><I>Chapter 5  Migrating  jConnect Applications</I><HR NOSHADE SIZE=1></P>
+<A NAME="X17255"></A><h1>Sybase extensions </h1>
+<p>jConnect
+
+version 4.1 and later include the package <b>com.sybase.jdbcx</b> that contains
+
+all of the Sybase extensions to JDBC. In versions of jConnect previous
+
+to 4.1, these extensions were available in the <b>com.sybase.jdbc</b> and <b>com.sybase.utils</b> packages.</p>
+<p><b>com.sybase.jdbcx</b> provides a consistent
+
+interface across different versions of jConnect. All of the Sybase
+
+extensions are defined as Java interfaces, which allows the underlying
+
+implementations to change without affecting applications built using
+
+these interfaces.</p>
+<p>When you develop new applications that use Sybase extensions,
+
+use <b>com.sybase.jdbcx</b>. The interfaces in this
+
+package allow you to upgrade applications to versions of jConnect
+
+that follow version 4.0 with minimal changes.</p>
+<p><IMG SRC="images/note.gif" width=17 height=17 border=0 align="bottom" alt="Note">&nbsp;&nbsp; Applications previously built using the Sybase extensions
+
+to the JDBC API, which were available in <b>com.sybase.jdbc</b> and <b>com.sybase.utils,</b> will continue
+
+to work under jConnect 4.x; however, all Sybase extensions in <b>com.sybase.jdbc</b> and <b>com.sybase.utils</b> have
+
+been marked deprecated.</P>
+<p>Some of the Sybase extensions have been changed to accommodate
+
+the new <b>com.sybase.jdbcx</b> interface.</p>
+<A NAME="TI91"></A><h2>Change example</h2>
+<p>If an application uses the <b>SybMessageHandler</b>,
+
+the code differences would be:  
+<ul>
+<li class=fi><strong>jConnect 4.0</strong> code: 
+<pre>import  com.sybase.jdbc.SybConnection;
+import com.sybase.jdbc.SybMessageHandler;
+.
+.
+Connection  con = DriverManager.getConnection(url, props); 
+SybConnection  sybCon = (SybConnection) con; 
+sybCon.setMessageHandler(new  ConnectionMsgHandler());</pre>
+
+</li>
+<li class=ds><strong>jConnect 4.1</strong> and later code:
+
+ 
+<pre>import com.sybase.jdbcx.SybConnection;
+import  com.sybase.jdbcx.SybMessageHandler;
+.
+.
+Connection  con = DriverManager.getConnection(url, props);
+SybConnection  sybCon = (SybConnection) con;
+sybCon.setSybMessageHandler(new  ConnectionMsgHandler());</pre>
+
+<br><br>
+See the samples provided with jConnect for more examples of
+
+how to use Sybase extensions.
+
+</li>
+</ul>
+</p>
+<A NAME="TI92"></A><h2>Method names</h2>
+<p>The following table lists how methods were been renamed in
+
+the new interface.</p>
+<A NAME="TI93"></A><table cellspacing=0 cellpadding=6 border=1 frame="void" rules="all"><tr><th align="left" valign=bottom>Class
+</th>
+<th align="left" valign=bottom>Old name
+</th>
+<th align="left" valign=bottom>New name
+</th>
+</tr>
+<tr><td valign=top><b>SybConnection</b>
+</td>
+<td valign=top><b>getCapture( )</b>
+</td>
+<td valign=top><b>createCapture( )</b>
+</td>
+</tr>
+<tr><td valign=top><b>SybConnection</b>
+</td>
+<td valign=top><b>setMessageHandler( )</b>
+</td>
+<td valign=top><b>setSybMessageHandler( )</b>
+</td>
+</tr>
+<tr><td valign=top><b>SybConnection</b>
+</td>
+<td valign=top><b>getMessageHandler( )</b>
+</td>
+<td valign=top><b>getSybMessageHandler( )</b>
+</td>
+</tr>
+<tr><td valign=top><b>SybStatement</b>
+</td>
+<td valign=top><b>setMessageHandler( )</b>
+</td>
+<td valign=top><b>setSybMessageHandler( )</b>
+</td>
+</tr>
+<tr><td valign=top><b>SybStatement</b>
+</td>
+<td valign=top><b>getMessageHandler( )</b>
+</td>
+<td valign=top><b>getSybMessageHandler( )</b>
+</td>
+</tr>
+</table>
+<A NAME="TI94"></A><h2>Debug class</h2>
+<p>Direct static references to the <b>Debug</b> class
+
+are no longer supported, but exist in deprecated form in the <b>com.sybase.utils</b> package.
+
+To use jConnect debugging facilities, use the <b>getDebug(
+
+)</b> method of the <b>SybDriver</b> class to
+
+obtain a reference to the <b>Debug</b> class. For example: 
+<pre>import  com.sybase.jdbcx.SybDriver;
+import com.sybase.jdbcx.Debug;
+.
+.
+.
+SybDriver  sybDriver =
+    SybDriver)Class.forName
+    ("com.sybase.jdbc2.jdbc.SybDriver")  newInstance();
+Debug sybDebug = sybDriver.getDebug();
+sybDebug.debug(true,  "ALL", System.out);</pre>
+</p>
+<p>A complete list of Sybase extensions is in the jConnect javadoc
+
+documentation located in the <i>docs/</i> directory
+
+of your jConnect installation directory.</p>
+<P>&nbsp;</P><hr noshade size=1>
+<table cols=3><tr><td colspan=2 align=left>
+Copyright &copy; 2003 Sybase, Inc. All rights reserved.&nbsp;&nbsp;&nbsp;
+</td><td colspan=1>
+<A HREF="prjdbcp27.htm"><IMG SRC="images/arrow-right.gif" ALIGN=right></A>
+</td></tr></table>
+</BODY>
+</HTML>
+

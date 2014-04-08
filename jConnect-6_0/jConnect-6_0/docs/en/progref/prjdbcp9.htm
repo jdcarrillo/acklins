@@ -1,0 +1,621 @@
+
+<html>
+<!-- 
+Copyright (C) 2003. Sybase Inc. All rights reserved.
+Programmer's Reference
+jConnect&#153; for JDBC&#153;
+-->
+
+<HEAD>
+<script language="JavaScript">
+<!--
+
+if (navigator.appName == "Netscape"){
+     document.write('<LINK REL=STYLESHEET HREF="netscape.css" TYPE="text/javascript">');
+     }
+else{
+     document.write('<LINK REL=STYLESHEET HREF="default.css" TYPE="text/css">');
+     }
+
+//-->
+</script>
+<NOSCRIPT><LINK REL=STYLESHEET HREF="default.css" TYPE="text/css"></NOSCRIPT>
+<TITLE>Handling internationalization and localization</TITLE></HEAD>
+<BODY bgproperties="FIXED" bgcolor="#ffffe2">
+<P ALIGN=RIGHT><A HREF="prjdbcp8.htm"><IMG SRC="images/arrow-left.gif" align=top></A>&nbsp;&nbsp;<A HREF="prjdbcp10.htm"><IMG SRC="images/arrow-right.gif" align=top></A></P>
+
+<P ALIGN=LEFT><I>Chapter 2  Programming  Information</I><HR NOSHADE SIZE=1></P>
+<A NAME="X20896"></A><h1>Handling internationalization and localization</h1>
+<p>This section discusses internationalization and localization
+
+issues relevant to jConnect.</p>
+<A NAME="BHCFJECE"></A><h2>Using jConnect to pass Unicode data</h2>
+<p>In Adaptive Server version 12.5 and later, database clients
+
+can take advantage of the <i>unichar</i> and <i>univarchar</i>datatypes.
+
+The two datatypes allow for the efficient storage and retrieval
+
+of Unicode data.</p>
+<p>Quoting from the Unicode Standard, version 2.0: "The  Unicode Standard is a fixed-width, uniform encoding scheme for encoding  characters and text. The repertoire of this international character  code for information processing includes characters for the major  scripts of the world, as well as technical symbols in common. The  Unicode character encoding treats alphabetic characters, ideographic  characters, and symbols identically, which means they can be used  in any mixture and with equal facility. The Unicode Standard is  modeled on the ASCII character set, but uses a 16-bit encoding to  support full multilingual text."</br></font>
+</p>
+<p>This means that the user can designate database table columns to
+
+store Unicode data, regardless of the default character set of the
+
+server.</p>
+<p><IMG SRC="images/note.gif" width=17 height=17 border=0 align="bottom" alt="Note">&nbsp;&nbsp; In Adaptive Server version 12.5 through 12.5.0.3, the
+
+server had to have a default character set of utf-8 in order to
+
+use the unicode datatypes. However, in Adaptive Server 12.5.1 and
+
+later, database users can use unichar and univarchar without having
+
+to consider the default character set of the server.</P>
+<p>To use the <i>unichar</i> and <i>univarchar</i> datatypes
+
+with jConnect, you must perform the following two tasks:</p>
+<p>
+<ol>
+<li class=fi>Set the jConnect version
+
+to 6. See <A HREF="prjdbcp6.htm#X15095">"Setting the jConnect version"</A> for
+
+more information.
+</li>
+<li class=ds>Set the DISABLE_UNICHAR_SENDING
+
+connection property to false. See <A HREF="prjdbcp7.htm#X40297">"Setting connection properties"</A>for more information.
+
+</li>
+</ol>
+</p>
+<p>When the server accepts <i>unichar</i> and <i>univarchar</i> data,
+
+jConnect will behave as follows:
+<ul>
+<li class=fi>For all character
+
+data that a client wishes to send to the server - for example
+
+using the PreparedStatement.setString (int column, String
+
+value)- jConnect will determine if the string
+
+can be converted to the default character set of the server.
+</li>
+<li class=ds>If jConnect determines that the characters cannot
+
+be converted to the character set of the server (For example, some
+
+characters cannot be represented in the character set of the server),
+
+it will send the data to the server encoded as <i>unichar</i>/<i>univarchar</i> data.
+
+</li>
+</ul>
+</p>
+<p>For example, if a client attempted to send a unicode Japanese
+
+character to an Adaptive Server 12.5.1 which had iso_1
+
+as the default character set, jConnect would detect that the Japanese
+
+character could not be converted to an iso_1 character.
+
+jConnect would then send the String as unicode data.</p>
+<p>There is a performance penalty when a client sends <i>unichar</i>/<i>univarchar</i> data
+
+to a server. This is because jConnect must perform character-to-byte
+
+conversion twice for all Strings and characters that do not map
+
+directly to the default character set of the server. This penalty
+
+is why the DISABLE_UNICHAR_SENDING connection
+
+property defaults to true.</p>
+<p><IMG SRC="images/note.gif" width=17 height=17 border=0 align="bottom" alt="Note">&nbsp;&nbsp; For more information on support for <i>unichar</i> and <i>univarchar</i> datatypes, see
+
+the manuals for Adaptive Server version 12.5 or later.</P>
+<A NAME="X37477"></A><h2>jConnect character-set converters</h2>
+<p>jConnect uses special classes for all character-set conversions.
+
+By selecting a character-set converter class, you specify how jConnect
+
+should handle single-byte and multibyte character-set conversions,
+
+and the performance impact the conversions will have on your applications.</p>
+<p>There are two character-set conversion classes. The conversion
+
+class that jConnect uses is based on the version setting (for example,
+
+VERSION_4), and the CHARSET and CHARSET_CONVERTER_CLASS
+
+connection properties. 
+<ul>
+<li class=fi>The <b>TruncationConverter</b> class
+
+works only with single-byte character sets that use ASCII characters
+
+such as iso_1 and cp850. It does not work with multibyte
+
+character sets or single-byte character sets that use non-ASCII characters.
+<br><br>
+Using the <b>TruncationConverter</b> class, jConnect
+
+5.x handles character sets in the same manner as jConnect version
+
+2.2. The <b>TruncationConverter</b> class is the default
+
+converter when the version setting is VERSION_2.
+</li>
+<li class=ds>The <b>PureConverter</b> class
+
+is a pure Java, multibyte character-set converter. jConnect uses
+
+this class if the version setting is VERSION_4 or later. jConnect
+
+also uses this converter with VERSION_2 if it detects a character
+
+set specified in the CHARSET connection property that is not compatible
+
+with the <b>TruncationConverter</b> class.
+<br><br>
+Although it enables multibyte character-set conversions, the <b>PureConverter</b> class
+
+may negatively impact jConnect driver performance. If driver performance
+
+is a concern, see <A HREF="prjdbcp9.htm#X42659">"Improving
+
+character-set conversion performance"</A>.
+
+</li>
+</ul>
+</p>
+<A NAME="X22159"></A><h3>Selecting  a character-set converter</h3>
+<p>jConnect uses the version setting from <b>SybDriver.setVersion(
+
+)</b> to determine the default character-set
+
+converter class to use. For VERSION_2, the default is <b>TruncationConverter</b>.
+
+For VERSION_4 and later, the default is <b>PureConverter</b><i>.</i></p>
+<p>You can also set the CHARSET_CONVERTER_CLASS
+
+connection property to specify which character-set converter you
+
+want jConnect to use. This is useful if you want to use a character-set
+
+converter other than the default for your jConnect version.</p>
+<p>For example, if you set jConnect to VERSION_4 or
+
+later, but want to use the <b>TruncationConverter</b> class
+
+rather than the multibyte <b>PureConverter </b>class,
+
+you can set CHARSET_CONVERTER_CLASS:</p>
+<p>
+<pre>...
+ props.put("CHARSET_CONVERTER_CLASS", 
+   "com.sybase.jdbc2.utils.TruncationConverter")</pre>
+</p>
+<A NAME="X32871"></A><h3>Setting the CHARSET connection  property</h3>
+<p>You can specify the character set to use in your application
+
+by setting the CHARSET driver property. If you do not set the CHARSET
+
+property: 
+<ul>
+<li class=fi>For VERSION_2,
+
+jConnect uses iso_1 as the default character set.
+</li>
+<li class=ds>For VERSION_3, VERSION_4, VERSION_5, and
+
+VERSION_6, jConnect uses the database's default
+
+character set, and adjusts automatically to perform any necessary
+
+conversions on the client side.
+
+</li>
+</ul>
+</p>
+<p>You can also use the <b>-J </b><i>charset </i>command
+
+line option for the <b>IsqlApp</b> application to specify
+
+a character set.</p>
+<p>To determine which character sets are installed on your Adaptive
+
+Server, issue the following SQL query on your server: 
+<pre>select name from syscharsets
+ go</pre>
+</p>
+<p>For the <b>PureConverter</b> class, if the designated
+
+CHARSET does not work with the client's Java Virtual Machine
+
+(VM), the connection fails with a <b>SQLException</b>,
+
+indicating that you must set CHARSET to a character set that is supported
+
+by both Adaptive Server and the client.</p>
+<p>When the <b>TruncationConverter</b> class is used,
+
+character truncation is applied regardless of whether the designated
+
+CHARSET is 7-bit ASCII or not.</p>
+<A NAME="X42659"></A><h3>Improving  character-set conversion performance</h3>
+<p>If you use multibyte character sets and need to improve driver
+
+performance, you can use the <b>SunIoConverter</b> class
+
+provided with the jConnect samples. See <A HREF="prjdbcp21.htm#X20584">"Character-set conversion"</A> for details.</p>
+<A NAME="TI19"></A><h3>Supported character sets</h3>
+<p><A HREF="prjdbcp9.htm#X29467">Table 2-4</A> lists
+
+the Sybase character sets that are supported by jConnect. The table
+
+also lists the corresponding JDK byte converter for each supported character
+
+set.</p>
+<p>Although jConnect supports UCS-2, currently no Sybase databases
+
+or open servers support UCS-2.</p>
+<p>Adaptive Server versions 12.5 and later support a version
+
+of Unicode known as the UTF-16 encoding.</p>
+<p><A HREF="prjdbcp9.htm#X29467">Table 2-4</A> lists
+
+the character sets currently supported by Sybase.</p>
+<A NAME="X29467"></A><table cellspacing=0 cellpadding=6 border=1 frame="void" rules="all"><caption>Table 2-4: Supported Sybase character sets</caption>
+<tr><th align="left" valign=bottom>SybCharset
+
+name
+</th>
+<th align="left" valign=bottom>JDK byte converter
+</th>
+</tr>
+<tr><td valign=top>ascii_7
+</td>
+<td valign=top>ASCII
+</td>
+</tr>
+<tr><td valign=top>big5
+</td>
+<td valign=top>Big5
+</td>
+</tr>
+<tr><td valign=top>big5hk (see
+
+note)
+</td>
+<td valign=top>Big5_HKSCS
+</td>
+</tr>
+<tr><td valign=top>cp037
+</td>
+<td valign=top>Cp037
+</td>
+</tr>
+<tr><td valign=top>cp437
+</td>
+<td valign=top>Cp437
+</td>
+</tr>
+<tr><td valign=top>cp500
+</td>
+<td valign=top>Cp500
+</td>
+</tr>
+<tr><td valign=top>cp850
+</td>
+<td valign=top>Cp850
+</td>
+</tr>
+<tr><td valign=top>cp852
+</td>
+<td valign=top>Cp852
+</td>
+</tr>
+<tr><td valign=top>cp855
+</td>
+<td valign=top>Cp855
+</td>
+</tr>
+<tr><td valign=top>cp857
+</td>
+<td valign=top>Cp857
+</td>
+</tr>
+<tr><td valign=top>cp860
+</td>
+<td valign=top>Cp860
+</td>
+</tr>
+<tr><td valign=top>cp863
+</td>
+<td valign=top>Cp863
+</td>
+</tr>
+<tr><td valign=top>cp864
+</td>
+<td valign=top>Cp864
+</td>
+</tr>
+<tr><td valign=top>cp866
+</td>
+<td valign=top>Cp866
+</td>
+</tr>
+<tr><td valign=top>cp869
+</td>
+<td valign=top>Cp869
+</td>
+</tr>
+<tr><td valign=top>cp874
+</td>
+<td valign=top>Cp874
+</td>
+</tr>
+<tr><td valign=top>cp932
+</td>
+<td valign=top>MS932
+</td>
+</tr>
+<tr><td valign=top>cp936
+</td>
+<td valign=top>GBK
+</td>
+</tr>
+<tr><td valign=top>cp950
+</td>
+<td valign=top>Cp950
+</td>
+</tr>
+<tr><td valign=top>cp1250
+</td>
+<td valign=top>Cp1250
+</td>
+</tr>
+<tr><td valign=top>cp1251
+</td>
+<td valign=top>Cp1251
+</td>
+</tr>
+<tr><td valign=top>cp1252
+</td>
+<td valign=top>Cp1252
+</td>
+</tr>
+<tr><td valign=top>cp1253
+</td>
+<td valign=top>Cp1253
+</td>
+</tr>
+<tr><td valign=top>cp1254
+</td>
+<td valign=top>Cp1254
+</td>
+</tr>
+<tr><td valign=top>cp1255
+</td>
+<td valign=top>Cp1255
+</td>
+</tr>
+<tr><td valign=top>cp1256
+</td>
+<td valign=top>Cp1256
+</td>
+</tr>
+<tr><td valign=top>cp1257
+</td>
+<td valign=top>Cp1257
+</td>
+</tr>
+<tr><td valign=top>cp1258
+</td>
+<td valign=top>Cp1258
+</td>
+</tr>
+<tr><td valign=top>deckanji
+</td>
+<td valign=top>EUC_JP
+</td>
+</tr>
+<tr><td valign=top>eucgb
+</td>
+<td valign=top>EUC_CN
+</td>
+</tr>
+<tr><td valign=top>eucjis
+</td>
+<td valign=top>EUC_JP
+</td>
+</tr>
+<tr><td valign=top>eucksc
+</td>
+<td valign=top>EUC_KR
+</td>
+</tr>
+<tr><td valign=top>ibm420
+</td>
+<td valign=top>Cp420
+</td>
+</tr>
+<tr><td valign=top>ibm918
+</td>
+<td valign=top>Cp918
+</td>
+</tr>
+<tr><td valign=top>iso_1
+</td>
+<td valign=top>ISO8859_1
+</td>
+</tr>
+<tr><td valign=top>iso88592
+</td>
+<td valign=top>ISO8859-2
+</td>
+</tr>
+<tr><td valign=top>is088595
+</td>
+<td valign=top>ISO8859_5
+</td>
+</tr>
+<tr><td valign=top>iso88596
+</td>
+<td valign=top>ISO8859_6
+</td>
+</tr>
+<tr><td valign=top>iso88597
+</td>
+<td valign=top>ISO8859_7
+</td>
+</tr>
+<tr><td valign=top>iso88598
+</td>
+<td valign=top>ISO8859_8
+</td>
+</tr>
+<tr><td valign=top>iso88599
+</td>
+<td valign=top>ISO8859_9
+</td>
+</tr>
+<tr><td valign=top>iso15
+</td>
+<td valign=top>ISO8859_15_FDIS
+</td>
+</tr>
+<tr><td valign=top>koi8
+</td>
+<td valign=top>KOI8_R
+</td>
+</tr>
+<tr><td valign=top>mac
+</td>
+<td valign=top>Macroman
+</td>
+</tr>
+<tr><td valign=top>mac_cyr
+</td>
+<td valign=top>MacCyrillic
+</td>
+</tr>
+<tr><td valign=top>mac_ee
+</td>
+<td valign=top>MacCentralEurope
+</td>
+</tr>
+<tr><td valign=top>macgreek
+</td>
+<td valign=top>MacGreek
+</td>
+</tr>
+<tr><td valign=top>macturk
+</td>
+<td valign=top>MacTurkish
+</td>
+</tr>
+<tr><td valign=top>sjis
+</td>
+<td valign=top>MS932
+</td>
+</tr>
+<tr><td valign=top>tis620
+</td>
+<td valign=top>MS874
+</td>
+</tr>
+<tr><td valign=top>utf8
+</td>
+<td valign=top>UTF8
+</td>
+</tr>
+</table>
+<p><IMG SRC="images/note.gif" width=17 height=17 border=0 align="bottom" alt="Note">&nbsp;&nbsp; The big5hk character set will be supported only if you
+
+are using JDK 1.3 or later.</P>
+<A NAME="X18812"></A><h3>European currency symbol  support </h3>
+<p>jConnect version 4.1 and later support the use of the new
+
+European currency symbol, or "<i>euro</i>
+" and
+
+its conversion to and from UCS-2 Unicode.</p>
+<p>The <i>euro</i>
+ has
+
+been added to the following Sybase character sets: cp1250, cp1251,
+
+cp1252, cp1253, cp1254, cp1255, cp1256, cp1257, cp1258, cp874, iso885915,
+
+and utf8.</p>
+<p>To use the <i>euro</i>
+ symbol: 
+<ul>
+<li class=fi>Use the <b>PureConverter</b> class,
+
+a pure Java, multibyte character-set converter. See <A HREF="prjdbcp9.htm#X37477">"jConnect character-set converters"</A> for more information.
+</li>
+<li class=ds>Verify that the new character sets are installed
+
+on the server.
+<br><br>
+The <i>euro</i>
+ symbol is currently supported
+
+only on Adaptive Server version 11.9.2 and later; Adaptive Server
+
+Anywhere version 8.0 and later provides support for the <i>euro</i>
+ symbol.
+</li>
+<li class=ds>Select the appropriate character set on the client.
+
+See <A HREF="prjdbcp9.htm#X32871">"Setting the CHARSET connection
+
+property"</A> for
+
+more information.
+
+</li>
+</ul>
+</p>
+<A NAME="TI20"></A><h3>Unsupported character sets</h3>
+<p>The following Sybase character sets are not supported in jConnect
+
+5.x because no JDK byte converters are analogous to the Sybase character
+
+sets: 
+<ul>
+<li class=fi>cp1047
+</li>
+<li class=ds>euccns
+</li>
+<li class=ds>greek8
+</li>
+<li class=ds>roman8
+</li>
+<li class=ds>turkish8
+
+</li>
+</ul>
+</p>
+<p>You can use these character sets with the <b>TruncationConverter</b> class
+
+as long as the application uses only the 7-bit ASCII subsets of
+
+these characters.</p>
+<P>&nbsp;</P><hr noshade size=1>
+<table cols=3><tr><td colspan=2 align=left>
+Copyright &copy; 2003 Sybase, Inc. All rights reserved.&nbsp;&nbsp;&nbsp;
+</td><td colspan=1>
+<A HREF="prjdbcp10.htm"><IMG SRC="images/arrow-right.gif" ALIGN=right></A>
+</td></tr></table>
+</BODY>
+</HTML>
+

@@ -1,0 +1,136 @@
+<html>
+<head>
+<title>Untitled Document</title>
+</head>
+
+<body bgcolor="#FFFFFF">
+<BLOCKQUOTE>
+  <table width="75%" border="0">
+    <tr> 
+      <td> 
+        <div align="left"><font face="Default" size="2"><a href="toc.html"><b>Índice</b></a></font></div>
+      </td>
+      <td> 
+        <div align="left"><font face="Default" size="2"><a href="overview.html"><b>Presentación</b></a></font></div>
+      </td>
+      <td bgcolor="#FFFFFF"> 
+        <div align="left"><font face="Default" size="2"><b><a href="menu.html">Menús</a></b></font></div>
+      </td>
+      <td> 
+        <div align="left"><font face="Default" size="2"><b><a href="windows.html">Ventanas</a></b></font></div>
+      </td>
+      <td> 
+        <div align="left"><font face="Default" size="2"><b><a href="button.html">Botones</a></b></font></div>
+      </td>
+    </tr>
+  </table>
+<h2><b><font color="#0000A0">Menú Archivo</font></font></b> 
+</h2>
+  <table width="90%" border="1" cellpadding="5" cellspacing="0" name="mrenus" bordercolorlight="#999999" bordercolor="#999999">
+    <tr> 
+      <td width="24%" height="26"> 
+        <h5 align="left">OPCIÓN</font></h5>
+      </td>
+      <td width="76%" height="26"> 
+        <h5 align="left">DESCRIPCIÓN</font></h5>
+      </td>
+    </tr>
+    <tr> 
+      <td width="24%" valign="top"> 
+        <div align="left"><font color="#000099"><b><font color="#000000" face="Default" size="2">Leer archivo de lote </font></b></font></div>
+      </td>
+      <td width="76%"> 
+        <p align="left"><font face="Default" size="2">Permite ejecutar archivos por lotes preparados.
+		  Dependiendo del estado definido en la ficha <a href="inputoptions.html">Opciones de la ventana de entrada</a>, 
+          es posible leer archivos en dicha ventana, así como modificarlos para, a continuación, ejecutarlos mediante el
+		  <a href="button.html">botón Ir</a> o a la opción <i>Ejecutar</i> del <a
+href="query.html">menú Consultar</a>. El <i> delimitador de comando 
+          </i> puede configurarse en la ficha <a
+href="inputoptions.html">Opciones de la ventana de entrada</a>. </font></p>
+        <p align="left"><font face="Default" size="2"> Para 
+          ejecutar el lote como tarea de fondo, deberá activar la opción adecuada de la ficha <a
+href="inputoptions.html">Opciones de la ventana de entrada</a>.</font></p>
+      </td>
+    </tr>
+    <tr> 
+      <td width="24%"><b><font face="Default" size="2">Guardar ventana 
+        de entrada en archivo</font></b></td>
+      <td width="76%"><font face="Default" size="2">Almacena 
+        el contenido actual de la ventana de entrada en un archivo. Posteriormente, podrá leerlo y ejecutarlo de nuevo.</font></td>
+    </tr>
+    <tr> 
+      <td width="24%" valign="top"><b><font size="2" face="Default">Guardar búfer de salida en archivo</font></b></td>
+      <td width="76%">
+        <p><font face="Default" size="2">Todos los conjuntos de resultados se almacenan 
+          en un buffer de salida. Esta opción le permitirá guardar el contenido de este buffer 
+          en un archivo, lo que constituye un procedimiento directo para guardar
+          datos almacenados en la base de datos. Si los datos se presentan como 
+          <i>elementos de tabla</i>, en la ficha <a href="outputoptions.html">Opciones de la ventana de
+          salida</a> podrá definir un delimitador de campos; lo que permite 
+          preparar el archivo de salida para su posterior uso con <b>bcp</b> con el fin de introducir 
+          los datos otra vez en una tabla de base de datos. El delimitador de línea es siempre <i> 
+          LineFeed</i>. </font></p>
+        <p><font face="Default" size="2">Si los datos se presentan en forma de 
+          <i>texto</i>, se almacenarán exactamente como aparecen en la ventana de salida.</font></p>
+      </td>
+    </tr>
+    <tr> 
+      <td width="24%" valign="top"><b><font face="Default" size="2">Guardar búfer de historial en archivo</font></b></td>
+      <td width="76%"><font face="Default" size="2">Todos los comandos 
+        ejecutados se almacenan en la ventana de historial que se abre al hacer clic 
+        en el icono <a href="button.html">Historial</a>. Si lo desea, puede modificar
+        el contenido de esta ventana, añadiendo comentarios, por ejemplo, y guardarlo 
+        en un archivo para utilizarlo como registro o para que le sirva de ayuda al resolver problemas.</font></td>
+    </tr>
+    <tr> 
+      <td width="24%" valign="top"><b><font face="Default" size="2">Imprimir el estilo ASCII del conjunto de resultados</font></b></td>
+      <td width="76%">
+        <p><font face="Default" size="2">Envía el conjunto de resultados actual
+          a una impresora. Los datos se presentan como texto ASCII.</font></p>
+        <p><font face="Default" size="2" color="#800000"><b>NOTA:</b></font><font face="Default" size="2"> 
+          &nbsp;si modifica los datos en la ventana de salida, (por ejemplo, cambiando el tamaño o reordenando 
+          las columnas) estos cambios no aparecerán en la salida impresa.</font></p>
+      </td>
+    </tr>
+    <tr> 
+      <td width="24%" valign="top"><b><font face="Default" size="2">Imprimir el conjunto de resultados en el estilo JTable</font></b> <font face="Default" size="2"><br>
+        (sólo jdk 1.2)</font></td>
+      <td width="76%">
+        <p><font size="2" face="Default">Envía el conjunto de resultados actual
+          a una impresora. Los datos se presentan como una tabla <a href="table.html">JTable</a></font>.</p>
+        <p><font face="Default" size="2" color="#800000"><b>NOTA:</b></font><font face="Default" size="2"> 
+          &nbsp;si modifica los datos en la ventana de salida, (por ejemplo, cambiando el tamaño o reordenando 
+          las columnas) estos cambios no aparecerán en la salida impresa.</font></p>
+      </td>
+    </tr>
+    <tr> 
+      <td width="24%" valign="top"><b><font face="Default" size="2">Salir</font></b></td>
+      <td width="76%"><font face="Default" size="2">Cierra todas las ventanas 
+        de sesión, lo que también hace que se cierren las conexiones con bases de datos asociadas,
+       así como la aplicación. </font></td>
+    </tr>
+  </table>
+  <hr>
+<table width="75%" border="0">
+  <tr> 
+    <td> 
+      <div align="center"><font face="Default" size="2"><a href="toc.html"><b>Índice</b></a></font></div>
+    </td>
+    <td> 
+      <div align="center"><font face="Default" size="2"><a href="overview.html"><b>Presentación</b></a></font></div>
+    </td>
+    <td bgcolor="#FFFFFF"> 
+      <div align="center"><font face="Default" size="2"><b><a href="menu.html">Menús</a></b></font></div>
+    </td>
+    <td> 
+      <div align="center"><font face="Default" size="2"><b><a href="windows.html">Ventanas</a></b></font></div>
+    </td>
+    <td> 
+      <div align="center"><font face="Default" size="2"><b><a href="button.html">Botones</a></b></font></div>
+    </td>
+  </tr>
+</table>
+</BLOCKQUOTE>
+<p>&nbsp;</p>
+</body>
+</html>

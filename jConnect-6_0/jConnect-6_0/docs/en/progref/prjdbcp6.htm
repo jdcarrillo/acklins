@@ -1,0 +1,510 @@
+
+<html>
+<!-- 
+Copyright (C) 2003. Sybase Inc. All rights reserved.
+Programmer's Reference
+jConnect&#153; for JDBC&#153;
+-->
+
+<HEAD>
+<script language="JavaScript">
+<!--
+
+if (navigator.appName == "Netscape"){
+     document.write('<LINK REL=STYLESHEET HREF="netscape.css" TYPE="text/javascript">');
+     }
+else{
+     document.write('<LINK REL=STYLESHEET HREF="default.css" TYPE="text/css">');
+     }
+
+//-->
+</script>
+<NOSCRIPT><LINK REL=STYLESHEET HREF="default.css" TYPE="text/css"></NOSCRIPT>
+<TITLE>Setting  up jConnect</TITLE></HEAD>
+<BODY bgproperties="FIXED" bgcolor="#ffffe2">
+<P ALIGN=RIGHT><A HREF="prjdbcp5.htm"><IMG SRC="images/arrow-left.gif" align=top></A>&nbsp;&nbsp;<A HREF="prjdbcp7.htm"><IMG SRC="images/arrow-right.gif" align=top></A></P>
+
+<P ALIGN=LEFT><I>Chapter 2  Programming  Information</I><HR NOSHADE SIZE=1></P>
+<A NAME="X19839"></A><h1>Setting  up jConnect</h1>
+<p>This section describes the tasks you need to perform before
+
+you use jConnect.</p>
+<A NAME="X15095"></A><h2>Setting the jConnect version</h2>
+<p>There are several versions of jConnect; use a version setting
+
+to determine: 
+<ul>
+<li class=fi>The default
+
+value of the LANGUAGE
+
+connection property.
+</li>
+<li class=ds>The version-specific features that are available.
+</li>
+<li class=ds>The default character set, if no character set is
+
+specified through the CHARSET
+
+connection property.
+</li>
+<li class=ds>The default value of the CHARSET_CONVERTER
+
+connection property.
+</li>
+<li class=ds>The default value of the CANCEL_ALL
+
+connection property, which is used to set the behavior of <b>Statement.cancel(
+
+),</b> which by default cancels the object on which it is
+
+invoked and any other <b>Statement</b> objects that
+
+have begun to execute and are waiting for results.
+</li>
+<li class=ds>If you are requesting support for wide tables from
+
+the server.
+</li>
+<li class=ds>If you would like
+
+to request server support for storing character data in <i>unichar</i> (Unicode)
+
+columns.
+<p><IMG SRC="images/note.gif" width=17 height=17 border=0 align="bottom" alt="Note">&nbsp;&nbsp; Only Adaptive Server version 12.5 and later support
+
+wide tables and <i>unichar</i> character data.</P>
+</li>
+<li class=ds>If you would like to request support from the server
+
+for the <i>date</i> and <i>time</i> SQL
+
+datatypes.
+<p><IMG SRC="images/note.gif" width=17 height=17 border=0 align="bottom" alt="Note">&nbsp;&nbsp; Only Adaptive Server version 12.5.1 and later support
+
+the<i> date</i> and <i>time</i> SQL
+
+datatypes.</P>
+
+</li>
+</ul>
+</p>
+<p><A HREF="prjdbcp6.htm#X37705">Table 2-1</A> lists
+
+the version settings available and their features.</p>
+<A NAME="X37705"></A><table cellspacing=0 cellpadding=6 border=1 frame="void" rules="all"><caption>Table 2-1: jConnect version settings and their
+
+features</caption>
+<tr><th align="left" valign=bottom>Version constant
+</th>
+<th align="left" valign=bottom>Features
+</th>
+<th align="left" valign=bottom>Comments
+</th>
+</tr>
+<tr><td valign=top>VERSION_6
+</td>
+<td valign=top>
+<ul>
+<li class=fi>jConnect
+
+requests support for the date and time SQL datatypes from the server.
+
+This request is ignored by servers other than Adaptive Server version
+
+12.5.1 and later.
+</li>
+<li class=ds>jConnect requests support for the <i>unichar</i> and <i>univarchar</i> datatypes
+
+from the server. This request is ignored by servers other than Adaptive
+
+Server 12.5 and later.
+</li>
+<li class=ds>jConnect requests support for wide tables from the
+
+server. This request is ignored by servers other than Adaptive Server
+
+12.5 and later.
+</li>
+<li class=ds>The default value of the LANGUAGE connection property
+
+is null.
+</li>
+<li class=ds>If the CHARSET connection property does not specify
+
+a character set, jConnect uses the database's default character
+
+set.The default value for CHARSET_CONVERTER is the <b>PureConverter</b> class.
+</li>
+<li class=ds>By default, <b>Statement.cancel( )</b> cancels
+
+only the <b>Statement</b> object it is invoked on.
+</li>
+<li class=ds>JDBC 2.0 methods can be used to store and retrieve
+
+Java objects as column data.
+
+</li>
+</ul>
+
+</td>
+<td valign=top>For jConnect version 5.x,
+
+the default is VERSION_5.
+<br><br>
+For additional information, see the comments for VERSION_4.
+<br><br>
+For additional information for date and time datatypes, see <A HREF="prjdbcp10.htm#X18512">"Using <i>Date</i> and <i>Time</i> datatypes"</A>.
+<br><br>
+For more information on wide tables, see <A HREF="prjdbcp10.htm#BHCJEABE">"Wide table support for Adaptive Server version 12.5 and later"</A>.
+<br><br>
+For more information on <i>unichar</i> and <i>univarchar</i> datatypes
+
+and Unicode, see <A HREF="prjdbcp9.htm#BHCFJECE">"Using jConnect to pass Unicode data"</A>.
+</td>
+</tr>
+<tr><td valign=top>VERSION_5
+</td>
+<td valign=top>
+<ul>
+<li class=fi>The default value of the LANGUAGE connection property
+
+is null.
+</li>
+<li class=ds>If the CHARSET connection property does not specify
+
+a character set, jConnect uses the database's default character
+
+set.The default value for CHARSET_CONVERTER is the <b>PureConverter</b> class.
+</li>
+<li class=ds>By default, <b>Statement.cancel( )</b> cancels
+
+only the <b>Statement</b> object it is invoked on.
+</li>
+<li class=ds>JDBC 2.0 methods can be used to store and retrieve
+
+Java objects as column data.
+
+</li>
+</ul>
+
+</td>
+<td valign=top>For jConnect version 5.x,
+
+the default is VERSION_5.
+<br><br>
+For additional information, see the comments for VERSION_4.
+</td>
+</tr>
+<tr><td valign=top>VERSION_4
+</td>
+<td valign=top>
+<ul>
+<li class=fi>The default value of the LANGUAGE connection property
+
+is null.
+</li>
+<li class=ds>If the CHARSET connection property does not specify
+
+a character set, jConnect uses the database's default character
+
+set.The default value for CHARSET_CONVERTER is the <b>PureConverter</b> class.
+</li>
+<li class=ds>By default, <b>Statement.cancel( )</b> cancels
+
+only the <b>Statement</b> object it is invoked on.
+</li>
+<li class=ds>JDBC 2.0 methods can be used to store and retrieve
+
+Java objects as column data.
+
+</li>
+</ul>
+
+</td>
+<td valign=top>Server messages are localized
+
+according to the language setting in your local environment. The
+
+languages supported are: Chinese, U.S. English, French, German,
+
+Japanese, Korean, Polish, Portuguese, and Spanish.
+<br><br>
+The default behavior of <b>Statement.cancel( )</b> is JDBC-compliant.
+<br><br>
+Use CANCEL_ALL to set the behavior of <b>Statement.cancel(
+
+)</b>. See <A HREF="prjdbcp6.htm#X22271">"CANCEL_ALL connection property"</A>.
+<br><br>
+For information on Java objects as column data, see <A HREF="prjdbcp11.htm#X38769">"Storing Java objects as column data in a table"</A>.
+</td>
+</tr>
+<tr><td valign=top>VERSION_3
+</td>
+<td valign=top>
+<ul>
+<li class=fi>The default value of the LANGUAGE connection property
+
+is us_english.
+</li>
+<li class=ds>If the CHARSET connection property does not specify
+
+a character set, jConnect uses the database's default character
+
+set.
+</li>
+<li class=ds>The default value for CHARSET_CONVERTER
+
+is the <b>PureConverter</b> class.
+</li>
+<li class=ds>By default, <b>Statement.cancel( ) </b>cancels
+
+the object it is invoked on and any other <b>Statement</b> objects
+
+that have begun to execute and are waiting for results.
+
+</li>
+</ul>
+
+</td>
+<td valign=top>See the comments for VERSION_2.
+</td>
+</tr>
+<tr><td valign=top>VERSION_2
+</td>
+<td valign=top>
+<ul>
+<li class=fi>The default value of the LANGUAGE connection property
+
+is us_english.
+</li>
+<li class=ds>If the CHARSET connection property does not specify
+
+a character set, the default character set is iso_1.
+</li>
+<li class=ds>The default value for CHARSET_CONVERTER
+
+is the <b>TruncationConverter</b> class, unless the CHARSET
+
+connection property specifies a multibyte or 8-bit character set,
+
+in which case the default CHARSET_CONVERTER is the <b>PureConverter</b> class.
+</li>
+<li class=ds>By default, <b>Statement.cancel( ) </b>cancels
+
+the object it is invoked on and any other <b>Statement</b> objects
+
+that have begun to execute and are waiting for results.
+
+</li>
+</ul>
+
+</td>
+<td valign=top>The LANGUAGE connection
+
+property determines the language in which messages from jConnect
+
+and the server appear.
+<br><br>
+For information on the CHARSET and CHARSET_CONVERTER
+
+connection classes, see <A HREF="prjdbcp9.htm#X37477">"jConnect character-set converters"</A>.
+<br><br>
+The VERSION_2 default behavior of <b>Statement.cancel(
+
+)</b> is not JDBC-compliant. Use CANCEL_ALL to set
+
+the behavior of <b>Statement.cancel( )</b>. See <A HREF="prjdbcp6.htm#X22271">"CANCEL_ALL connection property"</A>.
+</td>
+</tr>
+</table>
+<p>The version values are constant values from the <b>SybDriver</b> class.
+
+When referring to the version constant, use this syntax: 
+<pre>com.sybase.jdbcx.SybDriver.VERSION_5</pre>
+</p>
+<p>Use <b>SybDriver.setVersion( )</b> to set the
+
+jConnect version. The setVersion method will affect the jConnect
+
+default behavior for all Connections created by the SybDriver object.
+
+However, you can use the JCONNECT_VERSION connection property
+
+to set version-specific behavior for individual connections. The
+
+following code samples show how to load the jConnect driver and
+
+set the version:</p>
+<p>
+<pre>import com.sybase.jdbcx.SybDriver;
+SybDriver  sybDriver = (SybDriver)
+   Class.forName   ("com.sybase.jdbc2.jdbc.SybDriver").newInstance();
+sybDriver.setVersion
+   (com.sybase.jdbcx.SybDriver.VERSION_5);
+DriverManager.registerDriver(sybDriver);</pre>
+</p>
+<p>You can call <b>setVersion( )</b> multiple times
+
+to change the version setting. New connections inherit the behavior
+
+associated with the version setting at the time the connection was
+
+made. Changing the version setting during a session does not affect
+
+the current connection. jConnect provides a com.sybase.jdbcx.SybDriver.VERSION_LATEST
+
+constant which can be used to ensure that you are always requesting
+
+the highest version value possible for the jConnect driver you're
+
+using. However, by setting the version to VERSION_LATEST,
+
+you may see behavior changes, if you replace your jConnect driver
+
+with a newer one.</p>
+<p>As described in the next section, you can use JCONNECT_VERSION
+
+to override the <b>SybDriver</b> version setting and
+
+specify a different version setting for a specific connection.</p>
+<p><strong>For wide table, unichar, and date/time
+
+datatype support with<br>jConnect 5.5:</strong></p>
+<p>To enable wide table, unichar, and date/time datatype
+
+support with Adaptive Server version 12.5 and later, (date/time
+
+datatype support is only available in Adaptive Server version 12.5.1
+
+and later), use <b>SybDriver.setVersion( )</b> to set
+
+the jConnect version to 6:</p>
+<p>
+<pre>sybDriver.setVersion
+   (com.sybase.jdbcx.SybDriver.VERSION_6);</pre>
+</p>
+<A NAME="X19884"></A><h3>JCONNECT_VERSION connection property</h3>
+<p>Use JCONNECT_VERSION to specify the version setting
+
+for a specific session.You can set JCONNECT_VERSION to
+
+an integer value of "2," "3," "4," "5," or "6" depending
+
+on the characteristics you want (see <A HREF="prjdbcp6.htm#X37705">Table 2-1</A>).</p>
+<A NAME="X22271"></A><h3>CANCEL_ALL connection property</h3>
+<p>CANCEL_ALL is a Boolean-valued connection property
+
+for specifying the behavior of the <b>Statement.cancel( )</b> method.</p>
+<p><IMG SRC="images/note.gif" width=17 height=17 border=0 align="bottom" alt="Note">&nbsp;&nbsp; In jConnect version 4.0 and earlier, the default for
+
+CANCEL_ALL is <i>true</i>. In jConnect version
+
+4.1 and later, to comply with the JDBC specification, if you set
+
+the connection property JCONNECT_VERSION to "4" or
+
+above, the default setting for CANCEL_ALL is <i>false</i>.</P>
+<p>The settings for CANCEL_ALL have the following effect
+
+on <b>Statement.cancel( )</b>: 
+<ul>
+<li class=fi>If CANCEL_ALL is <i>false</i>,
+
+invoking <b>Statement.cancel(
+
+)</b> cancels only the <b>Statement</b> object
+
+it is invoked on. Thus, if <b>stmtA</b> is a <b>Statement</b> object, <b>stmtA.cancel(
+
+) </b>cancels the execution of the SQL statement contained
+
+in <b>stmtA</b> in the database, but no other statements
+
+are affected. <b>stmtA</b> is canceled whether it is
+
+in cache waiting to execute or has started to execute and is waiting
+
+for results.
+</li>
+<li class=ds>If CANCEL_ALL is <i>true</i>,
+
+invoking <b>Statement.cancel( )</b> cancels not only the
+
+object it is invoked on, but also any other <b>Statement</b> objects
+
+on the same connection that have executed and are waiting for results.
+
+</li>
+</ul>
+</p>
+<p>The following example sets CANCEL_ALL to <i>false</i>.
+
+In the example, <i>props</i> is a <b>Properties</b> object
+
+for specifying connection properties. 
+<pre>props.put("CANCEL_ALL",  "false");</pre>
+</p>
+<p><IMG SRC="images/note.gif" width=17 height=17 border=0 align="bottom" alt="Note">&nbsp;&nbsp; To cancel the execution of all <b>Statement</b> objects
+
+on a connection, regardless of whether or not they have begun execution
+
+on the server, use the extension method <b>SybConnection.cancel(
+
+).</b></P>
+<A NAME="X16713"></A><h2>Invoking  the jConnect driver </h2>
+<p>To register and invoke the Sybase jConnect driver, use either
+
+of the following two suggested methods: </p>
+<p>
+<ol>
+<li class=fi>Use a <b>Class.forName</b> call
+
+as in the following example:
+<br><br>
+
+<pre>Class.forName("com.sybase.jdbc2.jdbc.SybDriver")
+.newInstance();</pre>
+
+</li>
+<li class=ds>Add the jConnect driver to the <b>jdbc.drivers</b> system
+
+property. At initialization,
+
+the <b>DriverManager</b> class attempts to load the
+
+drivers listed in <b>jdbc.drivers</b>. This is less
+
+efficient than the Class.forName call approach. You can list multiple
+
+drivers in this property, separated with a colon (:). The following
+
+code samples show how to add a driver to <b>jdbc.drivers</b> within
+
+a program: 
+<pre>Properties sysProps = System.getProperties();
+String  drivers = "com.sybase.jdbc2.jdbc.SybDriver";
+String  oldDrivers =
+sysProps.getProperty("jdbc.drivers");
+if  (oldDrivers != null)
+   drivers += ":" + oldDrivers;
+ sysProps.put("jdbc.drivers",  drivers.toString());</pre>
+
+
+</li>
+</ol>
+</p>
+<p><IMG SRC="images/note.gif" width=17 height=17 border=0 align="bottom" alt="Note">&nbsp;&nbsp; <b>System.getProperties( )</b> is not allowed
+
+for Java applets. Use the <br> <b>Class.forName( )</b> method,
+
+instead.</P>
+<P>&nbsp;</P><hr noshade size=1>
+<table cols=3><tr><td colspan=2 align=left>
+Copyright &copy; 2003 Sybase, Inc. All rights reserved.&nbsp;&nbsp;&nbsp;
+</td><td colspan=1>
+<A HREF="prjdbcp7.htm"><IMG SRC="images/arrow-right.gif" ALIGN=right></A>
+</td></tr></table>
+</BODY>
+</HTML>
+

@@ -1,0 +1,151 @@
+<HTML>
+<BODY bgcolor="#FFFFFF">
+<blockquote>
+<div align="left"></div>
+<table width="75%" border="0">
+  <tr> 
+    <td> 
+      <div align="left"><font face="Default" size="2"><a href="toc.html"><b>Índice</b></a></font></div>
+    </td>
+    <td> 
+      <div align="left"><font face="Default" size="2"><a href="overview.html"><b>Presentación</b></a></font></div>
+    </td>
+    <td bgcolor="#FFFFFF"> 
+      <div align="left"><font face="Default" size="2"><b><a href="menu.html">Menús</a></b></font></div>
+    </td>
+    <td> 
+      <div align="left"><font face="Default" size="2"><b><a href="windows.html">Ventanas</a></b></font></div>
+    </td>
+    <td bgcolor="#FFFFFF"> 
+      <div align="left"><font face="Default" size="2"><b><a href="button.html">Botones</a></b></font></div>
+    </td>
+  </tr>
+</table>
+<hr>
+<h2><font face="Default" color="#000099">Opciones de bases de datos</font></h2>
+  <p><font face="Default" size="2">Estas opciones constituyen un medio 
+    eficaz de configurar los parámetros que se utilizan con asiduidad. 
+    Si desea más información sobre la función de estos parámetros y su 
+    utilización, consulte los manuales de Transact-SQL. Estos valores no 
+    se actualizarán cuando cambien en la base de datos. </font></p>
+  <table width="85%" border="1" cellspacing="0" cellpadding="5" height="80">
+    <tr> 
+      <td valign="top" width="12%" height="60"><b><i><font color="#660000" face="Default" size="2">NOTA</font><font color="#660000">:</font></i></b></td>
+      <td valign="top" width="88%" height="60"><font face="Default" size="2">Los 
+      botones <font color="#000099"> <b>On</b></font>|<font 
+      color="#000099"><b>Off</b></font> de las opciones quedarán sin marcar 
+      una vez que haga clic en <font color="#000099"><b>Aplicar</b></font> 
+      y el comando sea enviado a la base de datos, ya que <b>jisql</b> no puede 
+      estar seguro del estado actual de dichas opciones. Por ejemplo, si hace 
+      clic en <font color="#000099"><b>On</b></font> para &quot;Usar 
+      transacciones encadenadas&quot;, después hace clic en <b><font 
+      color="#000099">Aplicar</font></b> y, a continuación, ejecuta la misma 
+      instrucción de la ventana de entrada, <b>jisql</b> no recibirá la 
+      notificación de que el valor de la opción ha cambiado. </font></td>
+    </tr>
+  </table>
+  <p><font face="Default" size="2">Haga clic en <b>Aplicar</b> para 
+    guardar las modificaciones realizadas.<br>
+    </font></p>
+  <table width="95%" border="1" cellpadding="5" cellspacing="0" bordercolor="#999999" bordercolorlight="#999999">
+    <tr> 
+    <td width="50%" valign="top" bordercolor="#999999"><b><font face="Default" size="2">OPCIÓN</font></b></td>
+    <td width="50%"><b><font face="Default" size="2">DESCRIPCIÓN</font></b></td>
+  </tr>
+  <tr> 
+    <td width="50%" valign="top"><b><font face="Default" size="2"> Número 
+    máximo de filas a devolver (rowcount)</font></b></td>
+    <td width="50%"><font face="Default" size="2">Hace que se 
+    detenga el procesamiento de la consulta (<b>select</b>, <b>insert</b>, 
+    <b>update</b> o <b>delete</b>) una vez que se haya afectado el número de 
+    filas especificado. Para desactivar esta opción, introduzca 0 
+   (cero).</font></td>
+  </tr>
+  <tr> 
+    <td width="50%" valign="top"><b><font face="Default" size="2">Límite 
+    de tamaño de <i>texto </i>o <i>imagen</i> a devolver 
+    (textsize)</font></b></td>
+    <td width="50%"> 
+      <p><font face="Default" size="2">Determina el límite en 
+      bytes de los datos de <i>texto</i> o <i>imagen</i> que puede devolver 
+      una consulta <b>select</b>.</font></p>
+    </td>
+  </tr>
+  <tr> 
+    <td width="50%" valign="top"><b><font face="Default" size="2">Define el nivel de aislamiento de las transacciones (0 - 3)</font></b></td>
+    <td width="50%">
+      <p><font size="2" face="Default">Especifica hasta qué punto 
+        otros usuarios pueden acceder a los datos durante una 
+        transacción.</font></p>
+      <p><font face="Default" size="2"><b>0</b>: el resto de las 
+      transacciones no podrán modificar los datos hasta que la transacción
+      en curso se confirme. Sin embargo, sí podrán leer los datos no 
+      confirmados.</font></p>
+      <p><font face="Default" size="2"><b>1</b>: evita que una transacción 
+      modifique una fila mientras que otra la lee, antes de que la primera 
+      transacción haya confirmado el cambio.</font></p>
+      <p><font face="Default" size="2"><b>2</b>: evita que una transacción 
+      lea una fila mientras que otra la está modificando.</font></p>
+      <p><font face="Default" size="2"><b>3</b>: evita que una transacción 
+      lea un conjunto de filas que responden a una consulta mientras una 
+      segunda transacción modifica los datos, lo que garantiza que los 
+      datos leídos por una transacción son válidos hasta que ésta 
+      finalice.</font></p>
+    </td>
+  </tr>
+  <tr> 
+    <td width="50%" valign="top"><b><font face="Default" size="2">Mostrar 
+      número de filas afectadas </font></b></td>
+      <td width="50%"><font face="Default" size="2">Activa 
+        o desactiva la visualización de las filas afectadas por una 
+        instrucción <b>insert</b>, <b>update</b> 
+        o <b>delete</b>. Por defecto, la opción 
+        está desactivada.</font></td>
+  </tr>
+  <tr> 
+    <td width="50%" valign="top"><b><font face="Default" size="2">Usar 
+      transacciones encadenadas (chained)</font></b></td>
+    <td width="50%"><font size="2" face="Default">En modo encadenado, todos 
+    los comandos de recuperación y modificación de datos (<b>delete</b>, 
+    <b>insert</b>, <b>open</b>, <b>fetch</b>, <b>select</b> y <b>update</b>) 
+    inician una transacción. Este comportamiento no es compatible con muchas 
+    aplicaciones T-SQL. Por defecto, esta opción está 
+    desactivada.</font></td>
+  </tr>
+  <tr> 
+    <td width="50%" valign="top"><b><font face="Default" size="2">Reconocer los identificadores delimitados (quoted_identifier) </font></b></td>
+    <td width="50%"><font face="Default" size="2">Esta opción 
+      permite que la base de datos reconozca los identificadores delimitados. 
+      Siempre que incluya identificadores entre comillas en una instrucción, 
+      utilice comillas dobles. Si esta opción está activada, no 
+      utilice comillas dobles para las cadenas de caracteres o de fecha; en 
+      su lugar, use comillas simples. Para insertar una comilla simple en 
+      una columna, escriba dos signos de comillas simples consecutivos. Por defecto, esta opción está desactivada.</font></td>
+  </tr>
+</table>
+<p><font face="Default" size="2">Si desea obtener más información, consulte 
+  el manual <i>Transact-SQL User's Guide</i>.</font></p>
+  <div align="left">
+    <table width="75%" border="0">
+      <tr> 
+        <td> 
+          <div align="left"><font face="Default" size="2"><a href="toc.html"><b>Índice</b></a></font></div>
+        </td>
+        <td> 
+          <div align="left"><font face="Default" size="2"><a href="overview.html"><b>Presentación</b></a></font></div>
+        </td>
+        <td bgcolor="#FFFFFF"> 
+          <div align="left"><font face="Default" size="2"><b><a href="menu.html">Menús</a></b></font></div>
+        </td>
+        <td> 
+          <div align="left"><font face="Default" size="2"><b><a href="windows.html">Ventanas</a></b></font></div>
+        </td>
+        <td bgcolor="#FFFFFF"> 
+          <div align="left"><font face="Default" size="2"><b><a href="button.html">Botones</a></b></font></div>
+        </td>
+      </tr>
+    </table>
+  </div>
+</blockquote>
+</BODY>
+</HTML>
