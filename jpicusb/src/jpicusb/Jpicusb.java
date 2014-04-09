@@ -19,7 +19,7 @@ public class Jpicusb {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        
+        //System.load("/home/jcarrillo/NetBeansProjects/jpicusb/jpicusb.dll");
         try{
 	        iface.load();
 	}catch(Exception e){

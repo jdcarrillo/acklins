@@ -6,7 +6,7 @@
 
 package rwports;
 
-import static rwports.PuertoSerie.puerto;
+//import static rwports.PuertoSerie.puerto;
 
  /*
  * @author Juanda

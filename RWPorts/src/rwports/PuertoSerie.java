@@ -43,7 +43,7 @@ public class PuertoSerie {
             Parameters settings = new Parameters(); //se comienza con la configuracion de los tipos de datos a recibir
             //mediante la variiable settings
             // Configuraci�n del puerto
-            settings.setPort("COM"); //puerto COM a utilizar
+            settings.setPort("COM1"); //puerto COM a utilizar
             settings.setBaudRate("9600");      // velocidad 9600 bps
             settings.setStopBits("1");         //se tienen dos bits de paro
 
