@@ -5,9 +5,15 @@
  */
 package comcontrol;
 
-import javax.comm.*;
+import gnu.io.CommPortIdentifier;
+import gnu.io.PortInUseException;
+import gnu.io.SerialPort;
+import gnu.io.SerialPortEvent;
+import gnu.io.SerialPortEventListener;
+import gnu.io.UnsupportedCommOperationException;
 import java.io.*;
 import java.util.*;
+//import javax.comm.*;
 
 /**
  *
@@ -28,11 +34,13 @@ public class ComControl implements Runnable, SerialPortEventListener {
     protected String divertCode = "10";
     static String TimeStamp;
 
+    
     public static void main(String[] args) {
         // TODO code application logic here
 
+        
         try {
-            portId1 = CommPortIdentifier.getPortIdentifier("COM4");
+            portId1 = CommPortIdentifier.getPortIdentifier("/dev/ttyS0");
             portId2 = CommPortIdentifier.getPortIdentifier("COM5");
             ComControl reader = new ComControl();
         } catch (Exception e) {
