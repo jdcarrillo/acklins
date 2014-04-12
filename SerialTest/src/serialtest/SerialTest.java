@@ -6,6 +6,7 @@
 package serialtest;
 
 import gnu.io.CommPortIdentifier;
+
 import gnu.io.SerialPort;
 import gnu.io.SerialPortEvent;
 import gnu.io.SerialPortEventListener;
@@ -33,8 +34,8 @@ public class SerialTest implements SerialPortEventListener {
      */
     private static final String PORT_NAMES[] = {"/dev/tty.usbserial-A9007UX1", // Mac OS X
         "/dev/ttyUSB0",
-        "/dev/ttyS0",
-        "/dev/serial/by-id/usb-Prolific_Technology_Inc._USB-Serial_Controller-if00-port0",// Linux
+        "/dev/ttyS0",// Linux
+        "COMUSB0",
         "COM35", // Windows
 };
     private BufferedReader input;
@@ -64,6 +65,7 @@ public class SerialTest implements SerialPortEventListener {
         try {
             serialPort = (SerialPort) portId.open(this.getClass().getName(),
                     TIME_OUT);
+
             serialPort.setSerialPortParams(DATA_RATE,
                     SerialPort.DATABITS_8,
                     SerialPort.STOPBITS_1,
@@ -106,7 +108,7 @@ public class SerialTest implements SerialPortEventListener {
 
     public static void main(String[] args) {
         // TODO code application logic here
-
+        
         SerialTest main = new SerialTest();
         main.initialize();
         Thread t = new Thread() {
@@ -115,7 +117,7 @@ public class SerialTest implements SerialPortEventListener {
                 //the following line will keep this app alive for 1000    seconds,
                 //waiting for events to occur and responding to them    (printing incoming messages to console).
                 try {
-                    Thread.sleep(1000000);
+                    Thread.sleep(5);
                 } catch (InterruptedException ie) {
                 }
             }

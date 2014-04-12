@@ -51,10 +51,10 @@ public class SimpleRead implements Runnable, SerialPortEventListener {
         while (portList.hasMoreElements()) {
             portId = (CommPortIdentifier) portList.nextElement();
             if (portId.getPortType() == CommPortIdentifier.PORT_SERIAL) {
-                if (portId.getName().equals("COM1")) {
-                    if (portId.getName().equals("/dev/term/a")) {
+                if (portId.getName().equals("/dev/ttyUSB0")) {
+                    //if (portId.getName().equals("/dev/term/a")) {
                         SimpleRead reader = new SimpleRead();
-                    }
+                   // }
                 }
             }
         }
@@ -92,7 +92,7 @@ public class SimpleRead implements Runnable, SerialPortEventListener {
     @Override
     public void run() {
         try {
-            Thread.sleep(20000);
+            Thread.sleep(1000);
         } catch (InterruptedException e) {
             System.out.println(e);
         }

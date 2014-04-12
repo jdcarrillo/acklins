@@ -42,6 +42,7 @@ public class ListPorts {
                     break;
             }
             System.out.println(port.getName() + ": " + type);
+            
         }
 
     }

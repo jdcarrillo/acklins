@@ -43,7 +43,7 @@ public class PuertoSerie {
             Parameters settings = new Parameters(); //se comienza con la configuracion de los tipos de datos a recibir
             //mediante la variiable settings
             // Configuraci�n del puerto
-            settings.setPort("/dev/ttyS0"); //puerto COM a utilizar
+            settings.setPort("COMUSB0"); //puerto COM a utilizar
             settings.setBaudRate("9600");      // velocidad 9600 bps
             settings.setStopBits("1");         //se tienen dos bits de paro
 
@@ -56,6 +56,10 @@ public class PuertoSerie {
             int ciclo = 1;
             while (ciclo == 1) {
                 System.out.println("recibiendo: " + com1.receiveSingleChar());
+                System.out.println("ESTADO: " + com1.getStateSerialPortC(recibido));
+                System.out.println("ESTADO2: " + com1.receiveSingleString());
+                
+                
             }
 
         } catch (Exception ex) {

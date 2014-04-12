@@ -47,7 +47,7 @@ public class EjemploRXTX {
             portId = (CommPortIdentifier) portList.nextElement(); //get next port to check
             
             if (portId.getPortType() == CommPortIdentifier.PORT_SERIAL) {
-                if ( portId.getName().equals("/dev/tty") ) {
+                if ( portId.getName().equals("/dev/ttyS0") ) {
                     port = portId.getName();
                     gotPort = true;
                 }
