@@ -1,0 +1,60 @@
+           //serialPort.setParams(9600, 8, 1, 0,false,false);
+            // byte data transfer
+            //serialPort.writeBytes("H".getBytes());
+            // String data transfer
+            //serialPort.writeString("text to tranfer");
+
+            //System.out.println("\nLectura: " + serialPort.readString());
+            // int mask = SerialPort.MASK_RXCHAR;
+            //Set the prepared mask
+            // serialPort.setEventsMask(mask);
+            //Add an interface through which we will receive information about events
+            //serialPort.addEventListener(new Mains.SerialPortReader());
+//  
+            //System.out.println("inicio lectura: " + serialPort.writeString("?h"));
+            //while (serialPort.readBytes() == null) {
+//            while (serialPort.readString() == null) {    
+//
+//                System.out.println("Lectura: " + serialPort.readString());
+//                System.out.println("escribiendo: " + serialPort.writeString("H"));
+//                //System.out.println("mascara: " + serialPort.readHexStringArray());
+//                System.out.println("Lectura2: " + serialPort.readHexString(8, " "));
+//
+////                try {
+////                    System.out.println("INGRESE: ");
+////                    char caracter = (char) System.in.read();
+////                    System.out.println("Lectura2: " + serialPort.readHexString(8, " "));
+////                } catch (IOException ex) {
+////                    Logger.getLogger(Ports.class.getName()).log(Level.SEVERE, null, ex);
+////                }
+//                //System.out.println("pp: " + serialPort.writeString("h"));
+//
+//                
+//                //System.out.println("Lectura3: " + serialPort.readHexString(mask, " "));
+//
+//                System.out.println("Lectura4: " + serialPort.getInputBufferBytesCount());
+//                break;
+//            }
+
+
+
+//    public void serialEvent(SerialPortEvent event) {
+//
+//        if (event.isRXCHAR() && event.getEventValue() > 0) { //If data is available
+//
+//            try {
+//                SerialPort serialPort = new SerialPort("/dev/ttyUSB0");
+//                buffer += serialPort.readString(event.getEventValue());//Read all available from serial port and add it to buffer
+//
+//                if (buffer.endsWith("\n")) {//Check the end of buffer string. You need to know the data transfer end symbol, see it on your device protocol. If you have HEX based protocol you should check received bytes.
+//
+//                    //Do work with received data buffer = ""; //Send new request 
+//                }
+//
+//            } catch (Exception ex) {
+//
+//                //Do nothing 
+//            }
+//
+//        }
+//    }
