@@ -27,3 +27,6 @@
 /MainJssc/build/
 /MainJssc/dist/
 /TestJssc/dist/
+/Main/nbproject/private/
+/Main/build/
+/Main/dist/

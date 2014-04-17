@@ -5,6 +5,8 @@
  */
 
 package ports;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import jssc.SerialPort;
 import jssc.SerialPortEvent;
 import jssc.SerialPortEventListener;
@@ -25,6 +27,11 @@ public class Mains {
             int mask = SerialPort.MASK_RXCHAR + SerialPort.MASK_CTS + SerialPort.MASK_DSR;//Prepare mask
             serialPort.setEventsMask(mask);//Set mask
             serialPort.addEventListener(new SerialPortReader());//Add SerialPortEventListener
+            
+             
+            
+            
+            //serialPort.closePort();
         }
         catch (SerialPortException ex) {
             System.out.println(ex);
@@ -44,7 +51,7 @@ public class Mains {
                 if(event.getEventValue() == 10){//Check bytes count in the input buffer
                     //Read data, if 10 bytes available 
                     try {
-                        byte buffer[] = serialPort.readBytes(10);
+                        byte buffer[] = serialPort.readBytes(8);
                     }
                     catch (SerialPortException ex) {
                         System.out.println(ex);
@@ -67,7 +74,34 @@ public class Mains {
                     System.out.println("DSR - OFF");
                 }
             }
+            if (event.isTXEMPTY()){
+                System.out.println("vacio");
+            }else {System.out.println("no vacio");
+            
+            
+            Ports x = new Ports();
+            try {
+                System.out.println("escribiendo: " + serialPort.writeString("H"));
+            } catch (SerialPortException ex) {
+                Logger.getLogger(Mains.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            try {
+                String hex;
+                hex = serialPort.readHexString(8, "");
+                System.out.println("Resultado: " + x.resultScale(hex));
+            } catch (SerialPortException ex) {
+                Logger.getLogger(Mains.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            }
+            
+            
+           
+         
         }
+        
+        
     }
 
     
