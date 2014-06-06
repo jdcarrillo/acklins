@@ -74,7 +74,7 @@ function findAllcatalogo()
 
             // build the “GET” request URL
 
-            var URL = "http://buscaonline.dyndns.org:8080/Busqueda/resources/catalogo/catalogos/";
+            var URL = "http://192.168.0.12:8080/Busqueda/resources/catalogo/catalogos/";
 
               // open connection and send “GET” request to server
 
