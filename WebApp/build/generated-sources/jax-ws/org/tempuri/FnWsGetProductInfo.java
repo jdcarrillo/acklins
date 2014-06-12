@@ -100,4 +100,8 @@ public class FnWsGetProductInfo {
         this.securityKey = value;
     }
 
+    public FnWsGetProductInfoResponse.FnWsGetProductInfoResult getFnWsGetProductInfoResult() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }

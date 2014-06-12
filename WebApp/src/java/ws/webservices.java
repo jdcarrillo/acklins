@@ -12,7 +12,8 @@ import javax.jws.WebService;
  *
  * @author root
  */
-@WebService(serviceName = "ws_app_getinfo", portName = "ws_app_getinfoSoap", endpointInterface = "org.tempuri.WsAppGetinfoSoap", targetNamespace = "http://tempuri.org/", wsdlLocation = "WEB-INF/wsdl/webservices/servicios.acklins.net/ws_app_getinfo.asmx.wsdl")
+//@WebService(serviceName = "ws_app_getinfo", portName = "ws_app_getinfoSoap", endpointInterface = "org.tempuri.WsAppGetinfoSoap", targetNamespace = "http://tempuri.org/", wsdlLocation = "WEB-INF/wsdl/webservices/servicios.acklins.net/ws_app_getinfo.asmx.wsdl")
+@WebService(serviceName = "ws_app_getinfo", portName = "ws_app_getinfoSoap", endpointInterface = "org.tempuri.WsAppGetinfoSoap", targetNamespace = "http://tempuri.org/", wsdlLocation = "http://servicios.acklins.net/ws_app_getinfo.asmx.wsdl")
 public class webservices {
 
 
@@ -29,7 +30,8 @@ public class webservices {
         return fnWsGetProductInfo(0L,1,"oka");
     }
     
-    
+
+   
     
     
     

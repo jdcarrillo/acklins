@@ -24,8 +24,6 @@ import javax.xml.namespace.QName;
 @XmlRegistry
 public class ObjectFactory {
 
-    private final static QName _GroupTypeElement_QNAME = new QName("http://www.w3.org/2001/XMLSchema", "element");
-    private final static QName _GroupTypeGroup_QNAME = new QName("http://www.w3.org/2001/XMLSchema", "group");
     private final static QName _MaxLength_QNAME = new QName("http://www.w3.org/2001/XMLSchema", "maxLength");
     private final static QName _MinInclusive_QNAME = new QName("http://www.w3.org/2001/XMLSchema", "minInclusive");
     private final static QName _Sequence_QNAME = new QName("http://www.w3.org/2001/XMLSchema", "sequence");
@@ -41,6 +39,8 @@ public class ObjectFactory {
     private final static QName _Unique_QNAME = new QName("http://www.w3.org/2001/XMLSchema", "unique");
     private final static QName _MaxInclusive_QNAME = new QName("http://www.w3.org/2001/XMLSchema", "maxInclusive");
     private final static QName _AnyAttribute_QNAME = new QName("http://www.w3.org/2001/XMLSchema", "anyAttribute");
+    private final static QName _GroupTypeElement_QNAME = new QName("http://www.w3.org/2001/XMLSchema", "element");
+    private final static QName _GroupTypeGroup_QNAME = new QName("http://www.w3.org/2001/XMLSchema", "group");
 
     /**
      * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: ws
@@ -490,24 +490,6 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link LocalElement }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://www.w3.org/2001/XMLSchema", name = "element", scope = GroupType.class)
-    public JAXBElement<LocalElement> createGroupTypeElement(LocalElement value) {
-        return new JAXBElement<LocalElement>(_GroupTypeElement_QNAME, LocalElement.class, GroupType.class, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link GroupRef }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://www.w3.org/2001/XMLSchema", name = "group", scope = GroupType.class)
-    public JAXBElement<GroupRef> createGroupTypeGroup(GroupRef value) {
-        return new JAXBElement<GroupRef>(_GroupTypeGroup_QNAME, GroupRef.class, GroupType.class, value);
-    }
-
-    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link NumFacet }{@code >}}
      * 
      */
@@ -640,6 +622,24 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://www.w3.org/2001/XMLSchema", name = "anyAttribute")
     public JAXBElement<Wildcard> createAnyAttribute(Wildcard value) {
         return new JAXBElement<Wildcard>(_AnyAttribute_QNAME, Wildcard.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link LocalElement }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://www.w3.org/2001/XMLSchema", name = "element", scope = GroupType.class)
+    public JAXBElement<LocalElement> createGroupTypeElement(LocalElement value) {
+        return new JAXBElement<LocalElement>(_GroupTypeElement_QNAME, LocalElement.class, GroupType.class, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link GroupRef }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://www.w3.org/2001/XMLSchema", name = "group", scope = GroupType.class)
+    public JAXBElement<GroupRef> createGroupTypeGroup(GroupRef value) {
+        return new JAXBElement<GroupRef>(_GroupTypeGroup_QNAME, GroupRef.class, GroupType.class, value);
     }
 
 }

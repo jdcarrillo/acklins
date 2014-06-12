@@ -34,7 +34,7 @@ public class Client {
         // TODO code application logic here
 
         System.out.println("\n\nCalling the SOAP Server to say hello\n\n");
-        URL url = new URL("http://servicios.acklins.net/ws_app_getinfo.asmx");
+        URL url = new URL("http://servicios.acklins.net/ws_app_getinfo.asmx?WSDL");
         String name="sayHello";
 
         Call call = new Call();

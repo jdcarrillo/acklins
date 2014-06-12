@@ -76,8 +76,8 @@ public class Documentation {
      * 
      * <p>
      * Objects of the following type(s) are allowed in the list
-     * {@link Object }
      * {@link String }
+     * {@link Object }
      * {@link Element }
      * 
      * 

@@ -41,8 +41,8 @@ import javax.xml.namespace.QName;
  *         &lt;/choice>
  *         &lt;group ref="{http://www.w3.org/2001/XMLSchema}identityConstraint" maxOccurs="unbounded" minOccurs="0"/>
  *       &lt;/sequence>
- *       &lt;attGroup ref="{http://www.w3.org/2001/XMLSchema}occurs"/>
  *       &lt;attGroup ref="{http://www.w3.org/2001/XMLSchema}defRef"/>
+ *       &lt;attGroup ref="{http://www.w3.org/2001/XMLSchema}occurs"/>
  *       &lt;attribute name="type" type="{http://www.w3.org/2001/XMLSchema}QName" />
  *       &lt;attribute name="substitutionGroup" type="{http://www.w3.org/2001/XMLSchema}QName" />
  *       &lt;attribute name="default" type="{http://www.w3.org/2001/XMLSchema}string" />
@@ -102,18 +102,18 @@ public abstract class ElementType
     protected List<String> blocks;
     @XmlAttribute(name = "form")
     protected FormChoice form;
-    @XmlAttribute(name = "minOccurs")
-    @XmlSchemaType(name = "nonNegativeInteger")
-    protected BigInteger minOccurs;
-    @XmlAttribute(name = "maxOccurs")
-    @XmlSchemaType(name = "allNNI")
-    protected String maxOccurs;
     @XmlAttribute(name = "name")
     @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
     @XmlSchemaType(name = "NCName")
     protected String name;
     @XmlAttribute(name = "ref")
     protected QName ref;
+    @XmlAttribute(name = "minOccurs")
+    @XmlSchemaType(name = "nonNegativeInteger")
+    protected BigInteger minOccurs;
+    @XmlAttribute(name = "maxOccurs")
+    @XmlSchemaType(name = "allNNI")
+    protected String maxOccurs;
 
     /**
      * Obtiene el valor de la propiedad complexType.
@@ -429,6 +429,54 @@ public abstract class ElementType
     }
 
     /**
+     * Obtiene el valor de la propiedad name.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * Define el valor de la propiedad name.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setName(String value) {
+        this.name = value;
+    }
+
+    /**
+     * Obtiene el valor de la propiedad ref.
+     * 
+     * @return
+     *     possible object is
+     *     {@link QName }
+     *     
+     */
+    public QName getRef() {
+        return ref;
+    }
+
+    /**
+     * Define el valor de la propiedad ref.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link QName }
+     *     
+     */
+    public void setRef(QName value) {
+        this.ref = value;
+    }
+
+    /**
      * Obtiene el valor de la propiedad minOccurs.
      * 
      * @return
@@ -482,54 +530,6 @@ public abstract class ElementType
      */
     public void setMaxOccurs(String value) {
         this.maxOccurs = value;
-    }
-
-    /**
-     * Obtiene el valor de la propiedad name.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * Define el valor de la propiedad name.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setName(String value) {
-        this.name = value;
-    }
-
-    /**
-     * Obtiene el valor de la propiedad ref.
-     * 
-     * @return
-     *     possible object is
-     *     {@link QName }
-     *     
-     */
-    public QName getRef() {
-        return ref;
-    }
-
-    /**
-     * Define el valor de la propiedad ref.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link QName }
-     *     
-     */
-    public void setRef(QName value) {
-        this.ref = value;
     }
 
 }
