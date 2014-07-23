@@ -1,0 +1,1 @@
+$wnd.com_acklins_mavenproject2_AppWidgetSet.runAsyncCallback2('defineClass(909, 1, $intern_108);\n_.onSuccess_1 = function onSuccess_3(){\n  $setLoaded_0((!impl_11 && (impl_11 = new ConnectorBundleLoaderImpl) , impl_11), this.this$1.packageName);\n}\n;\n$entry(onLoad)(2);\n\n//# sourceURL=com.acklins.mavenproject2.AppWidgetSet-2.js\n')

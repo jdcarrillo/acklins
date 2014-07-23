@@ -1,0 +1,2 @@
+# Module com.acklins.mavenproject2.AppWidgetSet
+# RPC service class, partial path of RPC policy file
