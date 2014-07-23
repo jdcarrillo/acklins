@@ -5,9 +5,14 @@
  */
 package sri;
 
+import java.io.IOException;
+import java.net.CookieManager;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -82,18 +87,20 @@ public class sri extends javax.swing.JFrame {
 
     private void btnOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOkActionPerformed
         // TODO add your handling code here:
-        String url = txtUrl.getText();
-        String address = "https://declaraciones.sri.gob.ec/facturacion-internet/consultas/publico/ruc-datos1.jspa?pagina=resultado&opcion=1&texto=1791405307001";
+        String uri = txtUrl.getText();
+        //String address = "https://declaraciones.sri.gob.ec/facturacion-internet/consultas/publico/ruc-datos1.jspa?pagina=resultado&opcion=1&texto=1791405307001";
+        String address = "https://declaraciones.sri.gob.ec/consultas-renta-internet/consultaNaturales.jsf?form%3AseleccionRadioButton=C&form%3ArucRazonSocial=&form%3Acedula=0704356765&form%3Apassaport=&form%3AapellidoN=&form%3Asubmit=Buscar&form=form&autoScroll=&javax.faces.ViewState=j_id1";
         //"https://declaraciones.sri.gob.ec/consultas-renta-internet/consultaNaturales.jsf?form%3AseleccionRadioButton=C&form%3ArucRazonSocial=&form%3Acedula=0704356765&form%3Apassaport=&form%3AapellidoN=&form%3Asubmit=Buscar&form=form&autoScroll=&javax.faces.ViewState=j_id11";
         String content = null;
         URLConnection connection = null;
+
         try {
             connection = new URL(address).openConnection();
             Scanner scanner = new Scanner(connection.getInputStream());
             scanner.useDelimiter("\\Z");
             content = scanner.next();
-            //txtWeb.setText(content);
-            txtWeb.setText(ExtractUrl.getTitle(address));
+            txtWeb.setText(content);
+            //txtWeb.setText(ExtractUrl.getTitle(address));
         } catch (Exception ex) {
             ex.printStackTrace();
         }

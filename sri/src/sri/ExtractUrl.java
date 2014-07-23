@@ -34,7 +34,7 @@ public class ExtractUrl {
 		}
 	    }
 
-	    return "";
+	    return line;
 	} finally {
 	    if (reader != null)
 		reader.close();
