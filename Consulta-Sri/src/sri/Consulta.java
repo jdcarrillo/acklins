@@ -6,9 +6,13 @@
 package sri;
 
 import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -86,56 +90,61 @@ public class Consulta extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    
-    
     private void btnOkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOkActionPerformed
-        // TODO add your handling code here:
-        //String address="https://declaraciones.sri.gob.ec/consultas-renta-internet/consultaNaturales.jsf?form%3AseleccionRadioButton=C&form%3ArucRazonSocial=&form%3Acedula=1713647640&form%3Apassaport=&form%3AapellidoN=&form%3Asubmit=Buscar&form=form&autoScroll=&javax.faces.ViewState=j_id13";
+
+        String address = "https://declaraciones.sri.gob.ec/consultas-renta-internet/consultaNaturales.jsf?form%3AseleccionRadioButton=C&form%3ArucRazonSocial=&form%3Acedula=1713647640&form%3Apassaport=&form%3AapellidoN=&form%3Asubmit=Buscar&form=form&autoScroll=&javax.faces.ViewState=j_id1";
+        String address2 = "https://declaraciones.sri.gob.ec/consultas-renta-internet/consultaNaturales.jsf?AJAXREQUEST=j_id_jsp_1909033050_0&form%3AseleccionRadioButton=C&form%3ArucRazonSocial=&form%3Acedula=&form%3Apassaport=&form%3AapellidoN=&form=form&autoScroll=&javax.faces.ViewState=j_id2&ajaxSingle=form%3AlimpiarDatos&form%3AlimpiarDatos=form%3AlimpiarDatos&";
         //String address="https://declaraciones.sri.gob.ec/consultas-renta-internet/consultaDeudaNaturales.jsf?AJAXREQUEST=j_id_jsp_2048670963_0&form%3AradioTipoPersona=I&form%3Aj_id_jsp_2048670963_7=1713647640&form=form&autoScroll=&javax.faces.ViewState=j_id9&form%3Aj_id_jsp_2048670963_8=form%3Aj_id_jsp_2048670963_8&";
-        String address="https://declaraciones.sri.gob.ec/facturacion-internet/consultas/publico/ruc-datos1.jspa?pagina=resultado&opcion=1&texto=1713647673001";
+        //String address = "https://declaraciones.sri.gob.ec/facturacion-internet/consultas/publico/ruc-datos1.jspa?pagina=resultado&opcion=1&texto=1713647673001";
         String content = null;
-        URLConnection connection = null;
+        HttpURLConnection connection = null;
+
         try {
-            connection = new URL(address).openConnection();
+
+            connection = (HttpURLConnection) new URL(address).openConnection();
+            System.out.println("Metodo: " + connection.getRequestMethod());
+            connection.connect();
+
             Scanner scanner = new Scanner(connection.getInputStream());
             scanner.useDelimiter("\\Z");
             content = scanner.next();
-            SRI x = new SRI();
-            
-            //txtWeb.setText(x.getHTML(address));
+            //SRI x = new SRI();
             txtWeb.setText(content);
+            //txtWeb.setText(x.getHTML(address));
+            //txtWeb.setText(content);
             //System.out.println(x.getHTML(address));
         } catch (Exception ex) {
             ex.printStackTrace();
         }
         //System.out.println(content);
+
         //Extrae extrae = new Extrae();
         //txtWeb.setText(extrae.ExtraeHtml(address));
+        //txtWeb.setText(extrae.callURL(address));
         //String r = extrae.ExtraeHtml(address);
-        
+        //System.out.println(r);
         Document doc = Jsoup.parse(content);
-        //Elements links = doc.select("a[href]");
-        //Elements resultLinks = doc.select("h3.r > a");
-        
-        
-//        Element masthead = doc.select("tr.par").first();
-//        System.out.println(masthead);
-//     
+//        Elements links = doc.select("a[href]");
+//        Elements resultLinks = doc.select("h3.r > a");
+        //System.out.println(doc);
+        //Element masthead = doc.select("tr.par").first();
+        //System.out.println(masthead);
+        //System.out.println("\n--------------------------------\n");
 //        Element link = masthead.select("a").first();
 //        String linkText = link.text();
 //        System.out.println(linkText);
-        
-        
-        for (Element table : doc.select("table.reporte")) {
-     for (Element row : table.select("tr:gt(0)")) {
-        Elements tds = row.select("td:not([rowspan])");
-        System.out.println("Nombres: "+tds.get(1).text() + " -> " + tds.get(0).text());
-     }
-}
-        
-        
-        
-       
+//        Elements tds = new Elements();
+//        for (Element table : doc.select("table.anchoDoc")) { //table.reporte
+//            for (Element row : table.select("tr:gt(0)")) {
+//                tds = row.select("td:not([rowspan])");
+//                System.out.println("Nombres: " + tds.get(1).text() + " -> " + tds.get(0).text());
+//
+//            }
+//
+//        }
+//        String resultado = null;
+//        resultado = "Nombres: " + tds.get(1).text() + " -> " + tds.get(0).text();
+//        txtWeb.setText(resultado);
     }//GEN-LAST:event_btnOkActionPerformed
 
     /**
